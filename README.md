@@ -13,7 +13,7 @@ mBapp es el nombre que recibe nuestro proyecto de robótica, el cual consiste en
 
 ## Lenguajes utilizados
 
-**Mini-bar:** C++
+**Mini-bar:** C++, PlatformIO
 
 **Aplicación:** Kotlin, Jetpack Compose
 
