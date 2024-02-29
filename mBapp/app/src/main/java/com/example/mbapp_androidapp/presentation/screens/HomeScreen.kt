@@ -27,10 +27,12 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
@@ -84,11 +86,20 @@ private fun Buttons() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MenuButton(icon = Icons.Rounded.ShoppingCart, text = "Mis compras")
+        MenuButton(
+            icon = Icons.Rounded.ShoppingCart,
+            text = "Mis compras"
+        )
         Spacer(modifier = Modifier.height(60.dp))
-        MenuButton(icon = Icons.Rounded.Person, text = "Productos")
+        MenuButton(
+            icon = ImageVector.vectorResource(id = R.drawable.local_cafe_24px),
+            text = "Productos"
+        )
         Spacer(modifier = Modifier.height(60.dp))
-        MenuButton(icon = Icons.Rounded.Person, text = "Soy empleado")
+        MenuButton(
+            icon = Icons.Rounded.Person,
+            text = "Soy empleado"
+        )
     }
 }
 

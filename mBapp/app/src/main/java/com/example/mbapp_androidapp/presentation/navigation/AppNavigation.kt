@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mbapp_androidapp.presentation.screens.SleepScreen
 
 
 /**
@@ -16,6 +17,9 @@ fun AppNavigation() {
 
     // Almacenamiento y gestión de pantallas con NavHost
     NavHost(navController = navController, startDestination = AppScreens.SleepScreen.route) {
+        composable(route = AppScreens.SleepScreen.route) {
+            SleepScreen(navController)
+        }
         composable(route = AppScreens.HomeScreen.route) {
 
         }

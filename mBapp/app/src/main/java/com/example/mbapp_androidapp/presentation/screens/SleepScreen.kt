@@ -19,17 +19,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun SleepScreen() {
+fun SleepScreen(navController: NavHostController) {
     Box (
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
     ) {
         TopElements() //Elementos en la parte superior
         CenterElements() //Elementos de la parte central de la pantalla
@@ -92,10 +94,4 @@ private fun CenterElements() {
             fontFamily = caviarFamily
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SleepScreenPreview() {
-    SleepScreen()
 }
