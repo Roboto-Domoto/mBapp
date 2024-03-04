@@ -36,14 +36,21 @@ void loop() {
     SerialBT.write(Serial.read());
   }
   if (SerialBT.available()) {
+    String line = "";
     char in = SerialBT.read();
-    Serial.print("BT: ");
-    Serial.println(in);
-    if(in=='a'){
+    while(in!='\n'){
+      line+=in;
+      in = SerialBT.read();
+    }
+    Serial.print("BT ");
+    if(line=="APAGAR"){
+      digitalWrite(LED,LOW);
+    }else if (line=="ENCENDER"){
       digitalWrite(LED,HIGH);
     }else{
-      digitalWrite(LED,LOW);
+      Serial.print("BARCODE");
     }
+    Serial.println(": "+line);
   }
   delay(20);
 }
