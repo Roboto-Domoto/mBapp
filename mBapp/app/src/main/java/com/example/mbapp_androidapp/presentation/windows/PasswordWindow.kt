@@ -1,6 +1,5 @@
 package com.example.mbapp_androidapp.presentation.windows
 
-import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -22,6 +21,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,87 +39,97 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupPositionProvider
 import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordWindow(modifier: Modifier = Modifier) {
+fun PasswordWindow(flag: MutableState<Boolean>, modifier: Modifier = Modifier) {
     var hidden by remember { mutableStateOf(true) }
     var password by remember { mutableStateOf("") }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
-            .border(2.dp, Color.Black, RoundedCornerShape(16.dp))
-            .wrapContentSize(Alignment.TopCenter)
-            .background(Color.White, shape = RoundedCornerShape(16.dp))
-    ) {
-        Text(
-            text = "Contraseña",
-            fontFamily = caviarFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 28.sp,
-            modifier = Modifier.padding(12.dp)
-        )
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = {
-                Text(text = "Contraseña")
-            },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
-            ),
-            visualTransformation = if(hidden) PasswordVisualTransformation()
-            else VisualTransformation.None,
-            trailingIcon = {
-                IconButton(onClick = { hidden = !hidden }) {
+    AlertDialog(
+        onDismissRequest = { flag.value = !flag.value },
+        confirmButton = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                //Botón para cerrar
+                IconButton(
+                    onClick = { flag.value = !flag.value }
+                ) {
                     Icon(
-                        imageVector =
-                        if(hidden) ImageVector.vectorResource(R.drawable.visibility_off)
-                        else ImageVector.vectorResource(R.drawable.visibility_on),
-                        contentDescription = "Visibility"
+                        imageVector = Icons.Rounded.Close,
+                        contentDescription = "Validate password",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(Color.Black, CircleShape)
                     )
                 }
-            },
-            modifier = Modifier
-                .padding(12.dp)
-                .size(272.dp, 52.dp)
-        )
-        Buttons() //Botones de aceptar o cerrar
-    }
-}
-
-@Composable
-private fun Buttons() {
-    Row (
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(12.dp),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ){
-        Icon(
-            imageVector = Icons.Rounded.Close,
-            contentDescription = "Close Window",
-            modifier = Modifier.size(32.dp)
-        )
-        Icon(
-            imageVector = Icons.Rounded.Check,
-            contentDescription = "Validate password",
-            modifier = Modifier.size(32.dp)
-        )
-    }
+                //Botón para aceptar
+                IconButton(
+                    onClick = { /*TODO*/ }
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Check,
+                        contentDescription = "Validate password",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(Color.Black, CircleShape)
+                    )
+                }
+            }
+        },
+        title = {
+            Text(
+                text = "Contraseña",
+                fontFamily = caviarFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp,
+                modifier = Modifier.padding(4.dp)
+            )
+        },
+        text = {
+            TextField(
+                value = password,
+                onValueChange = { password = it },
+                label = {
+                    Text(text = "Contraseña")
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                visualTransformation = if(hidden) PasswordVisualTransformation()
+                else VisualTransformation.None,
+                trailingIcon = {
+                    IconButton(onClick = { hidden = !hidden }) {
+                        Icon(
+                            imageVector =
+                            if(hidden) ImageVector.vectorResource(R.drawable.visibility_off)
+                            else ImageVector.vectorResource(R.drawable.visibility_on),
+                            contentDescription = "Visibility"
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .padding(12.dp)
+                    .size(272.dp, 52.dp)
+            )
+        },
+        modifier = modifier
+            .border(2.dp, Color.Black, RoundedCornerShape(16.dp))
+            .background(Color.White, RoundedCornerShape(16.dp))
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    PasswordWindow()
+    val flag = remember { mutableStateOf(false) }
+    PasswordWindow(flag)
 }

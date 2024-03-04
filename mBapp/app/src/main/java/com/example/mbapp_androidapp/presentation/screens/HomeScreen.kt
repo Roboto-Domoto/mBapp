@@ -76,6 +76,7 @@ fun HomeScreen() {
         )
         if (showPassWindow.value) {
             PasswordWindow(
+                showPassWindow,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .padding(12.dp)
