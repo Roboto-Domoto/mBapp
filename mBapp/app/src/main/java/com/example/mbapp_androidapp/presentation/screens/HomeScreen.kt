@@ -2,49 +2,70 @@ package com.example.mbapp_androidapp.presentation.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mbapp_androidapp.R
+import com.example.mbapp_androidapp.presentation.windows.PasswordWindow
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
 fun HomeScreen() {
+    val showPassWindow = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
         TopElements() //Hora y temperatura superior
-        Buttons() //Los botones con las distintas opciones del menú
+        Buttons(showPassWindow) //Los botones con las distintas opciones del menú
         Icon(
             imageVector = Icons.Rounded.Info,
             contentDescription = "Info button",
@@ -53,6 +74,13 @@ fun HomeScreen() {
                 .padding(8.dp)
                 .size(52.dp)
         )
+        if (showPassWindow.value) {
+            PasswordWindow(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(12.dp)
+            )
+        }
     }
 }
 
@@ -80,7 +108,7 @@ private fun TopElements() {
 }
 
 @Composable
-private fun Buttons() {
+private fun Buttons(flag: MutableState<Boolean>) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -98,15 +126,16 @@ private fun Buttons() {
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
             icon = Icons.Rounded.Person,
-            text = "Soy empleado"
+            text = "Soy empleado",
+            onClick = { flag.value = !flag.value }
         )
     }
 }
 
 @Composable
-private fun MenuButton (icon: ImageVector, text: String) {
+private fun MenuButton (icon: ImageVector, text: String, onClick: () -> Unit = {}) {
     TextButton(
-        onClick = { /*TODO*/ },
+        onClick = { onClick.invoke() },
         colors = ButtonDefaults.buttonColors(Color.Black, Color.White),
         border = BorderStroke(
             width = 2.dp,
