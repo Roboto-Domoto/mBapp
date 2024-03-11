@@ -39,12 +39,16 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
+import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordWindow(flag: MutableState<Boolean>, modifier: Modifier = Modifier) {
+fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>,
+                   modifier: Modifier = Modifier)
+{
     var hidden by remember { mutableStateOf(true) }
     var password by remember { mutableStateOf("") }
 
@@ -70,7 +74,10 @@ fun PasswordWindow(flag: MutableState<Boolean>, modifier: Modifier = Modifier) {
                 }
                 //Botón para aceptar
                 IconButton(
-                    onClick = { /*TODO*/ }
+                    onClick = {
+                        if (password == "Contraseña")
+                            navController.navigate(AppScreens.EmployeeScreen.route)
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Check,
@@ -125,11 +132,4 @@ fun PasswordWindow(flag: MutableState<Boolean>, modifier: Modifier = Modifier) {
             .border(2.dp, Color.Black, RoundedCornerShape(16.dp))
             .background(Color.White, RoundedCornerShape(16.dp))
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    val flag = remember { mutableStateOf(false) }
-    PasswordWindow(flag)
 }

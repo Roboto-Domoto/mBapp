@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mbapp_androidapp.presentation.screens.EmployeeScreen
+import com.example.mbapp_androidapp.presentation.screens.HomeScreen
+import com.example.mbapp_androidapp.presentation.screens.ItemsScreen
 import com.example.mbapp_androidapp.presentation.screens.SleepScreen
 
 
@@ -21,7 +24,7 @@ fun AppNavigation() {
             SleepScreen(navController)
         }
         composable(route = AppScreens.HomeScreen.route) {
-
+            HomeScreen(navController)
         }
 
         composable(route = AppScreens.MyShoppingScreen.route) {
@@ -29,11 +32,11 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.ItemsScreen.route) {
-
+            ItemsScreen(navController)
         }
 
         composable(route = AppScreens.EmployeeScreen.route) {
-
+            EmployeeScreen(navController)
         }
     }
 

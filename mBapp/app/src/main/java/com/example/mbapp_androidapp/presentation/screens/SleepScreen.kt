@@ -13,6 +13,7 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
@@ -33,7 +35,7 @@ fun SleepScreen(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        TopElements() //Elementos en la parte superior
+        TopElements(navController) //Elementos en la parte superior
         CenterElements() //Elementos de la parte central de la pantalla
         Icon(
             imageVector = Icons.Rounded.Info,
@@ -48,7 +50,7 @@ fun SleepScreen(navController: NavHostController) {
 
 //En esta función se establecen los botones del menú principal y ajustes
 @Composable
-private fun TopElements() {
+private fun TopElements(navController: NavHostController) {
     Row (
         modifier = Modifier
             .fillMaxSize()
@@ -56,16 +58,21 @@ private fun TopElements() {
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(
-            imageVector = Icons.Rounded.Home,
-            contentDescription = "Home button",
-            modifier = Modifier.size(52.dp)
-        )
-        Icon(
-            imageVector = Icons.Rounded.Settings,
-            contentDescription = "Settings button",
-            modifier = Modifier.size(52.dp)
-        )
+        IconButton(onClick = { navController.navigate(AppScreens.HomeScreen.route) }) {
+            Icon(
+                imageVector = Icons.Rounded.Home,
+                contentDescription = "Home button",
+                modifier = Modifier.size(52.dp)
+            )
+        }
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                imageVector = Icons.Rounded.Settings,
+                contentDescription = "Settings button",
+                modifier = Modifier.size(52.dp)
+            )
+        }
+
     }
 }
 

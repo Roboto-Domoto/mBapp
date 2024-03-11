@@ -30,9 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.common.Drink
 import com.example.mbapp_androidapp.common.ItemClass
@@ -46,7 +46,7 @@ val cocacolazero = Drink(R.drawable.coca_cola_zero_lata, "Coca-Cola Zero", 1.5f,
 val twix = Snack(R.drawable.twix, "Snickers", 1.25f, 50f)
 val list = listOf(cocacola, cocacolazero, twix)
 @Composable
-fun ItemsScreen() {
+fun ItemsScreen(navController: NavHostController) {
     val showInfo = remember { mutableStateOf(false) }
     val item: MutableState<ItemClass?> = remember { mutableStateOf(null) }
     Box(
@@ -193,8 +193,3 @@ private fun TopElements() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    ItemsScreen()
-}

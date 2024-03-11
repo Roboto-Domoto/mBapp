@@ -14,12 +14,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.List
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -29,19 +27,18 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.HorizontalAlignmentLine
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun EmployeeScreen() {
+fun EmployeeScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -49,7 +46,7 @@ fun EmployeeScreen() {
     ) {
         TopElements() //Hora y temperatura
         Buttons() //Los botones con las distintas opciones del menú
-        BottomElements() //Botones de cierre de sesión e información
+        BottomElements(navController) //Botones de cierre de sesión e información
     }
 }
 
@@ -77,19 +74,20 @@ private fun TopElements() {
 }
 
 @Composable
-private fun BottomElements() {
+private fun BottomElements(navController: NavHostController) {
     Row(
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.SpaceBetween
     ){
-        Icon(
-            imageVector = Icons.Rounded.ExitToApp,
-            contentDescription = "Info button",
-            modifier = Modifier
-                .padding(8.dp)
-                .size(52.dp)
-        )
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(
+                imageVector = Icons.Rounded.ExitToApp,
+                contentDescription = "Info button",
+                modifier = Modifier
+                    .size(52.dp)
+            )
+        }
 
         Icon(
             imageVector = Icons.Rounded.Info,
@@ -162,10 +160,4 @@ private fun ButtonContent(icon: ImageVector, text: String) {
             fontSize = 16.sp
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    EmployeeScreen()
 }
