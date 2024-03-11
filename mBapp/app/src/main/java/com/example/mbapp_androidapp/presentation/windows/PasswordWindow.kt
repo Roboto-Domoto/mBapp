@@ -129,7 +129,7 @@ fun PasswordWindow(flag: MutableState<Boolean>, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun Preview() {
+private fun Preview() {
     val flag = remember { mutableStateOf(false) }
     PasswordWindow(flag)
 }
