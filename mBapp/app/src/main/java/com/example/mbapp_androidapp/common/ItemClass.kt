@@ -1,7 +1,5 @@
 package com.example.mbapp_androidapp.common
 
-import android.content.ClipData.Item
-
 abstract class ItemClass(
     var pictureId: Int,
     var name: String,

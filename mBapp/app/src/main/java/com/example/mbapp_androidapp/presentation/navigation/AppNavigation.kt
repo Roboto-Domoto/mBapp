@@ -32,7 +32,7 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.ItemsScreen.route) {
-            ItemsScreen(navController)
+            ItemsScreen()
         }
 
         composable(route = AppScreens.EmployeeScreen.route) {
