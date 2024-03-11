@@ -1,5 +1,11 @@
 package com.example.mbapp_androidapp.presentation.screens
 
+import android.icu.util.Calendar
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,14 +21,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun SleepScreen(navController: NavHostController) {
@@ -74,6 +88,27 @@ private fun TopElements(navController: NavHostController) {
 //En esta función se representa la temperatura, hora, fecha y clima
 @Composable
 private fun CenterElements() {
+    val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val hourFormat = DateTimeFormatter.ofPattern("hh:mm")
+
+    val date = LocalDateTime.now().format(dateFormat)
+    val hour = LocalDateTime.now().format(hourFormat)
+
+    var isColonVisible by remember { mutableStateOf(true) }
+
+    val infiniteTransition = rememberInfiniteTransition(label = "Clock")
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 1200
+                0.5f at 600
+            },
+            repeatMode = RepeatMode.Reverse
+        ), label = "Clock"
+    )
+
     Column (
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -84,16 +119,36 @@ private fun CenterElements() {
             fontSize = 208.sp,
             fontFamily = amableFamily
         )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Text(
+                text = hour.substring(0, 2),
+                fontSize = 60.sp,
+                fontFamily = caviarFamily
+            )
+            Text(
+                text = ":",
+                fontSize = 60.sp,
+                fontFamily = caviarFamily,
+                letterSpacing = 0.sp,
+                color = Color.Black.copy(alpha = alpha)
+            )
+            Text(
+                text = hour.substring(3),
+                fontSize = 60.sp,
+                fontFamily = caviarFamily
+            )
+        }
         Text(
-            text = "10:00",
-            fontSize = 60.sp,
-            fontFamily = caviarFamily,
-            letterSpacing = 0.sp
-        )
-        Text(
-            text = "26/02/2024",
+            text = date,
             fontSize = 16.sp,
             fontFamily = caviarFamily
         )
+    }
+
+    LaunchedEffect(alpha) {
+        isColonVisible = alpha > 0.5f
     }
 }
