@@ -1,6 +1,5 @@
 package com.example.mbapp_androidapp.presentation.screens
 
-import android.icu.util.Calendar
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
