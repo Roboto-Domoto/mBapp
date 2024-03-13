@@ -21,7 +21,7 @@ BluetoothSerial SerialBT;
 void setup() {
   Serial.begin(115200);
   SerialBT.begin(device_name); //Bluetooth device name
-  Serial.printf("The device with name \"%s\" is started.\nNow you can pair it with Bluetooth!\n", device_name.c_str());
+  Serial.printf("\nThe device with name \"%s\" is started.\nNow you can pair it with Bluetooth!\n", device_name.c_str());
   //Serial.printf("The device with name \"%s\" and MAC address %s is started.\nNow you can pair it with Bluetooth!\n", device_name.c_str(), SerialBT.getMacString()); // Use this after the MAC method is implemented
   #ifdef USE_PIN
     SerialBT.setPin(pin);
@@ -36,14 +36,22 @@ void loop() {
     SerialBT.write(Serial.read());
   }
   if (SerialBT.available()) {
+    String line = "";
     char in = SerialBT.read();
-    Serial.print("BT: ");
-    Serial.println(in);
-    if(in=='a'){
-      digitalWrite(LED,HIGH);
-    }else{
-      digitalWrite(LED,LOW);
+    while(in!='\n'){
+      line+=in;
+      in = SerialBT.read();
     }
+    Serial.print("BT ");
+    if(line=="ENCENDER"){
+      digitalWrite(LED,HIGH);
+    }else if(line=="APAGAR"){
+      digitalWrite(LED,LOW);
+    }else{
+      Serial.print("BARCODE ");
+    }
+    Serial.print(": ");
+    Serial.println(line);
   }
   delay(20);
 }
