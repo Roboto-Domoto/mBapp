@@ -23,7 +23,7 @@ interface ItemDao {
     @Query("SELECT * FROM items_table")
     fun getAll(): Flow<List<ItemEntity>>
 
-    @Query("SELECT * FROM items_table WHERE item_id = :id")
+    @Query("SELECT * FROM items_table WHERE itemId = :id")
     fun getByID(id: Int): Flow<ItemEntity>
 
     @Query("SELECT * FROM items_table WHERE name = :name")

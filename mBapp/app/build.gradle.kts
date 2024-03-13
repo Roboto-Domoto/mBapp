@@ -99,4 +99,9 @@ dependencies {
 
     // implementation of Gson library to convert Java objects into their JSON representation
     implementation("com.google.code.gson:gson:2.9.0")
+
+    val lifecycle_version = "2.7.0"
+    // LiveData
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.7.0-alpha04")
 }

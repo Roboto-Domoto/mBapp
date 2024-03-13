@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.mbapp_androidapp.common.elements.Clock
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
@@ -80,7 +81,6 @@ private fun TopElements(navController: NavHostController) {
                 modifier = Modifier.size(52.dp)
             )
         }
-
     }
 }
 
@@ -88,25 +88,7 @@ private fun TopElements(navController: NavHostController) {
 @Composable
 private fun CenterElements() {
     val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-    val hourFormat = DateTimeFormatter.ofPattern("hh:mm")
-
     val date = LocalDateTime.now().format(dateFormat)
-    val hour = LocalDateTime.now().format(hourFormat)
-
-    var isColonVisible by remember { mutableStateOf(true) }
-
-    val infiniteTransition = rememberInfiniteTransition(label = "Clock")
-    val alpha by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 0f,
-        animationSpec = infiniteRepeatable(
-            animation = keyframes {
-                durationMillis = 1200
-                0.5f at 600
-            },
-            repeatMode = RepeatMode.Reverse
-        ), label = "Clock"
-    )
 
     Column (
         modifier = Modifier.fillMaxSize(),
@@ -118,28 +100,11 @@ private fun CenterElements() {
             fontSize = 208.sp,
             fontFamily = amableFamily
         )
-        Row(
+        Clock(
+            fontSize = 60.sp,
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Text(
-                text = hour.substring(0, 2),
-                fontSize = 60.sp,
-                fontFamily = caviarFamily
-            )
-            Text(
-                text = ":",
-                fontSize = 60.sp,
-                fontFamily = caviarFamily,
-                letterSpacing = 0.sp,
-                color = Color.Black.copy(alpha = alpha)
-            )
-            Text(
-                text = hour.substring(3),
-                fontSize = 60.sp,
-                fontFamily = caviarFamily
-            )
-        }
+            horizontalArrangement = Arrangement.Center
+        )
         Text(
             text = date,
             fontSize = 16.sp,
@@ -147,7 +112,4 @@ private fun CenterElements() {
         )
     }
 
-    LaunchedEffect(alpha) {
-        isColonVisible = alpha > 0.5f
-    }
 }

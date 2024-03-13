@@ -30,9 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mbapp_androidapp.R
-import com.example.mbapp_androidapp.common.Drink
-import com.example.mbapp_androidapp.common.ItemClass
-import com.example.mbapp_androidapp.common.NutritionInfoClass
+import com.example.mbapp_androidapp.common.classes.ItemClass
+import com.example.mbapp_androidapp.common.classes.NutritionInfoClass
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 val cc_nutrionInfo = NutritionInfoClass(
@@ -44,12 +43,13 @@ val cc_nutrionInfo = NutritionInfoClass(
     protein = 0.1f
 )
 
-val cocacola = Drink (
+val cocacola = ItemClass (
     pictureId = R.drawable.cocacola_lata,
     name = "Coca-Cola",
     price = 1.5f,
     quantity = 330f,
-    nutritionInfo = cc_nutrionInfo
+    nutritionInfo = cc_nutrionInfo,
+    type = "Drink"
 )
 
 @Composable
@@ -124,7 +124,7 @@ private fun NutritionInfo(item: ItemClass) {
         modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
     ) {
         Text(
-            text = if (item is Drink) "Cada 100 ml" else "Cada 100 g",
+            text = if (item.type == "Drink") "Cada 100 ml" else "Cada 100 g",
             fontWeight = FontWeight.Bold,
             fontFamily = caviarFamily,
             fontSize = 20.sp,

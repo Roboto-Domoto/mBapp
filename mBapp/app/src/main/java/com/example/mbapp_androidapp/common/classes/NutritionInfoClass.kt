@@ -1,4 +1,4 @@
-package com.example.mbapp_androidapp.common
+package com.example.mbapp_androidapp.common.classes
 
 class NutritionInfoClass(
     var calories: Float = 0f,

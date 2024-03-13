@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
@@ -23,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,49 +36,56 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mbapp_androidapp.R
-import com.example.mbapp_androidapp.common.Drink
-import com.example.mbapp_androidapp.common.ItemClass
-import com.example.mbapp_androidapp.common.Snack
+import com.example.mbapp_androidapp.common.classes.ItemClass
+import com.example.mbapp_androidapp.common.elements.TopElements
+import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.windows.NutritionalWindow
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
-val cocacola = Drink(R.drawable.cocacola_lata, "Coca-Cola", 1.5f, 330f)
-val cocacolazero = Drink(R.drawable.coca_cola_zero_lata, "Coca-Cola Zero", 1.5f, 330f)
-val twix = Snack(R.drawable.twix, "Snickers", 1.25f, 50f)
-val list = listOf(cocacola, cocacolazero, twix)
 @Composable
-fun ItemsScreen() {
+fun ItemsScreen(itemsViewModel: ItemsViewModel) {
     val showInfo = remember { mutableStateOf(false) }
     val item: MutableState<ItemClass?> = remember { mutableStateOf(null) }
+    val itemsList by itemsViewModel.allItems.observeAsState(emptyList())
+
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
+
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             TopElements()
             LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.95f),
                 state = rememberLazyListState(),
                 contentPadding = PaddingValues(12.dp)
             ) {
-                items(list.size) { i ->
-                    Item(item = list[i], showInfo, item) //Representación del producto
+                itemsIndexed(itemsList) { _, actualItem ->
+                    Item(item = actualItem.toItemClass(), showInfo, item) //Representación del producto
                     Spacer(modifier = Modifier.height(16.dp)) //Margen entre productos
                 }
             }
         }
-        Icon(
-            imageVector = Icons.Rounded.Info,
-            contentDescription = "Info button",
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(8.dp)
-                .size(52.dp)
-        )
+
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Info,
+                contentDescription = "Info button",
+                modifier = Modifier
+                    .padding(8.dp)
+                    .size(52.dp)
+            )
+        }
+
         if (showInfo.value && item.value != null) {
             NutritionalWindow(flag = showInfo, item = item.value!!)
         }
@@ -99,6 +110,7 @@ private fun Item(item: ItemClass, showInfo: MutableState<Boolean>,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .size(108.dp)
+                    .padding(end = 8.dp)
             )
             Column {
                 Row(
@@ -167,28 +179,5 @@ private fun Item(item: ItemClass, showInfo: MutableState<Boolean>,
         )
     }
 
-}
-
-@Composable
-private fun TopElements() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Top
-    ) {
-        Text(
-            text = "10:00",
-            fontSize = 36.sp,
-            fontFamily = caviarFamily,
-            letterSpacing = 0.sp
-        )
-        Text(
-            text = "4º",
-            fontSize = 32.sp,
-            fontFamily = amableFamily
-        )
-    }
 }
 

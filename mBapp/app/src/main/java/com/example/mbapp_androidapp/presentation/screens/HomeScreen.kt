@@ -35,9 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
+import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.windows.PasswordWindow
-import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
@@ -67,29 +67,6 @@ fun HomeScreen(navController: NavHostController) {
                     .padding(12.dp)
             )
         }
-    }
-}
-
-@Composable
-private fun TopElements() {
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Top
-    ) {
-        Text(
-            text = "10:00",
-            fontSize = 36.sp,
-            fontFamily = caviarFamily,
-            letterSpacing = 0.sp
-        )
-        Text(
-            text = "4º",
-            fontSize = 32.sp,
-            fontFamily = amableFamily
-        )
     }
 }
 

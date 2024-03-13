@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
+import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
@@ -46,29 +47,6 @@ fun EmployeeScreen(navController: NavHostController) {
         TopElements() //Hora y temperatura
         Buttons() //Los botones con las distintas opciones del menú
         BottomElements(navController) //Botones de cierre de sesión e información
-    }
-}
-
-@Composable
-private fun TopElements() {
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Top
-    ) {
-        Text(
-            text = "10:00",
-            fontSize = 36.sp,
-            fontFamily = caviarFamily,
-            letterSpacing = 0.sp
-        )
-        Text(
-            text = "4º",
-            fontSize = 32.sp,
-            fontFamily = amableFamily
-        )
     }
 }
 
