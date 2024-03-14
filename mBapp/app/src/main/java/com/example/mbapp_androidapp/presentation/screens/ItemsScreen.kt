@@ -66,7 +66,8 @@ fun ItemsScreen(itemsViewModel: ItemsViewModel) {
                 contentPadding = PaddingValues(12.dp)
             ) {
                 itemsIndexed(itemsList) { _, actualItem ->
-                    Item(item = actualItem.toItemClass(), showInfo, item) //Representación del producto
+                    //Representación del producto
+                    Item(item = actualItem.toItemClass(), showInfo, item, itemsViewModel)
                     Spacer(modifier = Modifier.height(16.dp)) //Margen entre productos
                 }
             }
@@ -94,8 +95,10 @@ fun ItemsScreen(itemsViewModel: ItemsViewModel) {
 
 @Composable
 private fun Item(item: ItemClass, showInfo: MutableState<Boolean>,
-                 itemToShow: MutableState<ItemClass?>
+                 itemToShow: MutableState<ItemClass?>, itemsViewModel: ItemsViewModel
 ) {
+    val stock = itemsViewModel.getStock(item.name)
+
     Column(
         modifier = Modifier.fillMaxWidth(0.95f),
         horizontalAlignment = Alignment.Start,
@@ -163,7 +166,7 @@ private fun Item(item: ItemClass, showInfo: MutableState<Boolean>,
                         modifier = Modifier.padding(12.dp)
                     )
                     Text(
-                        text = "2",
+                        text = "$stock",
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 48.sp
                     )

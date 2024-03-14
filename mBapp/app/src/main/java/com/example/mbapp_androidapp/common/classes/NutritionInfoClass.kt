@@ -8,6 +8,10 @@ class NutritionInfoClass(
     var sugar: Float = 0f,
     var protein: Float = 0f
 ) {
+    fun getkCalText(): String {
+        return "$calories kcal"
+    }
+
     fun getFatText(): String {
         return "$fat g"
     }

@@ -27,5 +27,5 @@ interface ItemDao {
     fun getByID(id: Int): Flow<ItemEntity>
 
     @Query("SELECT * FROM items_table WHERE name = :name")
-    fun getByName(name: String): Flow<ItemEntity>
+    fun getByName(name: String): Flow<List<ItemEntity>>
 }

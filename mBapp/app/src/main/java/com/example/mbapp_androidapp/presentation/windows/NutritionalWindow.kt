@@ -34,24 +34,6 @@ import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.NutritionInfoClass
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
-val cc_nutrionInfo = NutritionInfoClass(
-    calories = 38f ,
-    fat = 0f ,
-    cholesterol = 0f,
-    carbohydrate = 10f,
-    sugar = 9f,
-    protein = 0.1f
-)
-
-val cocacola = ItemClass (
-    pictureId = R.drawable.cocacola_lata,
-    name = "Coca-Cola",
-    price = 1.5f,
-    quantity = 330f,
-    nutritionInfo = cc_nutrionInfo,
-    type = "Drink"
-)
-
 @Composable
 fun NutritionalWindow(flag: MutableState<Boolean>, item: ItemClass, modifier: Modifier = Modifier) {
     AlertDialog(
@@ -136,7 +118,7 @@ private fun NutritionInfo(item: ItemClass) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(8.dp)
         ) {
-            NutritionInfoText(element = "Calorías: ", quantity = item.nutritionInfo.calories.toString())
+            NutritionInfoText(element = "Calorías: ", quantity = item.nutritionInfo.getkCalText())
             NutritionInfoText(element = "Grasas: ", quantity = item.nutritionInfo.getFatText())
             NutritionInfoText(element = "Colesterol: ", quantity = item.nutritionInfo.getCholesterolText())
             NutritionInfoText(element = "Hidratos de carbono: ", quantity = item.nutritionInfo.getCarboHydrateText())
@@ -162,11 +144,4 @@ private fun NutritionInfoText(element: String, quantity: String) {
             text = quantity
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    val flag = remember { mutableStateOf(false) }
-    NutritionalWindow(flag, cocacola)
 }
