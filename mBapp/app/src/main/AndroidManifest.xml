@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android"/>
+
     <application
         android:name=".data.AppApplication"
         android:allowBackup="true"
@@ -31,6 +33,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CaptureActivityPortrait"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MBapp_androidApp"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>

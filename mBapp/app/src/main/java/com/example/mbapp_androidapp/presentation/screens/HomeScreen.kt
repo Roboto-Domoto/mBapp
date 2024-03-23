@@ -41,7 +41,7 @@ import com.example.mbapp_androidapp.presentation.windows.PasswordWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavHostController,scan:()->Unit) {
     val showPassWindow = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
@@ -49,7 +49,7 @@ fun HomeScreen(navController: NavHostController) {
             .background(Color.White)
     ) {
         TopElements() //Hora y temperatura superior
-        Buttons(navController, showPassWindow) //Los botones con las distintas opciones del menú
+        Buttons(navController, showPassWindow, scan) //Los botones con las distintas opciones del menú
         Icon(
             imageVector = Icons.Rounded.Info,
             contentDescription = "Info button",
@@ -71,7 +71,7 @@ fun HomeScreen(navController: NavHostController) {
 }
 
 @Composable
-private fun Buttons(navController: NavHostController, flag: MutableState<Boolean>) {
+private fun Buttons(navController: NavHostController, flag: MutableState<Boolean>, scan:()->Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -85,7 +85,7 @@ private fun Buttons(navController: NavHostController, flag: MutableState<Boolean
         MenuButton(
             icon = ImageVector.vectorResource(id = R.drawable.local_cafe_24px),
             text = "Productos",
-            onClick = { navController.navigate(AppScreens.ItemsScreen.route) }
+            onClick = scan//{ navController.navigate(AppScreens.ItemsScreen.route) }
         )
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
@@ -134,3 +134,7 @@ private fun ButtonContent(icon: ImageVector, text: String) {
         )
     }
 }
+
+
+
+

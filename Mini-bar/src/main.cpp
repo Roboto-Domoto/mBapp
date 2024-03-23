@@ -42,15 +42,7 @@ void loop() {
       line+=in;
       in = SerialBT.read();
     }
-    Serial.print("BT ");
-    if(line=="ENCENDER"){
-      digitalWrite(LED,HIGH);
-    }else if(line=="APAGAR"){
-      digitalWrite(LED,LOW);
-    }else{
-      Serial.print("BARCODE ");
-    }
-    Serial.print(": ");
+    Serial.print("BT: ");
     Serial.println(line);
   }
   delay(20);
