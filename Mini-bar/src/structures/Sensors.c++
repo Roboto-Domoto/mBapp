@@ -21,5 +21,6 @@ Context Sensors::generateContext(){
     actual.setData(topDHT.getTempAndHumidity(),0);
     actual.setData(doorDHT.getTempAndHumidity(),1);
     actual.setData(bottomDHT.getTempAndHumidity(),2);
+    return actual;
 }
 

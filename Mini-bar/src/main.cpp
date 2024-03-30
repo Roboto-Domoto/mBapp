@@ -1,50 +1,54 @@
 #include <Arduino.h>
-#include <BluetoothSerial.h>
-#include <DHTesp.h>
+#include <structures/Sensors.h>
+#include <structures/BluetoothTerminal.h>
 
-//#define USE_PIN // Uncomment this to use PIN during pairing. The pin is specified on the line below
-const char *pin = "1234"; // Change this to more secure PIN.
+void loopSecondCore(void *pvParameters);
+void printMsg(const char *msg);
 
-String device_name = "ESP32-BT-Slave";
+#define DHT_TOP 2
+#define DHT_DOOR 3
+#define DHT_BOTTOM 4
+#define BUMPER 5
+#define PRESSURE_TOP 6
+#define PRESSURE_BOTTOM 7
 
-#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
-#error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
-#endif
-
-#if !defined(CONFIG_BT_SPP_ENABLED)
-#error Serial Bluetooth not available or not enabled. It is only available for the ESP32 chip.
-#endif
-
-#define LED 2
-
-BluetoothSerial SerialBT;
+Sensors* sensors;
+BluetoothTerminal* terminal;
+TaskHandle_t* taskHandle;
 
 void setup() {
+  //Inicializacion monitor serial:
   Serial.begin(115200);
-  SerialBT.begin(device_name); //Bluetooth device name
-  Serial.printf("\nThe device with name \"%s\" is started.\nNow you can pair it with Bluetooth!\n", device_name.c_str());
-  //Serial.printf("The device with name \"%s\" and MAC address %s is started.\nNow you can pair it with Bluetooth!\n", device_name.c_str(), SerialBT.getMacString()); // Use this after the MAC method is implemented
-  #ifdef USE_PIN
-    SerialBT.setPin(pin);
-    Serial.println("Using PIN");
-  #endif
+  
+  //Creación de los objetos base:
+  sensors = new Sensors(DHT_TOP,DHT_BOTTOM,DHT_DOOR,BUMPER,PRESSURE_TOP,PRESSURE_BOTTOM);
+  terminal = new BluetoothTerminal("ESP32-BT-MINIBAR");
 
-  pinMode(LED,OUTPUT);
+	//Creacion tarea segundo hilo:
+  xTaskCreatePinnedToCore(loopSecondCore,"SecondaryCore",1000,NULL,1,taskHandle,0);
 }
 
 void loop() {
+  printMsg("HOLA");
   if (Serial.available()) {
-    SerialBT.write(Serial.read());
+    terminal->writeChar(Serial.read());
   }
-  if (SerialBT.available()) {
-    String line = "";
-    char in = SerialBT.read();
-    while(in!='\n'){
-      line+=in;
-      in = SerialBT.read();
-    }
-    Serial.print("BT: ");
-    Serial.println(line);
+  terminal->readLine();
+  delay(400);
+}
+
+void loopSecondCore(void *pvParameters){
+  while(true) {
+    printMsg("HOLA");
+    delay(400);
   }
-  delay(20);
+  vTaskDelay(10);
+}
+
+void printMsg(const char *msg){
+  Serial.print(xPortGetCoreID());
+  Serial.print(".");
+  Serial.print(xPortGetTickRateHz());
+  Serial.print(":");
+  Serial.println(msg);
 }

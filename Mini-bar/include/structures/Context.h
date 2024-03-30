@@ -1,5 +1,5 @@
-#ifndef __INFO_H
-#define __INFO_H
+#ifndef __CONTEXT_H
+#define __CONTEXT_H
 #include <DHTesp.h>
 
 class Context{
