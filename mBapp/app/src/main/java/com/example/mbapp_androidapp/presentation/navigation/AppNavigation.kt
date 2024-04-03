@@ -20,7 +20,7 @@ import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModelFactor
  */
 
 @Composable
-fun AppNavigation(scan:()->Unit) {
+fun AppNavigation() {
     val navController = rememberNavController() //Controlador de navegación
 
     //Room y DAO
@@ -36,7 +36,7 @@ fun AppNavigation(scan:()->Unit) {
             SleepScreen(navController)
         }
         composable(route = AppScreens.HomeScreen.route) {
-            HomeScreen(navController,scan)
+            HomeScreen(navController)
         }
 
         composable(route = AppScreens.MyShoppingScreen.route) {

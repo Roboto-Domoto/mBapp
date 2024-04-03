@@ -179,7 +179,7 @@ class MainActivity : ComponentActivity() {
     }
 
     //Get device by name
-    private fun getBluetoothDeviceByName(name: String): BluetoothDevice {
+    private fun getBluetoothDeviceByName(name: String): BluetoothDevice? {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.BLUETOOTH_CONNECT
@@ -189,7 +189,7 @@ class MainActivity : ComponentActivity() {
         for (pairedDevice in pairedDevices)
             if (pairedDevice.name.equals(name))
                 return pairedDevice
-        return pairedDevices.first()
+        return null
     }
 
     //Conectar y crear el hilo de conecxion
