@@ -52,14 +52,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Pedir permisos
+        /*//Pedir permisos
         requestBluetoothConnectPermission()
         requestLocationPermission()
         //Crear conexion
         selectedDevices()
         connectBtDevice()
         //Avisar
-        myConnectionBT.writeln("Succesfull connection")
+        myConnectionBT.writeln("Succesfull connection")*/
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -70,9 +70,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AppNavigation {
-                        scan()
-                    }
+                    AppNavigation()
                 }
             }
         }
@@ -81,12 +79,12 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         //Cerrar socket en caso de destruccion de activity
-        try {
+        /*try {
             btSocket.close()
         } catch (e: IOException) {
             showToast("Error disconnecting..: ${e.message}")
         }
-        finish()
+        finish()*/
     }
 
     //Launcher del scanner (no se puede sacar de una actividad ni meter en un companion object)
