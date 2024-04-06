@@ -79,7 +79,8 @@ private fun Buttons(navController: NavHostController, flag: MutableState<Boolean
     ) {
         MenuButton(
             icon = Icons.Rounded.ShoppingCart,
-            text = "Mis compras"
+            text = "Mis compras",
+            onClick = { navController.navigate(AppScreens.MyShoppingScreen.route) }
         )
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(

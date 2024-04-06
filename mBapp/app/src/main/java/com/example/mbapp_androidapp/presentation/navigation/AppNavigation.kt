@@ -6,10 +6,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mbapp_androidapp.common.classes.Customer
 import com.example.mbapp_androidapp.data.AppDatabase
 import com.example.mbapp_androidapp.presentation.screens.EmployeeScreen
 import com.example.mbapp_androidapp.presentation.screens.HomeScreen
 import com.example.mbapp_androidapp.presentation.screens.ItemsScreen
+import com.example.mbapp_androidapp.presentation.screens.MyShoppingScreen
 import com.example.mbapp_androidapp.presentation.screens.SleepScreen
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModelFactory
@@ -22,6 +24,9 @@ import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModelFactor
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController() //Controlador de navegación
+
+    //Se instancia al cliente
+    val customer = Customer()
 
     //Room y DAO
     val appDatabase = AppDatabase.getDatabase(context = LocalContext.current.applicationContext)
@@ -40,7 +45,7 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.MyShoppingScreen.route) {
-
+            MyShoppingScreen(customer)
         }
 
         composable(route = AppScreens.ItemsScreen.route) {
