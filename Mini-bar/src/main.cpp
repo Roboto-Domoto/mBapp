@@ -9,8 +9,8 @@ void printMsg(const char *msg);
 #define DHT_DOOR 3
 #define DHT_BOTTOM 4
 #define BUMPER 5
-#define PRESSURE_TOP 6
-#define PRESSURE_BOTTOM 7
+#define PRESSURE_TOP 21
+#define PRESSURE_BOTTOM 22
 
 Sensors* sensors;
 BluetoothTerminal* terminal;
@@ -29,18 +29,18 @@ void setup() {
 }
 
 void loop() {
+  // if (Serial.available()) {
+  //   terminal->writeChar(Serial.read());
+  // }
+  // terminal->readLine();
   printMsg("HOLA");
-  if (Serial.available()) {
-    terminal->writeChar(Serial.read());
-  }
-  terminal->readLine();
-  delay(400);
+  delay(4000);
 }
 
 void loopSecondCore(void *pvParameters){
   while(true) {
     printMsg("HOLA");
-    delay(400);
+    delay(5000);
   }
   vTaskDelay(10);
 }

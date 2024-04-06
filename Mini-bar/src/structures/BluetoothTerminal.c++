@@ -21,8 +21,8 @@ String BluetoothTerminal::readLine(){
         String line = "";
         char in = this->serial.read();
         while(in!='\n'){
-        line+=in;
-        in = this->serial.read();
+            line+=in;
+            in = this->serial.read();
         }
         Serial.print("Line: ");
         Serial.println(line);

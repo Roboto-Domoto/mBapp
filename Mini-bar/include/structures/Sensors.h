@@ -21,11 +21,6 @@ public:
         uint8_t pinDoorBumper,uint8_t pinTopPressure,uint8_t pinBottomPressure);
 
     Context generateContext();
-
-    
-
-    
-
 };
 
 #endif
