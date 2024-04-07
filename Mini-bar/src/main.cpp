@@ -6,11 +6,11 @@ void loopSecondCore(void *pvParameters);
 void printMsg(const char *msg);
 
 #define DHT_TOP 2
-#define DHT_DOOR 3
-#define DHT_BOTTOM 4
-#define BUMPER 5
-#define PRESSURE_TOP 21
-#define PRESSURE_BOTTOM 22
+#define DHT_DOOR 4
+#define DHT_BOTTOM 5
+#define BUMPER 12
+#define PRESSURE_TOP 13
+#define PRESSURE_BOTTOM 14
 
 Sensors* sensors;
 BluetoothTerminal* terminal;
@@ -25,24 +25,23 @@ void setup() {
   terminal = new BluetoothTerminal("ESP32-BT-MINIBAR");
 
 	//Creacion tarea segundo hilo:
-  xTaskCreatePinnedToCore(loopSecondCore,"SecondaryCore",1000,NULL,1,taskHandle,0);
+  //xTaskCreatePinnedToCore(loopSecondCore,"SecondaryCore",1000,NULL,1,taskHandle,0);
 }
 
 void loop() {
-  // if (Serial.available()) {
-  //   terminal->writeChar(Serial.read());
-  // }
-  // terminal->readLine();
-  printMsg("HOLA");
-  delay(4000);
+  if (Serial.available()) {
+    terminal->writeChar(Serial.read());
+  }
+  terminal->readLine();
+  delay(400);
 }
 
 void loopSecondCore(void *pvParameters){
-  while(true) {
-    printMsg("HOLA");
-    delay(5000);
-  }
-  vTaskDelay(10);
+  // while(true) {
+  //   printMsg("HOLA");
+  //   delay(1000);
+  // }
+  // vTaskDelay(10);
 }
 
 void printMsg(const char *msg){

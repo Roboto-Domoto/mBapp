@@ -38,7 +38,7 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
     private lateinit var adapter: BluetoothAdapter //Adaptador bluetooth
     private lateinit var socket: BluetoothSocket //Socket de comunicación
     private var selectDevice: BluetoothDevice? = null //Dispositivo seleccionado
-    private var nameDevice = "ESP32-BT-Slave" //Nombre del dispositivo
+    private var nameDevice = "ESP32-BT-MINIBAR" //Nombre del dispositivo
 
     companion object{
         @Volatile private var INSTANCE: ConnectedThread? = null
@@ -161,6 +161,7 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
         for (pairedDevice in pairedDevices)
             if (pairedDevice.name.equals(name))
                 return pairedDevice
+        showToast("No encontrado el dispositivo")
         return null
     }
 
@@ -179,6 +180,7 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
             mmOutputStream = socket.outputStream
             start()
             showToast("Connection successful")
+            writeln("Connection great")
         } catch (e: IOException) {
             showToast("Error to connect with device: ${e.message}")
             socket.close()
