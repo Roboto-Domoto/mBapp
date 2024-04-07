@@ -1,10 +1,8 @@
-package com.example.mbapp_androidapp.common
+package com.example.mbapp_androidapp.common.classes
 
-import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -14,9 +12,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.room.Room
 import com.example.mbapp_androidapp.MainActivity
-import com.example.mbapp_androidapp.data.AppDatabase
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
