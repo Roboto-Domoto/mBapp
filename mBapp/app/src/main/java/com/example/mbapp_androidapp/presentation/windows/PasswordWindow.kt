@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
+import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
@@ -46,6 +47,8 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>,
                    modifier: Modifier = Modifier)
 {
+    val system = System.getInstance()
+
     var hidden by remember { mutableStateOf(true) }
     var password by remember { mutableStateOf("") }
 
@@ -73,6 +76,7 @@ fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>
                 IconButton(
                     onClick = {
                         if (password == "Contraseña")
+                            system.addLog("Acceso a modo empleado")
                             navController.navigate(AppScreens.EmployeeScreen.route)
                     }
                 ) {

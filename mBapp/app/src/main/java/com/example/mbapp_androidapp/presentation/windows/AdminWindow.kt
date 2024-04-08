@@ -33,13 +33,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mbapp_androidapp.common.classes.Employee
+import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdminWindow(flag: MutableState<Boolean>)
 {
-    val employee = Employee.getInstance()
+    val employee = System.getInstance().employee
     var number by remember { mutableStateOf(employee.getAdminTl()) }
 
     AlertDialog(
