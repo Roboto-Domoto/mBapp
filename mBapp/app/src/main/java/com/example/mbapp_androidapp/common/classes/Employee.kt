@@ -9,6 +9,10 @@ class Employee private constructor() {
             if (instance == null) instance = Employee()
             return instance!!
         }
+
+        fun deleteInstance() {
+            instance = null
+        }
     }
 
     fun changeAdminTl(number: String) {

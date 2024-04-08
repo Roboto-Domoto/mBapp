@@ -132,7 +132,8 @@ private fun Buttons(showMsg: MutableState<Boolean>, showAdminW: MutableState<Boo
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
             icon = Icons.Rounded.Build,
-            text = "Rest. modo fábrica"
+            text = "Rest. modo fábrica",
+            onClick = { System.getInstance().factoryReset() }
         )
     }
 }

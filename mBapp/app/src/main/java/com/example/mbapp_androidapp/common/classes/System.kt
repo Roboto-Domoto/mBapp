@@ -1,18 +1,13 @@
 package com.example.mbapp_androidapp.common.classes
 
-import android.content.ClipData.Item
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Date
-import kotlin.time.Duration.Companion.hours
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
 
 class System private constructor() {
     private val mBappLogs: MutableList<MBappLog> = mutableListOf()
     private val dailyInventory: MutableList<InventoryItem> = mutableListOf()
-    val employee: Employee = Employee.getInstance()
-    val customer: Customer = Customer.getInstance()
+    var employee: Employee = Employee.getInstance()
+    var customer: Customer = Customer.getInstance()
 
     companion object {
         private var instance: System? = null
@@ -41,5 +36,14 @@ class System private constructor() {
 
     fun getInventory(): List<InventoryItem> {
         return dailyInventory
+    }
+
+    fun factoryReset() {
+        mBappLogs.clear()
+        dailyInventory.clear()
+        Employee.deleteInstance()
+        employee = Employee.getInstance()
+        Customer.deleteInstance()
+        customer = Customer.getInstance()
     }
 }

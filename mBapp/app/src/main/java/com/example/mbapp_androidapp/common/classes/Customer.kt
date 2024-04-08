@@ -9,6 +9,10 @@ class Customer private constructor() {
             if (instance == null) instance = Customer()
             return instance!!
         }
+
+        fun deleteInstance() {
+            instance = null
+        }
     }
 
     //Vaciar la lista de productos comprados
