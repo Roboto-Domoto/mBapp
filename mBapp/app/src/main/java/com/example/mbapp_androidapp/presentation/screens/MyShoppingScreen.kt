@@ -33,7 +33,9 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import java.util.Locale
 
 @Composable
-fun MyShoppingScreen(customer: Customer) {
+fun MyShoppingScreen() {
+    val customer = Customer.getInstance()
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

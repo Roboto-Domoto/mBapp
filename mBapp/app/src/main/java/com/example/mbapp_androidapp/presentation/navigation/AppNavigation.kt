@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mbapp_androidapp.common.classes.Customer
 import com.example.mbapp_androidapp.data.AppDatabase
 import com.example.mbapp_androidapp.presentation.screens.EmployeeScreen
+import com.example.mbapp_androidapp.presentation.screens.EmployeeSettingScreen
 import com.example.mbapp_androidapp.presentation.screens.HomeScreen
 import com.example.mbapp_androidapp.presentation.screens.ItemsScreen
 import com.example.mbapp_androidapp.presentation.screens.MyShoppingScreen
@@ -26,7 +27,7 @@ fun AppNavigation() {
     val navController = rememberNavController() //Controlador de navegación
 
     //Se instancia al cliente
-    val customer = Customer()
+    val customer = Customer.getInstance()
 
     //Room y DAO
     val appDatabase = AppDatabase.getDatabase(context = LocalContext.current.applicationContext)
@@ -45,7 +46,7 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.MyShoppingScreen.route) {
-            MyShoppingScreen(customer)
+            MyShoppingScreen()
         }
 
         composable(route = AppScreens.ItemsScreen.route) {
@@ -54,6 +55,10 @@ fun AppNavigation() {
 
         composable(route = AppScreens.EmployeeScreen.route) {
             EmployeeScreen(navController)
+        }
+
+        composable(route = AppScreens.EmployeeSettingScreen.route) {
+            EmployeeSettingScreen()
         }
     }
 }

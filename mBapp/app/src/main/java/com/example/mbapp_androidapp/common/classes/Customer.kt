@@ -1,7 +1,15 @@
 package com.example.mbapp_androidapp.common.classes
 
-class Customer {
+class Customer private constructor() {
     private val shopping: MutableList<ItemClass> = mutableListOf()
+
+    companion object {
+        private var instance: Customer? = null
+        fun getInstance(): Customer {
+            if (instance == null) instance = Customer()
+            return instance!!
+        }
+    }
 
     //Vaciar la lista de productos comprados
     fun resetList() {

@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
+import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.windows.PasswordWindow
@@ -93,45 +94,6 @@ private fun Buttons(navController: NavHostController, flag: MutableState<Boolean
             icon = Icons.Rounded.Person,
             text = "Soy empleado",
             onClick = { flag.value = !flag.value }
-        )
-    }
-}
-
-@Composable
-private fun MenuButton (icon: ImageVector, text: String, onClick: () -> Unit = {}) {
-    TextButton(
-        onClick = { onClick.invoke() },
-        colors = ButtonDefaults.buttonColors(Color.Black, Color.White),
-        border = BorderStroke(
-            width = 2.dp,
-            brush = Brush.linearGradient(listOf(Color.Gray, Color.White))
-        ),
-        modifier = Modifier
-            .size(192.dp, 60.dp)
-    ) {
-        ButtonContent(icon, text) //Icono y texto que contiene el botón
-    }
-}
-
-@Composable
-private fun ButtonContent(icon: ImageVector, text: String) {
-    Row(
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = "",
-            modifier = Modifier
-                .size(52.dp)
-                .alpha(0.25f)
-        )
-        Text(
-            text = text,
-            fontFamily = caviarFamily,
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
         )
     }
 }
