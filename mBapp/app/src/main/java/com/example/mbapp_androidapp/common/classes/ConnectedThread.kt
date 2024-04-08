@@ -20,10 +20,10 @@ import java.util.UUID
 
 class ConnectedThread private constructor(private val activity: MainActivity) : Thread() {
 
-    private var isOpen: Boolean = false
-    private var temperature: Double = 20.0
+    var isOpen: Boolean = false
+    var temperature: Double = 20.0
 
-
+    private var command = "C";
     private lateinit var mmOutputStream: OutputStream
     private lateinit var mmInputStream: InputStream
     private val tag: String = "ConnectedThread" //Log tag
@@ -38,12 +38,30 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
 
     companion object{
         @Volatile private var INSTANCE: ConnectedThread? = null
-        fun getConnectedThread(activity: MainActivity): ConnectedThread {
+        fun getConnectedThread(activity: MainActivity?): ConnectedThread {
             return INSTANCE ?: synchronized(this) {
-                val instance = ConnectedThread(activity)
+                val instance = ConnectedThread(activity!!)
                 INSTANCE = instance
                 return instance
             }
+        }
+    }
+
+    override fun run() {
+        super.run()
+        while(true){
+            writeln(command)
+            Log.d(tag,"Writed command")
+            sleep(400)
+            Log.d(tag,"Go to read")
+            var data = readLine()
+            Log.d(tag,"Readed")
+            var temperatures = data.split("|")[0]
+            var temp = temperatures.substring(2).split(",")[0]
+            if(temp!="nan") temperature = 20.0
+            else temperature = temp.toDouble()
+            Log.d(tag, "Readed $temperature")
+            sleep(1000)
         }
     }
 
@@ -64,12 +82,13 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
     fun readLine():String{
         var line: String = ""
         try{
-            var c: Char = mmInputStream.read().toChar()
-            if(c=='E') return "Error"
-            while(c!='\n'){
-                line+=c
-                c = mmInputStream.read().toChar()
-            }
+            Log.d(tag,"readline start")
+            line = mmInputStream.readBytes().toString()
+            Toast.makeText(
+                activity,
+                "Mensaje leido: ${line}",
+                Toast.LENGTH_SHORT
+            ).show()
         }catch(e: IOException){
             Toast.makeText(
                 activity,
@@ -176,7 +195,6 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
             mmOutputStream = socket.outputStream
             start()
             showToast("Connection successful")
-            writeln("Connection great")
         } catch (e: IOException) {
             showToast("Error to connect with device: ${e.message}")
             socket.close()

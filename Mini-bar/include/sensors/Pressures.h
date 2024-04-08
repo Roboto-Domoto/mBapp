@@ -9,6 +9,8 @@ public:
     Pressure(): Sensor(0,false){}
     Pressure(uint8_t pin):Sensor(pin,false){}
 
+    int getPressure();
+
 };
 
 #endif

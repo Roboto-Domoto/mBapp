@@ -13,14 +13,20 @@ class Sensors{
     Bumper doorBumper;
     Pressure topPressure;
     Pressure bottonPressure;
+    Context actual;
     
 public:
+
+    
 
     Sensors(
         uint8_t pinTopDHT,uint8_t pinDoorDHT,uint8_t pinBottomDHT,
         uint8_t pinDoorBumper,uint8_t pinTopPressure,uint8_t pinBottomPressure);
 
-    Context generateContext();
+    String generateContext();
+
+    int getPressure(bool top);
+
 };
 
 #endif

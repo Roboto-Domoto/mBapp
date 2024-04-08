@@ -12,15 +12,20 @@ Sensors::Sensors(
     this->bottomDHT.setup(pinBottomDHT,DHT_TYPE);
     this->doorBumper = Bumper(pinDoorBumper);
     this->topPressure = Pressure(pinTopPressure);
-    this->bottonPressure = Pressure(pinBottomPressure);      
+    this->bottonPressure = Pressure(pinBottomPressure);     
+    this->actual = Context(3); 
 }
 
-Context Sensors::generateContext(){
-    Context actual(3);
+String Sensors::generateContext(){
     actual.setDoorOpen(this->doorBumper.isClosed());
     actual.setData(topDHT.getTempAndHumidity(),0);
     actual.setData(doorDHT.getTempAndHumidity(),1);
     actual.setData(bottomDHT.getTempAndHumidity(),2);
-    return actual;
+    String s = actual.c_str();
+    return s;
+}
+
+int Sensors::getPressure(bool top){
+    return top? this->topPressure.getPressure() : this->bottonPressure.getPressure();
 }
 

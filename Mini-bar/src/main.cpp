@@ -21,7 +21,7 @@ void setup() {
   Serial.begin(115200);
   
   //Creación de los objetos base:
-  sensors = new Sensors(DHT_TOP,DHT_BOTTOM,DHT_DOOR,BUMPER,PRESSURE_TOP,PRESSURE_BOTTOM);
+  sensors = new Sensors(DHT_TOP,DHT_DOOR,DHT_BOTTOM,BUMPER,PRESSURE_TOP,PRESSURE_BOTTOM);
   terminal = new BluetoothTerminal("ESP32-BT-MINIBAR");
 
 	//Creacion tarea segundo hilo:
@@ -29,16 +29,37 @@ void setup() {
 }
 
 void loop() {
-  if (Serial.available()) {
-    terminal->writeChar(Serial.read());
+  String in = terminal->readLine();
+  if(in!=""){
+    Serial.printf("Command: %s\n",in.c_str());
+    if(in.charAt(0) == 'C'){
+      String s = sensors->generateContext();
+      terminal->writeString(s);
+      Serial.print(s);
+      delay(2000);
+    }
+    else{
+      int initialTopValue = sensors->getPressure(true);
+      int initialBottomValue = sensors->getPressure(false);
+      String in = terminal->readLine();
+      while(in!="END"){
+        int newTopValue = sensors->getPressure(true);
+        int newBottomValue = sensors->getPressure(false);
+        if(initialTopValue<newTopValue) terminal->writeString("ITL");
+        else if(initialBottomValue<newBottomValue) terminal->writeString("IBL");
+        else if(initialTopValue>newTopValue) terminal->writeString("ITM");
+        else if(initialBottomValue>newBottomValue) terminal->writeString("IBM");
+        else terminal->writeString("OK");
+        delay(500);
+        in = terminal->readLine();
+      }
+    }
   }
-  terminal->readLine();
-  delay(400);
 }
 
 void loopSecondCore(void *pvParameters){
   // while(true) {
-  //   printMsg("HOLA");
+  //   terminal->readLine();
   //   delay(1000);
   // }
   // vTaskDelay(10);

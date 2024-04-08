@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mbapp_androidapp.common.classes.ConnectedThread
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import java.time.LocalDateTime
@@ -77,6 +78,7 @@ fun Clock(fontSize: TextUnit, verticalAlignment: Alignment.Vertical,
 
 @Composable
 fun TopElements() {
+    var btThread = ConnectedThread.getConnectedThread(null)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -90,7 +92,7 @@ fun TopElements() {
             horizontalArrangement = Arrangement.SpaceBetween
         )
         Text(
-            text = "4º",
+            text = btThread.temperature.toString()+"º",
             fontSize = 32.sp,
             fontFamily = amableFamily
         )
