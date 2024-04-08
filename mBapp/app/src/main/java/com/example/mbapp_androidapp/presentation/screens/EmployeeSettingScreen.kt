@@ -40,20 +40,23 @@ import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.common.classes.Customer
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
+import com.example.mbapp_androidapp.presentation.windows.AdminWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import kotlinx.coroutines.delay
 
 @Composable
 fun EmployeeSettingScreen() {
     val showMsg = remember { mutableStateOf(false) }
+    val showAdminW = remember { mutableStateOf(false) }
     
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
     ) {
-        //TopElements() //Hora y temperatura
-        Buttons(showMsg) //Los botones con las distintas opciones del menú
+        TopElements() //Hora y temperatura
+        if (showAdminW.value) AdminWindow(flag = showAdminW)
+        Buttons(showMsg, showAdminW) //Los botones con las distintas opciones del menú
         Icon(
             imageVector = Icons.Rounded.Info,
             contentDescription = "Info button",
@@ -89,7 +92,7 @@ fun EmployeeSettingScreen() {
 }
 
 @Composable
-private fun Buttons(showMsg: MutableState<Boolean>) {
+private fun Buttons(showMsg: MutableState<Boolean>, showAdminW: MutableState<Boolean>) {
     val customer = Customer.getInstance()
 
     Column(
@@ -108,7 +111,9 @@ private fun Buttons(showMsg: MutableState<Boolean>) {
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
             icon = Icons.Rounded.Face,
-            text = "Cambiar administrador"
+            text = "Cambiar administrador",
+            onClick = { showAdminW.value = !showAdminW.value }
+
         )
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
