@@ -35,8 +35,12 @@ class MainActivity : ComponentActivity() {
         //btThread.requestLocationPermission()
         btThread.requestBluetoothConnectPermission()
         //Crear conexion
-        btThread.selectedDevice()
         btThread.connectBtDevice()
+
+        btThread.writeln("C")
+        btThread.getARead {
+            Toast.makeText(this,it,Toast.LENGTH_LONG).show()
+        }
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
