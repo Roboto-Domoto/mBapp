@@ -14,33 +14,38 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
 import com.example.mbapp_androidapp.common.classes.ConnectedThread
+import com.example.mbapp_androidapp.common.classes.MailSender
 import com.example.mbapp_androidapp.presentation.navigation.AppNavigation
 import com.example.mbapp_androidapp.ui.theme.MBapp_androidAppTheme
 
 
 class MainActivity : ComponentActivity() {
 
-    private val btThread = ConnectedThread.getConnectedThread(this)
+    private val btThread = BluetoothTerminal.getBluetoothTerminal(this)
     private val tag: String = "MainActivity"
 
     @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*
+
         //Pedir permisos
         //btThread.requestLocationPermission()
-        btThread.requestBluetoothConnectPermission()
+        /*btThread.requestBluetoothConnectPermission()
         //Crear conexion
         btThread.connectBtDevice()
 
         btThread.writeln("C")
         btThread.getARead {
             Toast.makeText(this,it,Toast.LENGTH_LONG).show()
-        }
-         */
-        
+        }*/
+
+        /*val mailSender = MailSender.getMailSender()
+        mailSender.send("Hola","Prueba","sebssgarcia502580@gmail.com")*/
+
+
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContent {

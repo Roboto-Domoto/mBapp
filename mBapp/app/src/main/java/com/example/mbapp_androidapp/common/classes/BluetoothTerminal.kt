@@ -22,11 +22,11 @@ import java.io.OutputStream
 import java.util.UUID
 import io.reactivex.schedulers.Schedulers;
 
-class ConnectedThread private constructor(private val activity: MainActivity) : Thread() {
+class BluetoothTerminal private constructor(private val activity: MainActivity){
 
-    private var message:String = ""
     private var isOpen: Boolean = false
-    var temperature: Double = 20.0
+    var temperatures = arrayOf(20.0,20.0,20.0)
+    var pressures = arrayOf(100,100)
 
     private var command = "";
     private lateinit var mmOutputStream: OutputStream
@@ -42,62 +42,14 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
     private var nameDevice = "ESP32-BT-MINIBAR" //Nombre del dispositivo
 
     companion object{
-        @Volatile private var INSTANCE: ConnectedThread? = null
-        fun getConnectedThread(activity: MainActivity?): ConnectedThread {
+        @Volatile private var INSTANCE: BluetoothTerminal? = null
+        fun getBluetoothTerminal(activity: MainActivity?): BluetoothTerminal {
             return INSTANCE ?: synchronized(this) {
-                val instance = ConnectedThread(activity!!)
+                val instance = BluetoothTerminal(activity!!)
                 INSTANCE = instance
                 return instance
             }
         }
-    }
-
-    override fun run() {
-        /*while(true){
-            writeln(command)
-            Log.d(tag,"Writed command")
-            sleep(400)
-            Log.d(tag,"Go to read")
-            var data = readLine()
-            Log.d(tag,"Readed")
-            var temperatures = data.split("|")[0]
-            var temp = temperatures.substring(2).split(",")[0]
-            if(temp!="nan") temperature = 20.0
-            else temperature = temp.toDouble()
-            Log.d(tag, "Readed $temperature")
-            sleep(1000)
-        }*/
-
-        val buffer = ByteArray(1024)
-        var bytes = 0 // bytes returned from read()
-        var numberOfReadings = 0 //to control the number of readings from the Arduino
-
-        // Keep listening to the InputStream until an exception occurs.
-        //We just want to get 1 temperature readings from the Arduino
-
-        // Keep listening to the InputStream until an exception occurs.
-        //We just want to get 1 temperature readings from the Arduino
-        while (numberOfReadings < 1) {
-            try {
-                buffer[bytes] = mmInputStream.read().toByte()
-                // If I detect a "\n" means I already read a full measurement
-                if (buffer[bytes] == '\n'.code.toByte()) {
-                    message = String(buffer,0,bytes);
-                    Log.e(tag, message)
-                    bytes = 0
-                    numberOfReadings++
-                } else {
-                    bytes++
-                }
-            } catch (e: IOException) {
-                Log.d(tag, "Input stream was disconnected", e)
-                break
-            }
-        }
-    }
-
-    fun getMessage():String{
-        return message
     }
 
     // Call this method from the main activity to shut down the connection.
@@ -114,7 +66,7 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
         adapter = activity.getSystemService(BluetoothManager::class.java).adapter
         val pairedDevices = adapter.bondedDevices
         for (pairedDevice in pairedDevices)
-            if (pairedDevice.name.equals(name))
+            if (pairedDevice.name.equals(nameDevice))
                 selectDevice = pairedDevice
         if (selectDevice == null) {
             showToast("No encontrado el dispositivo")
@@ -195,27 +147,4 @@ class ConnectedThread private constructor(private val activity: MainActivity) : 
         someActivityResultLauncher.launch(enableBtIntent)
     }
 
-    val connectToBTObservable: Observable<String> = Observable.create{
-        this.connectBtDevice()
-        if(socket.isConnected){
-            start()
-            if(message!=""){
-                it.onNext(message)
-            }
-            cancel()
-        }
-        it.onComplete()
-    }
-
-    @SuppressLint("CheckResult")
-    fun getARead(toDo:(String)->Unit){
-        if(selectDevice!=null){
-            connectToBTObservable
-                .observeOn(Schedulers.newThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe{
-                    toDo(it)
-                }
-        }
-    }
 }
