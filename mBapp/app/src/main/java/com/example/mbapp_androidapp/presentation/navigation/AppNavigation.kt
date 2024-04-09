@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mbapp_androidapp.common.classes.Customer
+import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.data.AppDatabase
 import com.example.mbapp_androidapp.presentation.screens.EmployeeScreen
 import com.example.mbapp_androidapp.presentation.screens.EmployeeSettingScreen
@@ -27,7 +28,7 @@ fun AppNavigation() {
     val navController = rememberNavController() //Controlador de navegación
 
     //Se instancia al cliente
-    val customer = Customer.getInstance()
+    val system = System.getInstance()
 
     //Room y DAO
     val appDatabase = AppDatabase.getDatabase(context = LocalContext.current.applicationContext)

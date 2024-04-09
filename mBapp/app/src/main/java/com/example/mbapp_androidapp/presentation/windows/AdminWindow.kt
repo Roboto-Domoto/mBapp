@@ -27,30 +27,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import com.example.mbapp_androidapp.R
+import com.example.mbapp_androidapp.common.classes.Employee
 import com.example.mbapp_androidapp.common.classes.System
-import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>,
-                   modifier: Modifier = Modifier)
+fun AdminWindow(flag: MutableState<Boolean>)
 {
-    val system = System.getInstance()
-
-    var hidden by remember { mutableStateOf(true) }
-    var password by remember { mutableStateOf("") }
+    val employee = System.getInstance().employee
+    var number by remember { mutableStateOf(employee.getAdminTl()) }
 
     AlertDialog(
         onDismissRequest = { flag.value = !flag.value },
@@ -65,7 +56,7 @@ fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Close,
-                        contentDescription = "Validate password",
+                        contentDescription = "Change the telephone number of admin",
                         tint = Color.White,
                         modifier = Modifier
                             .size(32.dp)
@@ -75,9 +66,10 @@ fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>
                 //Botón para aceptar
                 IconButton(
                     onClick = {
-                        if (password == "Contraseña")
-                            system.addLog("Acceso a modo empleado")
-                            navController.navigate(AppScreens.EmployeeScreen.route)
+                        if (number.length == 9) {
+                            employee.changeAdminTl(number)
+                            flag.value = !flag.value
+                        }
                     }
                 ) {
                     Icon(
@@ -93,7 +85,7 @@ fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>
         },
         title = {
             Text(
-                text = "Contraseña",
+                text = "Contacto del administrador",
                 fontFamily = caviarFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
@@ -102,34 +94,22 @@ fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>
         },
         text = {
             TextField(
-                value = password,
-                onValueChange = { password = it },
+                value = number,
+                onValueChange = { number = it },
                 label = {
-                    Text(text = "Contraseña")
+                    Text(text = "Número de teléfono")
                 },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
+                    keyboardType = KeyboardType.Phone,
                     imeAction = ImeAction.Done
                 ),
-                visualTransformation = if(hidden) PasswordVisualTransformation()
-                else VisualTransformation.None,
-                trailingIcon = {
-                    IconButton(onClick = { hidden = !hidden }) {
-                        Icon(
-                            imageVector =
-                            if(hidden) ImageVector.vectorResource(R.drawable.visibility_off)
-                            else ImageVector.vectorResource(R.drawable.visibility_on),
-                            contentDescription = "Visibility"
-                        )
-                    }
-                },
                 modifier = Modifier
                     .padding(12.dp)
                     .size(272.dp, 52.dp)
             )
         },
-        modifier = modifier
+        modifier = Modifier
             .border(2.dp, Color.Black, RoundedCornerShape(16.dp))
             .background(Color.White, RoundedCornerShape(16.dp))
     )

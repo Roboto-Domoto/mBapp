@@ -79,7 +79,7 @@ private fun Buttons(navController: NavHostController) {
         MenuButton(
             icon = Icons.Rounded.Settings,
             text = "Ajustes",
-            onClick = { //navController.navigate(AppScreens.EmployeeSettingScreen.route)
+            onClick = { navController.navigate(AppScreens.EmployeeSettingScreen.route)
             }
         )
         Spacer(modifier = Modifier.height(60.dp))
