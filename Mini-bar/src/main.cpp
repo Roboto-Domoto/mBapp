@@ -62,4 +62,5 @@ void loop() {
       Serial.println("Command not found");
     }
   }
+  delay(1000);
 }

@@ -1,6 +1,6 @@
 package com.example.mbapp_androidapp.common.classes
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
@@ -8,143 +8,106 @@ import android.bluetooth.BluetoothSocket
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.example.mbapp_androidapp.MainActivity
-import io.reactivex.Observable
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.util.UUID
-import io.reactivex.schedulers.Schedulers;
 
-class BluetoothTerminal private constructor(private val activity: MainActivity){
 
-    private var isOpen: Boolean = false
-    var temperatures = arrayOf(20.0,20.0,20.0)
-    var pressures = arrayOf(100,100)
+class BluetoothTerminal(private var activity: MainActivity){
 
-    private var command = "";
-    private lateinit var mmOutputStream: OutputStream
-    private lateinit var mmInputStream: InputStream
-    private val tag: String = "ConnectedThread" //Log tag
-    private val btModuleUuid: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB") //UUID module bluetooth (no tocar)
-    private val requestEnableBt = 1 //Indices permisos
-    val requestBluetoothConnectPermission = 2
-    private val requestFineLocationPermission = 3
-    private lateinit var adapter: BluetoothAdapter //Adaptador bluetooth
-    private lateinit var socket: BluetoothSocket //Socket de comunicación
-    private var selectDevice: BluetoothDevice? = null //Dispositivo seleccionado
-    private var nameDevice = "ESP32-BT-MINIBAR" //Nombre del dispositivo
+    private var tag = "BluetoothTerminal"
+    private var requestCode = 0
+    private var uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
+    private var device: BluetoothDevice? = null
+    private var manager: BluetoothManager = activity.getSystemService(BluetoothManager::class.java)
+    private var adapter: BluetoothAdapter = manager.adapter
+    private var socket: BluetoothSocket? = null
 
-    companion object{
-        @Volatile private var INSTANCE: BluetoothTerminal? = null
-        fun getBluetoothTerminal(activity: MainActivity?): BluetoothTerminal {
-            return INSTANCE ?: synchronized(this) {
-                val instance = BluetoothTerminal(activity!!)
-                INSTANCE = instance
-                return instance
-            }
+
+    fun checkBluetooth(){
+        if(!adapter.isEnabled){
+            val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+            checkConnectPermission()
+            activity.startActivityForResult(intent,requestCode)
         }
     }
 
-    // Call this method from the main activity to shut down the connection.
-    fun cancel() {
-        try {
-            socket.close()
-        } catch (e: IOException) {
-            Log.e(tag, "Could not close the connect socket", e)
+    fun requestConnectPermission(){
+        if(ActivityCompat.checkSelfPermission(activity,Manifest.permission.BLUETOOTH_CONNECT) !=
+            PackageManager.PERMISSION_GRANTED){
+            if(Build.VERSION.SDK_INT>=31){
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(Manifest.permission.BLUETOOTH_CONNECT),
+                    0
+                )
+            }else makeToast("Can't connect bluetooth")
         }
     }
 
-
-    fun connectBtDevice() {
-        adapter = activity.getSystemService(BluetoothManager::class.java).adapter
-        val pairedDevices = adapter.bondedDevices
-        for (pairedDevice in pairedDevices)
-            if (pairedDevice.name.equals(nameDevice))
-                selectDevice = pairedDevice
-        if (selectDevice == null) {
-            showToast("No encontrado el dispositivo")
+    private fun checkConnectPermission(){
+        if (ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.BLUETOOTH_CONNECT
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestConnectPermission()
             return
         }
-        try {
-            if (ActivityCompat.checkSelfPermission(activity.applicationContext, android.Manifest.permission.BLUETOOTH_CONNECT)
-                != PackageManager.PERMISSION_GRANTED
-            ) return
-            socket = selectDevice!!.createRfcommSocketToServiceRecord(btModuleUuid)
-            socket.connect()
-            mmInputStream = socket.inputStream
-            mmOutputStream = socket.outputStream
-            showToast("Connection successful")
-        } catch (e: IOException) {
-            showToast("Error to connect with device: ${e.message}")
-            socket.close()
-        }
     }
 
-    fun write(msg:String){
-        try{
-            for(c in msg)
-                mmOutputStream.write(c.code)
-        }catch (e:IOException){
-            Toast.makeText(
-                activity,
-                "Error to write in mmOutStream: ${e.message}",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-    }
-
-    fun writeln(input: String) {
-        write(input + "\n")
-    }
-
-    private fun showToast(msg: String) {
-        activity.runOnUiThread {
-            Toast.makeText(activity.applicationContext, msg, Toast.LENGTH_LONG).show()
-        }
-    }
-
-    //Registro resultado actividad(opcional y tiene que estar en el mainActivitu
-    private var someActivityResultLauncher: ActivityResultLauncher<Intent> =
-        activity.registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == requestEnableBt) {
-                Log.d(tag, "ACTIVITY REGISTER")
+    fun getDeviceByName(name:String){
+        checkConnectPermission()
+        for(dev in adapter.bondedDevices){
+            if(dev.name.equals(name)){
+                makeToast("Device get it")
+                device = dev
             }
         }
-
-    //Pedir permiso (localizacion)
-    fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(
-            activity,
-            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-            requestFineLocationPermission
-        )
     }
 
-    //Pedir permiso (bluetooth)
-    @RequiresApi(Build.VERSION_CODES.S)
-    fun requestBluetoothConnectPermission() {
-        ActivityCompat.requestPermissions(
-            activity,
-            arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT),
-            requestBluetoothConnectPermission
-
-        )
-        val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-        if (ActivityCompat.checkSelfPermission(
-                activity.applicationContext,
-                android.Manifest.permission.BLUETOOTH_CONNECT
-            ) != PackageManager.PERMISSION_GRANTED
-        ) return
-        someActivityResultLauncher.launch(enableBtIntent)
+    fun connect(){
+        checkConnectPermission()
+        if(device!=null){
+            try{
+                socket = device!!.createRfcommSocketToServiceRecord(uuid)
+            }catch (e:IOException){
+                makeToast("Can't create socket: ${e.message}")
+            }
+            try{
+                socket!!.connect()
+            }catch (e:IOException){
+                makeToast("Can't connect socket: ${e.message}")
+                try{
+                    socket!!.close()
+                }catch (e2:IOException){
+                    makeToast("Can't close socket: ${e2.message}")
+                }
+            }
+        }
+        if(socket!!.isConnected) makeToast("Connected")
     }
 
+    fun disconnect(){
+        try{
+            socket!!.close()
+            makeToast("Disconnect successful")
+        }catch(e:IOException){
+            e.printStackTrace()
+        }
+    }
+
+    fun getConnectedThread(handler: Handler): ConnectedThread? {
+        return socket?.let { ConnectedThread(it,handler) }
+    }
+
+    fun makeToast(message:String){
+        activity.runOnUiThread{
+            Toast.makeText(activity,message,Toast.LENGTH_SHORT).show()
+        }
+    }
 }

@@ -1,10 +1,14 @@
 package com.example.mbapp_androidapp
 
 import android.annotation.SuppressLint
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothSocket
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -15,35 +19,39 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
-import com.example.mbapp_androidapp.common.classes.MailSender
 import com.example.mbapp_androidapp.presentation.navigation.AppNavigation
 import com.example.mbapp_androidapp.ui.theme.MBapp_androidAppTheme
 
 
+
 class MainActivity : ComponentActivity() {
 
-    private val btThread = BluetoothTerminal.getBluetoothTerminal(this)
     private val tag: String = "MainActivity"
+    private lateinit var bt: BluetoothTerminal
 
     @RequiresApi(Build.VERSION_CODES.S)
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //Pedir permisos
-        //btThread.requestLocationPermission()
-        /*btThread.requestBluetoothConnectPermission()
-        //Crear conexion
-        btThread.connectBtDevice()
-
-        btThread.writeln("C")
-        btThread.getARead {
-            Toast.makeText(this,it,Toast.LENGTH_LONG).show()
-        }*/
-
-        /*val mailSender = MailSender.getMailSender()
-        mailSender.send("Hola","Prueba","sebssgarcia502580@gmail.com")*/
-
+        /*val bt = BluetoothTerminal(this)
+        bt.getDeviceByName("ESP32-BT-MINIBAR")
+        bt.connect()
+        val handler = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                when (msg.what) {
+                    0 -> {
+                        val message: String = msg.obj.toString()
+                        runOnUiThread{
+                            Toast.makeText(this@MainActivity,"Message: $message",Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+        }
+        val b = bt.getConnectedThread(handler)
+        b?.start()
+        b?.write("Connection Successful\n")*/
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -57,21 +65,6 @@ class MainActivity : ComponentActivity() {
                     AppNavigation()
                 }
             }
-        }
-    }
-
-    //Pedir permiso (Bluetooth connect)
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == btThread.requestBluetoothConnectPermission) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                Log.d(tag, "BLUETOOTH_CONNECT successful")
-            else Log.d(tag, "BLUETOOTH_CONNECT denied")
         }
     }
 }

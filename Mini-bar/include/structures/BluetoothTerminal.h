@@ -11,20 +11,15 @@
 #endif
 
 class BluetoothTerminal{
-
     BluetoothSerial serial;
-
 public:
-
     BluetoothTerminal(
         const char* deviceName,
         bool usePin=false,
         const char* pin="1234"
     );
-
     String readLine();
     char readChar();
-
     void writeString(String message);
     void writeChar(char c);
 };

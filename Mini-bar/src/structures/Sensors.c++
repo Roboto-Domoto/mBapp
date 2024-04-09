@@ -1,6 +1,8 @@
 #include <structures/Sensors.h>
-#include <structures/Context.h>
 #include <sensors/Bumper.h>
+#include <iostream>
+#include <sstream>
+
 
 #define DHT_TYPE DHTesp::DHT11
 
@@ -12,17 +14,15 @@ Sensors::Sensors(
     this->bottomDHT.setup(pinBottomDHT,DHT_TYPE);
     this->doorBumper = Bumper(pinDoorBumper);
     this->topPressure = Pressure(pinTopPressure);
-    this->bottonPressure = Pressure(pinBottomPressure);     
-    this->actual = Context(3); 
+    this->bottonPressure = Pressure(pinBottomPressure);      
 }
 
 String Sensors::generateContext(){
-    actual.setDoorOpen(this->doorBumper.isClosed());
-    actual.setData(topDHT.getTempAndHumidity(),0);
-    actual.setData(doorDHT.getTempAndHumidity(),1);
-    actual.setData(bottomDHT.getTempAndHumidity(),2);
-    String s = actual.c_str();
-    return s;
+    std::ostringstream formatted;
+    formatted << "T:" << topDHT.getTempAndHumidity().temperature << "," << doorDHT.getTempAndHumidity().temperature << "," << bottomDHT.getTempAndHumidity().temperature;
+    formatted << "|D:" << this->doorBumper.isClosed() << "\n";
+    std::string s = formatted.str();
+    return s.c_str();
 }
 
 int Sensors::getPressure(bool top){

@@ -99,18 +99,16 @@ dependencies {
     implementation("androidx.room:room-paging:$roomVersion")
 
     // implementation of Gson library to convert Java objects into their JSON representation
-    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     val lifecycleVersion = "2.7.0"
     // LiveData
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
-    implementation ("androidx.compose.runtime:runtime-livedata:1.7.0-alpha05")
+    implementation ("androidx.compose.runtime:runtime-livedata:1.7.0-alpha06")
 
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation("com.google.zxing:core:3.4.1")
 
     implementation("com.sun.mail:android-mail:1.6.2")
     implementation("com.sun.mail:android-activation:1.6.2")
-
-    implementation("com.github.jose-jhr:blueJhrLibrary:0.1.0")
 }

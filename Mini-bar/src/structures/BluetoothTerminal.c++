@@ -42,15 +42,9 @@ char BluetoothTerminal::readChar(){
 }
 
 void BluetoothTerminal::writeString(String message){
-    if(this->serial.available()) {
-        this->serial.print(message);
-    }else{
-        Serial.print("N");
-    }
+    this->serial.print(message);
 }
 
 void BluetoothTerminal::writeChar(char c){
-    if(this->serial.available()) {
-        this->serial.print(c);
-    }
+    this->serial.print(c);
 }

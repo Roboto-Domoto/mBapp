@@ -88,7 +88,6 @@ fun Clock(fontSize: TextUnit, verticalAlignment: Alignment.Vertical,
 
 @Composable
 fun TopElements() {
-    val btThread = ConnectedThread.getConnectedThread(null)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -102,7 +101,7 @@ fun TopElements() {
             horizontalArrangement = Arrangement.SpaceBetween
         )
         Text(
-            text = btThread.temperature.toString()+"º",
+            text = "4º",
             fontSize = 32.sp,
             fontFamily = amableFamily
         )
