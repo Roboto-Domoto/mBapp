@@ -4,7 +4,7 @@
 Sensor::Sensor(uint8_t pin,bool digital){
     this->pin=pin;
     this->digital=digital;
-    pinMode(this->pin,INPUT);
+    pinMode(this->pin,INPUT_PULLDOWN);
 }
 
 //Valores entre 0 y 4095
