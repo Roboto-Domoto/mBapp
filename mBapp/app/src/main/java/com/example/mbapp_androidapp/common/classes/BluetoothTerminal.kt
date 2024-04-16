@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Handler
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
 import androidx.core.app.ActivityCompat
 import com.example.mbapp_androidapp.MainActivity
 import java.io.IOException
@@ -27,6 +28,17 @@ class BluetoothTerminal(private var activity: MainActivity){
     private var adapter: BluetoothAdapter = manager.adapter
     private var socket: BluetoothSocket? = null
 
+
+    companion object{
+        @Volatile private var INSTANCE: BluetoothTerminal? = null
+        fun getBluetoothTerminal(activity: MainActivity?): BluetoothTerminal {
+            return INSTANCE ?: synchronized(this) {
+                val instance = BluetoothTerminal(activity!!)
+                INSTANCE = instance
+                return instance
+            }
+        }
+    }
 
     fun checkBluetooth(){
         if(!adapter.isEnabled){
@@ -101,8 +113,8 @@ class BluetoothTerminal(private var activity: MainActivity){
         }
     }
 
-    fun getConnectedThread(handler: Handler): ConnectedThread? {
-        return socket?.let { ConnectedThread(it,handler) }
+    fun createConnectedThread(mutableState: MutableState<String>) : ConnectedThread{
+        return ConnectedThread.getActualThread(socket!!,mutableState)
     }
 
     fun makeToast(message:String){
