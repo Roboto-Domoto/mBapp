@@ -1,6 +1,9 @@
 package com.example.mbapp_androidapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -12,6 +15,7 @@ import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.data.AppDatabase
 import com.example.mbapp_androidapp.data.entities.ItemEntity
+import com.example.mbapp_androidapp.presentation.screens.BuyScreen
 import com.example.mbapp_androidapp.presentation.screens.EmployeeScreen
 import com.example.mbapp_androidapp.presentation.screens.EmployeeSettingScreen
 import com.example.mbapp_androidapp.presentation.screens.HomeScreen
@@ -29,7 +33,6 @@ import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModelFactor
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController() //Controlador de navegación
-
     //Se instancia al cliente
     val system = System.getInstance()
     val snicker = ItemClass(
@@ -89,6 +92,10 @@ fun AppNavigation() {
 
         composable(route = AppScreens.EmployeeSettingScreen.route) {
             EmployeeSettingScreen()
+        }
+
+        composable(route = AppScreens.BuyScreen.route) {
+            BuyScreen()
         }
     }
 }

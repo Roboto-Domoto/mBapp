@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
         val bt = BluetoothTerminal(this)
         bt.getDeviceByName("ESP32-BT-MINIBAR")
         bt.connect()
-
+        
         //Instance of barcode scanner
         BarcodeScanner.getBarcodeScanner(this)
 

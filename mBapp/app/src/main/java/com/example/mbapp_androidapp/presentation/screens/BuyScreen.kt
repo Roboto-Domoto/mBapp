@@ -10,6 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,33 +27,25 @@ import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
-val system = System.getInstance()
+private val system = System.getInstance()
+private val weight = system.weight
 
 @Composable
 fun BuyScreen() {
-    val weight = system.weight
+    var barcodeResult by remember { mutableStateOf<String?>(null) }
     val failureConst = 0.1
-    val barcodeScanner = BarcodeScanner.getBarcodeScanner(null)
-    //Si el peso baja
-    if (system.weight < (weight * (1 - failureConst))) {
-        barcodeScanner.scan()
-        val code = barcodeScanner.getLastCodeRead()
-        /*
-        if (code != "") {
-            searchProduct(code)
-            s
+    val actualWeight by remember {
+        mutableIntStateOf(system.weight)
+    }
+    if (actualWeight < weight * (1 - failureConst)) {
+        LaunchedEffect(true) {
+            BarcodeScanner.getBarcodeScanner(null).scan()
+            barcodeResult = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
+            if (barcodeResult != "") {/*ACCIONES SI SE HA LEÍDO BIEN*/}
         }
-         */
-
     }
-    //Si el peso sube
-    else if (system.weight > weight * (1 + failureConst)) {
-        //NOTIFICAR ERROR
-    }
-    //Mientras no pase nada
-    else {
-        GuideScreen()
-    }
+    else if (actualWeight > weight * (1 + failureConst)) {}
+    else GuideScreen()
 }
 
 @Composable

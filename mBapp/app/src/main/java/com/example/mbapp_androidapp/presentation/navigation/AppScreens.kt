@@ -8,4 +8,5 @@ sealed class AppScreens(val route: String) {
     data object ItemsScreen: AppScreens("items_screen")
     data object EmployeeScreen: AppScreens("employee_screen")
     data object EmployeeSettingScreen: AppScreens("employee_settings_screen")
+    data object BuyScreen: AppScreens("buy_screen")
 }
