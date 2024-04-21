@@ -1,5 +1,6 @@
 package com.example.mbapp_androidapp.presentation.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,22 +28,19 @@ import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
-val system = System.getInstance()
-val weight = system.weightBot
+private val system = System.getInstance()
+private val weight = system.weightBot
 
 @Composable
 fun BuyScreen() {
     var barcodeResult by remember { mutableStateOf<String?>(null) }
     val failureConst = 0.1
-    val actualWeight by remember {
-        mutableIntStateOf(system.weightBot)
-    }
+    val actualWeight by remember {mutableIntStateOf(system.weightBot)}
     if (actualWeight < weight * (1 - failureConst)) {
-        LaunchedEffect(true) {
-            BarcodeScanner.getBarcodeScanner(null).scan()
-            barcodeResult = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
-            if (barcodeResult != "") {/*ACCIONES SI SE HA LEÍDO BIEN*/}
-        }
+        BarcodeScanner.getBarcodeScanner(null).scan()
+        barcodeResult = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
+        if (barcodeResult != "") {/*ACCIONES SI SE HA LEÍDO BIEN*/}
+
     }
     else if (actualWeight > weight * (1 + failureConst)) {}
     else GuideScreen()

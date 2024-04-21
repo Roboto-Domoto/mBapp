@@ -69,7 +69,7 @@ class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity
                                 val sys = System.getInstance()
                                 val data = filterMsg(msg.obj.toString())
                                 sys.temperature=data[0]
-                                sys.doorIsOpen=data[1]=="1"
+                                sys.doorIsOpen=data[1]!="1"
                                 sys.weightTop=data[2].toInt()
                                 sys.weightTop=data[3].toInt()
                             }

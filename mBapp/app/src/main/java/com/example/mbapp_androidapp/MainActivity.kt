@@ -39,7 +39,6 @@ class MainActivity : ComponentActivity() {
         val hilo = bt.createConnectedThread()
         hilo.execute()
 
-
         //Instance of barcode scanner
         BarcodeScanner.getBarcodeScanner(this)
 
