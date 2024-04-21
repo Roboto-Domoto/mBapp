@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        /*val bt = BluetoothTerminal(this)
+        val bt = BluetoothTerminal(this)
         bt.getDeviceByName("ESP32-BT-MINIBAR")
         bt.connect()
         val handler = object : Handler(Looper.getMainLooper()) {
@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
         }
         val b = bt.getConnectedThread(handler)
         b?.start()
-        b?.write("Connection Successful\n")*/
+        b?.write("Connection Successful\n")
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

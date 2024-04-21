@@ -9,7 +9,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
-import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.mbapp_androidapp.MainActivity
@@ -64,7 +63,7 @@ class BluetoothTerminal(private var activity: MainActivity){
         checkConnectPermission()
         for(dev in adapter.bondedDevices){
             if(dev.name.equals(name)){
-                makeToast("Device get it")
+                //makeToast("Device get it")
                 device = dev
             }
         }

@@ -2,12 +2,12 @@
 #include <structures/Sensors.h>
 #include <structures/BluetoothTerminal.h>
 
-#define DHT_TOP 2
-#define DHT_DOOR 4
-#define DHT_BOTTOM 5
-#define BUMPER 12 
-#define PRESSURE_TOP 13
-#define PRESSURE_BOTTOM 14
+#define DHT_TOP 4
+#define DHT_DOOR 16
+#define DHT_BOTTOM 17
+#define BUMPER 5 
+#define PRESSURE_TOP 2
+#define PRESSURE_BOTTOM 15
 
 #define PRESSURE_ERROR 30
 
@@ -29,13 +29,13 @@ void loop() {
   String in = terminal->readLine();
   if(in!=""){
     Serial.printf("Command: %s\n",in.c_str());
-    if(in.charAt(0) == 'C'){
+    if(in.substring(0,7) == "Context"){
       String s = sensors->generateContext();
       terminal->writeString(s);
       Serial.print(s);
       delay(2000);
     }
-    else if(in.charAt(0) == 'S'){
+    else if(in.substring(0,5) == "Sonar"){
       int initialTopValue = sensors->getPressure(true);
       int initialBottomValue = sensors->getPressure(false);
       String in = terminal->readLine();
