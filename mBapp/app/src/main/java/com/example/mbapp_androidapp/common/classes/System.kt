@@ -8,6 +8,12 @@ class System private constructor() {
     private val dailyInventory: MutableList<InventoryItem> = mutableListOf()
     var employee: Employee = Employee.getInstance()
     var customer: Customer = Customer.getInstance()
+    //Communication variables with ESP32
+    var temperature: String = "0"
+    var doorIsOpen: Boolean = false
+    var weightTop: Int = 0
+    var weightBot: Int = 0
+
 
     companion object {
         private var instance: System? = null

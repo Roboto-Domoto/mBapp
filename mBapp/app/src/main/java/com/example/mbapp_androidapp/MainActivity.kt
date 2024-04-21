@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
 import com.example.mbapp_androidapp.common.classes.ConnectedThread
 import com.example.mbapp_androidapp.presentation.navigation.AppNavigation
@@ -38,8 +39,9 @@ class MainActivity : ComponentActivity() {
         val hilo = bt.createConnectedThread()
         hilo.execute()
 
-        hilo.write("Context\n")
 
+        //Instance of barcode scanner
+        BarcodeScanner.getBarcodeScanner(this)
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

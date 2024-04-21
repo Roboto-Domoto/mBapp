@@ -7,7 +7,8 @@ import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
 
 class BarcodeScanner private constructor(private val activity: MainActivity) {
-
+    private var lastCode: String = ""
+    private val codeList: MutableList<String> = mutableListOf()
     companion object{
         @Volatile private var INSTANCE: BarcodeScanner? = null
         fun getBarcodeScanner(activity: MainActivity?): BarcodeScanner {
@@ -24,9 +25,27 @@ class BarcodeScanner private constructor(private val activity: MainActivity) {
     private val barcodeLauncher = activity.registerForActivityResult(ScanContract()) {
         if (it.contents != null) {
             Toast.makeText(activity.applicationContext,"Reader: " + it.contents, Toast.LENGTH_SHORT).show()
+            lastCode = it.contents
+            codeList.add(lastCode)
         } else {
             Toast.makeText(activity.applicationContext,"Error in reader", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    //Retornar el último código de barras almacenado
+    fun getLastCodeRead(): String {
+        val code = this.lastCode
+        //Vaciamos el último código de barras leido
+        this.lastCode = ""
+        return code
+    }
+
+    fun getCodeList(): List<String> {
+        return codeList
+    }
+
+    fun cleanList() {
+        codeList.clear()
     }
 
     //Funcion para modificar y lanzar scanner

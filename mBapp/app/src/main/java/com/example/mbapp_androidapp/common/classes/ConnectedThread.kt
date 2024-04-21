@@ -60,21 +60,18 @@ class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity
         var bytes:Int
         while(true){
             try{
-                Log.e(tag,"HHH")
                 bytes = mmInputStream!!.read(buffer)
-                Log.e(tag,"HHH")
                 val readMessage = String(buffer,0,bytes)
                 val handler = object : Handler(Looper.getMainLooper()) {
                     override fun handleMessage(msg: Message) {
                         when (msg.what) {
                             0 -> {
-                                val msgString = msg.obj.toString()
-                                val type = filterMsg(msgString)
-                                when(type){
-                                    "Puerta Abierta" -> Toast.makeText(activity,"Puerta abierta",Toast.LENGTH_LONG).show()
-                                    "Temperaturas" -> Toast.makeText(activity,"Temperaturas: ${msgString.substring(2,msgString.length-5)}",Toast.LENGTH_LONG).show()
-                                    "Peso" -> Toast.makeText(activity,"Peso: $msgString",Toast.LENGTH_LONG).show()
-                                }
+                                val sys = System.getInstance()
+                                val data = filterMsg(msg.obj.toString())
+                                sys.temperature=data[0]
+                                sys.doorIsOpen=data[1]=="1"
+                                sys.weightTop=data[2].toInt()
+                                sys.weightTop=data[3].toInt()
                             }
                         }
                     }
@@ -87,14 +84,23 @@ class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity
         }
     }
 
-    private fun filterMsg(msg:String):String{
-        if(msg[0] =='T'){
-            if(msg[msg.length-2] =='1'){
-                return "Puerta Abierta"
+    private fun filterMsg(msg:String):List<String>{
+        val listData = mutableListOf<String>()
+        val listOfSliceData = msg.split("|")
+        var temperatureMed = 0.00
+        var i = 0
+        for (temp in listOfSliceData[0].substring(2).split(",")){
+            if(temp!="nan"){
+                i++
+                temperatureMed+=temp.toDouble()
             }
-            return "Temperaturas"
         }
-        return "Peso"
+        listData.add((temperatureMed/i).toString())
+        listData.add(listOfSliceData[1][2].toString())
+        val pesos = listOfSliceData[2].split(",")
+        listData.add(pesos[0].substring(2))
+        listData.add(pesos[1].substring(0,pesos[1].length-1))
+        return listData
     }
 
     fun write(input:String){
