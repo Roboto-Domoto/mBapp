@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
 import com.example.mbapp_androidapp.presentation.navigation.AppNavigation
 import com.example.mbapp_androidapp.ui.theme.MBapp_androidAppTheme
@@ -35,6 +36,8 @@ class MainActivity : ComponentActivity() {
         bt.getDeviceByName("ESP32-BT-MINIBAR")
         bt.connect()
 
+        //Instance of barcode scanner
+        BarcodeScanner.getBarcodeScanner(this)
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
