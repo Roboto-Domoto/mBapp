@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
         val bt = BluetoothTerminal(this)
         bt.getDeviceByName("ESP32-BT-MINIBAR")
         bt.connect()
+
         val hilo = bt.createConnectedThread()
         hilo.execute()
 

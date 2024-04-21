@@ -1,5 +1,7 @@
 package com.example.mbapp_androidapp.common.classes
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -11,8 +13,10 @@ class System private constructor() {
     //Communication variables with ESP32
     var temperature: String = "0"
     var doorIsOpen: Boolean = false
-    var weightTop: Int = 0
-    var weightBot: Int = 0
+    private val _weightTop = MutableLiveData(0)
+    val weightTop: LiveData<Int> = _weightTop
+    private val _weightBot = MutableLiveData(0)
+    val weightBot: LiveData<Int> = _weightBot
 
 
     companion object {

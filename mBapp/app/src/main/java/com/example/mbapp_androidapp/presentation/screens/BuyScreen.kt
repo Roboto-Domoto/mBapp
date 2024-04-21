@@ -1,6 +1,5 @@
 package com.example.mbapp_androidapp.presentation.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,9 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -26,24 +23,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.System
+import com.example.mbapp_androidapp.presentation.viewmodels.BuyScreenViewModel
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 private val system = System.getInstance()
-private val weight = system.weightBot
+private val weight = system.weightBot.value ?: 0
 
 @Composable
-fun BuyScreen() {
+fun BuyScreen(viewModel: BuyScreenViewModel = BuyScreenViewModel()) {
     var barcodeResult by remember { mutableStateOf<String?>(null) }
     val failureConst = 0.1
-    val actualWeight by remember {mutableIntStateOf(system.weightBot)}
-    if (actualWeight < weight * (1 - failureConst)) {
+    val actualTopWeight = viewModel.topWeightNow.value ?: 0
+    val actualBotWeight = viewModel.botWeightNow.value ?: 0
+
+    if (actualTopWeight < (weight * (1 - failureConst))) {
         BarcodeScanner.getBarcodeScanner(null).scan()
         barcodeResult = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
         if (barcodeResult != "") {/*ACCIONES SI SE HA LEÍDO BIEN*/}
 
-    }
-    else if (actualWeight > weight * (1 + failureConst)) {}
-    else GuideScreen()
+    } else if (actualBotWeight > (weight * (1 + failureConst))) {} else GuideScreen()
 }
 
 @Composable
