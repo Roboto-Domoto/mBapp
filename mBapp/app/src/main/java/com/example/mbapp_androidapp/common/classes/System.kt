@@ -15,7 +15,7 @@ class System private constructor() {
     var doorIsOpen: Boolean = false
     private val _weightTop = MutableLiveData(0)
     val weightTop: LiveData<Int> = _weightTop
-    private val _weightBot = MutableLiveData(0)
+    private var _weightBot = MutableLiveData(0)
     val weightBot: LiveData<Int> = _weightBot
 
 
@@ -46,6 +46,11 @@ class System private constructor() {
 
     fun getInventory(): List<InventoryItem> {
         return dailyInventory
+    }
+
+    fun setWeights(weightTop:Int,weightBot:Int){
+        this._weightBot.value=weightBot
+        this._weightTop.value=weightTop
     }
 
     fun factoryReset() {

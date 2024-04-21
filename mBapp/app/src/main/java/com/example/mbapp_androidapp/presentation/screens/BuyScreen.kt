@@ -1,5 +1,7 @@
 package com.example.mbapp_androidapp.presentation.screens
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,7 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -27,21 +31,34 @@ import com.example.mbapp_androidapp.presentation.viewmodels.BuyScreenViewModel
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 private val system = System.getInstance()
-private val weight = system.weightBot.value ?: 0
+private val weightBot = system.weightBot.value ?: 0
+private val weightTop = system.weightTop.value ?: 0
 
 @Composable
 fun BuyScreen(viewModel: BuyScreenViewModel = BuyScreenViewModel()) {
-    var barcodeResult by remember { mutableStateOf<String?>(null) }
+    val barcodeResult by viewModel.barcodeResult.observeAsState()
     val failureConst = 0.1
-    val actualTopWeight = viewModel.topWeightNow.value ?: 0
-    val actualBotWeight = viewModel.botWeightNow.value ?: 0
 
-    if (actualTopWeight < (weight * (1 - failureConst))) {
-        BarcodeScanner.getBarcodeScanner(null).scan()
-        barcodeResult = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
-        if (barcodeResult != "") {/*ACCIONES SI SE HA LEÍDO BIEN*/}
+    val actualBotWeight by viewModel.botWeightNow.observeAsState()
+    val actualTopWeight by viewModel.topWeightNow.observeAsState()
 
-    } else if (actualBotWeight > (weight * (1 + failureConst))) {} else GuideScreen()
+    if (actualTopWeight!! < (viewModel.initialTopWeight * (1 - failureConst))||
+        actualBotWeight!! < (viewModel.initialBotWeight * (1 - failureConst)))
+    {
+        LaunchedEffect(true) {
+            BarcodeScanner.getBarcodeScanner(null).scan()
+            val barcodeScanner = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
+            viewModel.setBarcodeResult(barcodeScanner)
+
+        }
+
+    }
+    else if (actualBotWeight!! > (viewModel.initialBotWeight * (1 + failureConst))||
+        actualTopWeight!! > (viewModel.initialTopWeight * (1 + failureConst)))
+    {
+
+    }
+    else GuideScreen()
 }
 
 @Composable
