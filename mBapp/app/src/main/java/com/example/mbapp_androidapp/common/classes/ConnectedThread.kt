@@ -2,17 +2,41 @@ package com.example.mbapp_androidapp.common.classes
 
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.example.mbapp_androidapp.MainActivity
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-class ConnectedThread(socket: BluetoothSocket,private val handler: Handler):Thread() {
+class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity):Thread() {
 
     private var tag = "ConnectedThread"
     private var mmInputStream: InputStream? = null
     private var mmOutputStream: OutputStream? = null
     private val handlerState = 0
+
+    private var _temp1 = 0.0
+    private var _temp2 = 0.0
+    private var _temp3 = 0.0
+    private var _isOpen = false
+
+
+    companion object{
+        @Volatile private var INSTANCE: ConnectedThread? = null
+        fun getActualThread(socket: BluetoothSocket?,activity: MainActivity?): ConnectedThread {
+            return INSTANCE ?: synchronized(this) {
+                val instance = ConnectedThread(socket!!,activity!!)
+                INSTANCE = instance
+                return instance
+            }
+        }
+    }
 
     init {
         var tmpIn:InputStream? = null
@@ -44,6 +68,15 @@ class ConnectedThread(socket: BluetoothSocket,private val handler: Handler):Thre
                 bytes = mmInputStream!!.read(buffer)
                 Log.e(tag,"HHH")
                 val readMessage = String(buffer,0,bytes)
+                val handler = object : Handler(Looper.getMainLooper()) {
+                    override fun handleMessage(msg: Message) {
+                        when (msg.what) {
+                            0 -> {
+                                Toast.makeText(activity,msg.obj.toString(),Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }
                 handler.obtainMessage(handlerState,bytes,-1,readMessage).sendToTarget()
             }catch(e:IOException){
                 Log.e(tag,"Error running: ${e.message}")

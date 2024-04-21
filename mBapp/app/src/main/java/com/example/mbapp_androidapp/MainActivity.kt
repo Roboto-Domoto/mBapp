@@ -1,15 +1,12 @@
 package com.example.mbapp_androidapp
 
 import android.annotation.SuppressLint
-import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothSocket
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -37,21 +34,7 @@ class MainActivity : ComponentActivity() {
         val bt = BluetoothTerminal(this)
         bt.getDeviceByName("ESP32-BT-MINIBAR")
         bt.connect()
-        val handler = object : Handler(Looper.getMainLooper()) {
-            override fun handleMessage(msg: Message) {
-                when (msg.what) {
-                    0 -> {
-                        val message: String = msg.obj.toString()
-                        runOnUiThread{
-                            Toast.makeText(this@MainActivity,"Message: $message",Toast.LENGTH_LONG).show()
-                        }
-                    }
-                }
-            }
-        }
-        val b = bt.getConnectedThread(handler)
-        b?.start()
-        b?.write("Connection Successful\n")
+
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT

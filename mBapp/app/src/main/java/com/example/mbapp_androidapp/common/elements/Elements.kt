@@ -1,5 +1,6 @@
 package com.example.mbapp_androidapp.common.elements
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -21,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,9 +34,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mbapp_androidapp.common.classes.ConnectedThread
+import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -86,6 +91,7 @@ fun Clock(fontSize: TextUnit, verticalAlignment: Alignment.Vertical,
     }
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun TopElements() {
     Row(
