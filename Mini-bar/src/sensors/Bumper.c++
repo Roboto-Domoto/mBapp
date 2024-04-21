@@ -3,5 +3,5 @@
 
 
 bool Bumper::isClosed(){
-    return this->readValues()==LOW;
+    return this->readValues()==HIGH;
 }

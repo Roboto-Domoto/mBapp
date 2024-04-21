@@ -12,7 +12,7 @@ protected:
 public: 
 
     Sensor(uint8_t pin,bool digital);
-    uint8_t readValues();
+    int readValues();
 
 };
 

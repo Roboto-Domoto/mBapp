@@ -1,6 +1,10 @@
 package com.example.mbapp_androidapp.common.elements
 
 import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
+import android.widget.Toast
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -35,6 +39,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
+import com.example.mbapp_androidapp.common.classes.ConnectedThread
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import kotlinx.coroutines.Dispatchers

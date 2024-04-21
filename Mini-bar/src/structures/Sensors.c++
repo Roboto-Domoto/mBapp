@@ -20,7 +20,8 @@ Sensors::Sensors(
 String Sensors::generateContext(){
     std::ostringstream formatted;
     formatted << "T:" << topDHT.getTempAndHumidity().temperature << "," << doorDHT.getTempAndHumidity().temperature << "," << bottomDHT.getTempAndHumidity().temperature;
-    formatted << "|D:" << this->doorBumper.isClosed() << "\n";
+    formatted << "|D:" << this->doorBumper.isClosed();
+    formatted << "|P:" << this->topPressure.getPressure() << "," << this->bottonPressure.getPressure() << "\n";
     std::string s = formatted.str();
     return s.c_str();
 }

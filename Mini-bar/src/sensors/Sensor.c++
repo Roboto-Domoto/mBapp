@@ -8,7 +8,7 @@ Sensor::Sensor(uint8_t pin,bool digital){
 }
 
 //Valores entre 0 y 4095
-uint8_t Sensor::readValues(){
+int Sensor::readValues(){
     if(this->digital) return digitalRead(this->pin);
     else return analogRead(this->pin);
 }

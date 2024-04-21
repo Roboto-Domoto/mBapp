@@ -21,11 +21,6 @@ class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity
     private var mmOutputStream: OutputStream? = null
     private val handlerState = 0
 
-    private var _temp1 = 0.0
-    private var _temp2 = 0.0
-    private var _temp3 = 0.0
-    private var _isOpen = false
-
 
     companion object{
         @Volatile private var INSTANCE: ConnectedThread? = null
@@ -56,6 +51,7 @@ class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity
             Log.e(tag,"Can't execute")
         }else{
             start()
+            Toast.makeText(activity,"iniciado hilo",Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -72,7 +68,13 @@ class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity
                     override fun handleMessage(msg: Message) {
                         when (msg.what) {
                             0 -> {
-                                Toast.makeText(activity,msg.obj.toString(),Toast.LENGTH_LONG).show()
+                                val msgString = msg.obj.toString()
+                                val type = filterMsg(msgString)
+                                when(type){
+                                    "Puerta Abierta" -> Toast.makeText(activity,"Puerta abierta",Toast.LENGTH_LONG).show()
+                                    "Temperaturas" -> Toast.makeText(activity,"Temperaturas: ${msgString.substring(2,msgString.length-5)}",Toast.LENGTH_LONG).show()
+                                    "Peso" -> Toast.makeText(activity,"Peso: $msgString",Toast.LENGTH_LONG).show()
+                                }
                             }
                         }
                     }
@@ -83,6 +85,16 @@ class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity
                 break
             }
         }
+    }
+
+    private fun filterMsg(msg:String):String{
+        if(msg[0] =='T'){
+            if(msg[msg.length-2] =='1'){
+                return "Puerta Abierta"
+            }
+            return "Temperaturas"
+        }
+        return "Peso"
     }
 
     fun write(input:String){
