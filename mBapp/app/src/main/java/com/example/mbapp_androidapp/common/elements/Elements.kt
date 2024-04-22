@@ -24,6 +24,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
 import com.example.mbapp_androidapp.common.classes.ConnectedThread
+import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import kotlinx.coroutines.Dispatchers
@@ -99,6 +101,7 @@ fun Clock(fontSize: TextUnit, verticalAlignment: Alignment.Vertical,
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun TopElements() {
+    val temperature = System.getInstance().temperature.observeAsState(0)
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -112,7 +115,7 @@ fun TopElements() {
             horizontalArrangement = Arrangement.SpaceBetween
         )
         Text(
-            text = "4º",
+            text = "${temperature.value}º",
             fontSize = 32.sp,
             fontFamily = amableFamily
         )
