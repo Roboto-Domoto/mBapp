@@ -1,7 +1,9 @@
 package com.example.mbapp_androidapp.presentation.screens
 
-import android.util.Log
-import android.widget.Toast
+import android.app.Activity
+import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,61 +14,55 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.mbapp_androidapp.common.classes.BarcodeScanner
+import com.example.mbapp_androidapp.common.classes.BarcodeScannerActivity
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
-import com.example.mbapp_androidapp.presentation.viewmodels.BuyScreenViewModel
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
-private val system = System.getInstance()
-private val weightBot = system.weightBot.value ?: 0
-private val weightTop = system.weightTop.value ?: 0
-
 @Composable
-fun BuyScreen(navController: NavHostController, viewModel: BuyScreenViewModel = BuyScreenViewModel()) {
-    val doorIsOpen = system.doorIsOpen.observeAsState(initial = true)
+fun BuyScreen(navController: NavHostController) {
+    val initialTW = System.getInstance().getTopWeight()
+    val initialBW = System.getInstance().getBotWeight()
+    val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = true)
+
+    val scannerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val scannedBarcode = result.data?.getStringExtra("barcode")
+            if (scannedBarcode != null) {
+                // Guarda el código de barras escaneado y actualiza la lista en System
+                System.getInstance().codeScanned(scannedBarcode)
+            }
+        }
+    }
 
     if (!doorIsOpen.value) navController.navigate(AppScreens.SleepScreen.route)
     else {
-        // Lo demás
-        // NO TOCAR; LA TRIFUERZA NO HA LLEGADO TODAVÍA
-        val barcodeResult by viewModel.barcodeResult.observeAsState()
-        val failureConst = 0.1
-
-        val actualBotWeight by viewModel.botWeightNow.observeAsState()
-        val actualTopWeight by viewModel.topWeightNow.observeAsState()
-
-        if (actualTopWeight!! < (viewModel.initialTopWeight * (1 - failureConst))||
-            actualBotWeight!! < (viewModel.initialBotWeight * (1 - failureConst)))
-        {
-            LaunchedEffect(true) {
-                BarcodeScanner.getBarcodeScanner(null).scan()
-                val barcodeScanner = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
-                viewModel.setBarcodeResult(barcodeScanner)
-
-            }
-
+        val topWeight = System.getInstance().weightTop.observeAsState(0)
+        val botWeight = System.getInstance().weightBot.observeAsState(0)
+        val failTake = 0.9
+        val failPut = 1.1
+        //Sacar producto
+        if (topWeight.value < (initialTW * failTake) || botWeight.value < (initialBW * failTake)) {
+            //Activar cámara
+            val intent = Intent(LocalContext.current, BarcodeScannerActivity::class.java)
+            scannerLauncher.launch(intent)
         }
-        else if (actualBotWeight!! > (viewModel.initialBotWeight * (1 + failureConst))||
-            actualTopWeight!! > (viewModel.initialTopWeight * (1 + failureConst)))
-        {
-
+        //Meter un producto
+        else if (topWeight.value > (initialTW * failPut) || botWeight.value > (initialBW * failPut)) {
+            //Sacar un error
         }
+        //Mientras el peso se mantenga constante mostrar la pantalla de guía
         else GuideScreen()
+
     }
 
 
