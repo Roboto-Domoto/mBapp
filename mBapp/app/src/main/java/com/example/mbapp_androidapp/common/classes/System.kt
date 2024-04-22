@@ -14,8 +14,9 @@ class System private constructor() {
     //Temperature
     private val _temperature = MutableLiveData(0)
     var temperature: LiveData<Int> = _temperature
-
-    var doorIsOpen: Boolean = false
+    //Door
+    private val _doorIsOpen = MutableLiveData(false)
+    var doorIsOpen: LiveData<Boolean> = _doorIsOpen
     private val _weightTop = MutableLiveData(0)
     val weightTop: LiveData<Int> = _weightTop
     private var _weightBot = MutableLiveData(0)
@@ -23,6 +24,10 @@ class System private constructor() {
 
     fun updateTemperature(t: Int) {
         _temperature.value = t
+    }
+
+    fun updateDoorIsOpen(f: Boolean) {
+        _doorIsOpen.value = f
     }
 
     companion object {

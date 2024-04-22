@@ -34,25 +34,26 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun SleepScreen(navController: NavHostController) {
-    val doorIsOpen by remember {
-        mutableStateOf(System.getInstance().doorIsOpen)
-    }
-    Box (
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        TopElements(navController) //Elementos en la parte superior
-        CenterElements() //Elementos de la parte central de la pantalla
-        Icon(
-            imageVector = Icons.Rounded.Info,
-            contentDescription = "Info button",
+    val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(false)
+
+    if (doorIsOpen.value) navController.navigate(AppScreens.BuyScreen.route)
+    else {
+        Box (
             modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(8.dp)
-                .size(52.dp)
-        )
+                .fillMaxSize()
+        ) {
+            TopElements(navController) //Elementos en la parte superior
+            CenterElements() //Elementos de la parte central de la pantalla
+            Icon(
+                imageVector = Icons.Rounded.Info,
+                contentDescription = "Info button",
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(8.dp)
+                    .size(52.dp)
+            )
+        }
     }
-    if (doorIsOpen) navController.navigate(AppScreens.BuyScreen.route)
 }
 
 //En esta función se establecen los botones del menú principal y ajustes
