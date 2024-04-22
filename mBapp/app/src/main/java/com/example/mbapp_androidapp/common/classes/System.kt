@@ -11,13 +11,19 @@ class System private constructor() {
     var employee: Employee = Employee.getInstance()
     var customer: Customer = Customer.getInstance()
     //Communication variables with ESP32
-    var temperature: String = "0"
+    //Temperature
+    private val _temperature = MutableLiveData("0")
+    var temperature: LiveData<String> = _temperature
+
     var doorIsOpen: Boolean = false
     private val _weightTop = MutableLiveData(0)
     val weightTop: LiveData<Int> = _weightTop
     private var _weightBot = MutableLiveData(0)
     val weightBot: LiveData<Int> = _weightBot
 
+    fun updateTemperature(t: String) {
+        _temperature.value = t
+    }
 
     companion object {
         private var instance: System? = null

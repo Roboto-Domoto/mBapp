@@ -16,6 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -86,6 +87,7 @@ private fun TopElements(navController: NavHostController) {
 //En esta función se representa la temperatura, hora, fecha y clima
 @Composable
 private fun CenterElements() {
+    val temperature = System.getInstance().temperature.observeAsState("0")
     val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val date = LocalDateTime.now().format(dateFormat)
 
@@ -95,7 +97,7 @@ private fun CenterElements() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "4º",
+            text = temperature.value + "º",
             fontSize = 208.sp,
             fontFamily = amableFamily
         )

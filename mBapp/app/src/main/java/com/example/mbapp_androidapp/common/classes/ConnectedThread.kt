@@ -14,7 +14,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity):Thread() {
+class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity) : Thread() {
 
     private var tag = "ConnectedThread"
     private var mmInputStream: InputStream? = null
@@ -68,7 +68,7 @@ class ConnectedThread(socket: BluetoothSocket,private val activity: MainActivity
                             0 -> {
                                 val sys = System.getInstance()
                                 val data = filterMsg(msg.obj.toString())
-                                sys.temperature=data[0]
+                                sys.updateTemperature(data[0])
                                 sys.doorIsOpen=data[1]!="1"
                                 sys.setWeights(data[2].toInt(),data[3].toInt())
                             }
