@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -95,55 +96,55 @@ private fun TextGuide() {
             text = "Modo compra",
             fontFamily = caviarFamily,
             fontWeight = FontWeight.Bold,
-            fontSize = 40.sp,
+            style = TextStyle(color = Color.Black, fontSize = 40.sp)
         )
         Text(
             text = "Guía de uso",
             fontFamily = caviarFamily,
-            fontSize = 32.sp
+            style = TextStyle(color = Color.Black, fontSize = 40.sp)
         )
         Spacer(modifier = Modifier.height(100.dp))
         Text(
             text = "1. Retire el producto",
             fontFamily = caviarFamily,
-            fontSize = 28.sp
+            style = TextStyle(color = Color.Black, fontSize = 28.sp)
         )
         Spacer(modifier = Modifier.height(lineSpacing))
         Text(
             text = "2. La cámara se activará",
             fontFamily = caviarFamily,
-            fontSize = 28.sp
+            style = TextStyle(color = Color.Black, fontSize = 28.sp)
         )
         Spacer(modifier = Modifier.height(lineSpacing))
         Text(
             text = "3. Escanee el producto",
             fontFamily = caviarFamily,
-            fontSize = 28.sp
+            style = TextStyle(color = Color.Black, fontSize = 28.sp)
         )
         Spacer(modifier = Modifier.height(lineSpacing))
         Text(
             text = "4. Si desea seguir:",
             fontFamily = caviarFamily,
-            fontSize = 26.sp,
+            style = TextStyle(color = Color.Black, fontSize = 28.sp)
         )
         Spacer(modifier = Modifier.height(lineSpacing))
         Text(
             text = "4.1 Repita los pasos",
             fontFamily = caviarFamily,
-            fontSize = 26.sp,
+            style = TextStyle(color = Color.Black, fontSize = 28.sp),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Spacer(modifier = Modifier.height(lineSpacing))
         Text(
             text = "5. Si no:",
             fontFamily = caviarFamily,
-            fontSize = 26.sp,
+            style = TextStyle(color = Color.Black, fontSize = 28.sp)
         )
         Spacer(modifier = Modifier.height(lineSpacing))
         Text(
             text = "5.1 Cierre la puerta",
             fontFamily = caviarFamily,
-            fontSize = 26.sp,
+            style = TextStyle(color = Color.Black, fontSize = 28.sp),
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }

@@ -18,7 +18,7 @@ class System private constructor() {
 
     /*** Communication variables with ESP32 ***/
     //Temperature
-    private val _temperature = MutableLiveData(0)
+    private val _temperature = MutableLiveData(6)
     var temperature: LiveData<Int> = _temperature
     //Door
     private val _doorIsOpen = MutableLiveData(false)

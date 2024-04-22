@@ -128,7 +128,7 @@ private fun Item(item: ItemClass) {
                     Text(
                         text = "${String.format(Locale.US, "%.2f", item.price)}€",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 40.sp
+                        fontSize = 36.sp
                     )
                 }
             }

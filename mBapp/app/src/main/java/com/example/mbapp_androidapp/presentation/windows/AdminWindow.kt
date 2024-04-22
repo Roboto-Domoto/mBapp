@@ -97,7 +97,7 @@ fun AdminWindow(flag: MutableState<Boolean>)
                 value = number,
                 onValueChange = { number = it },
                 label = {
-                    Text(text = "Número de teléfono")
+                    Text(text = "Email del admin")
                 },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(

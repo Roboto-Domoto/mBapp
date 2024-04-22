@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.ContextCompat
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
+import com.example.mbapp_androidapp.common.classes.MailSender
 import com.example.mbapp_androidapp.presentation.navigation.AppNavigation
 import com.example.mbapp_androidapp.ui.theme.MBapp_androidAppTheme
 
@@ -43,6 +44,8 @@ class MainActivity : ComponentActivity() {
 
         //Instance of barcode scanner
         BarcodeScanner.getBarcodeScanner(this)
+        /*val stockMsg = "*Aviso temperatura anómala:*\nEl minibar cuenta con una diferencia de temperatura \nsignificativa entre los sensores interiores y el sensor de la puerta.\nAtender cuanto antes la posible fuga de frío.\n-----------------------------"
+        MailSender.getMailSender().send(stockMsg,"Alerta minibar (300203)","sebssgarcia502580@gmail.com")*/
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
