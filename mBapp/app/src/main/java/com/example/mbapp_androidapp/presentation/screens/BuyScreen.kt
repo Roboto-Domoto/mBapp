@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.System
+import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.viewmodels.BuyScreenViewModel
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
@@ -39,7 +40,7 @@ private val weightTop = system.weightTop.value ?: 0
 fun BuyScreen(navController: NavHostController, viewModel: BuyScreenViewModel = BuyScreenViewModel()) {
     val doorIsOpen = system.doorIsOpen.observeAsState(initial = true)
 
-    if (!doorIsOpen.value) navController.popBackStack()
+    if (!doorIsOpen.value) navController.navigate(AppScreens.SleepScreen.route)
     else {
         // Lo demás
         // NO TOCAR; LA TRIFUERZA NO HA LLEGADO TODAVÍA
