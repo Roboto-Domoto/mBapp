@@ -1,20 +1,15 @@
 package com.example.mbapp_androidapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mbapp_androidapp.R
-import com.example.mbapp_androidapp.common.classes.Customer
 import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.data.AppDatabase
-import com.example.mbapp_androidapp.data.entities.ItemEntity
 import com.example.mbapp_androidapp.presentation.screens.BuyScreen
 import com.example.mbapp_androidapp.presentation.screens.EmployeeScreen
 import com.example.mbapp_androidapp.presentation.screens.EmployeeSettingScreen
@@ -95,7 +90,7 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.BuyScreen.route) {
-            BuyScreen(navController)
+            BuyScreen(navController,System.getInstance().getTopWeight(),System.getInstance().getBotWeight())
         }
     }
 }

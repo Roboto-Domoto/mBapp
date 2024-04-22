@@ -1,7 +1,8 @@
 package com.example.mbapp_androidapp.presentation.screens
 
-import android.app.Activity
 import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -24,43 +25,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
-import com.example.mbapp_androidapp.common.classes.BarcodeScannerActivity
+import com.example.mbapp_androidapp.common.classes.Employee
+import com.example.mbapp_androidapp.common.classes.MailSender
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun BuyScreen(navController: NavHostController) {
-    val initialTW = System.getInstance().getTopWeight()
-    val initialBW = System.getInstance().getBotWeight()
+fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
+    val context = LocalContext.current
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = true)
+    val barcodeScanner = BarcodeScanner.getBarcodeScanner()
+    val mailSender = MailSender.getMailSender()
 
-    val scannerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val scannedBarcode = result.data?.getStringExtra("barcode")
-            if (scannedBarcode != null) {
-                // Guarda el código de barras escaneado y actualiza la lista en System
-                System.getInstance().codeScanned(scannedBarcode)
-            }
-        }
+    if (!doorIsOpen.value) {
+        val nProducts = barcodeScanner.getCodeList().size
+        if(nProducts!=0)
+            Toast.makeText(LocalContext.current,"Has comprado un total de $nProducts!",Toast.LENGTH_SHORT).show()
+        barcodeScanner.cleanList()
+        navController.navigate(AppScreens.SleepScreen.route)
     }
-
-    if (!doorIsOpen.value) navController.navigate(AppScreens.SleepScreen.route)
     else {
         val topWeight = System.getInstance().weightTop.observeAsState(0)
         val botWeight = System.getInstance().weightBot.observeAsState(0)
         val failTake = 0.9
         val failPut = 1.1
         //Sacar producto
+        Log.d("Weights", "$initialTW-$initialBW  ${topWeight.value}-${botWeight.value}")
         if (topWeight.value < (initialTW * failTake) || botWeight.value < (initialBW * failTake)) {
             //Activar cámara
-            val intent = Intent(LocalContext.current, BarcodeScannerActivity::class.java)
-            scannerLauncher.launch(intent)
-            //BarcodeScanner.getBarcodeScanner(null).scan()
+            barcodeScanner.scan()
+            navController.navigate(AppScreens.BuyScreen.route)
         }
         //Meter un producto
         else if (topWeight.value > (initialTW * failPut) || botWeight.value > (initialBW * failPut)) {
-            //Sacar un error
+            mailSender.send("Problema con el minibar 0, se ha detectado una subida de peso sospechosa. Acuda a observar y cobran si es necesario.",
+                "Problema minibar 0",Employee.getInstance().getAdminTl())
         }
         //Mientras el peso se mantenga constante mostrar la pantalla de guía
         else GuideScreen()

@@ -39,7 +39,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.MBapp_androidApp"
             android:windowSoftInputMode="stateAlwaysHidden"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
     </application>
 
 </manifest>

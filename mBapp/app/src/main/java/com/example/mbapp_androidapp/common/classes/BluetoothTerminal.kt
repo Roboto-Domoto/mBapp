@@ -30,7 +30,7 @@ class BluetoothTerminal(private var activity: MainActivity){
 
     companion object{
         @Volatile private var INSTANCE: BluetoothTerminal? = null
-        fun getBluetoothTerminal(activity: MainActivity?): BluetoothTerminal {
+        fun getBluetoothTerminal(activity: MainActivity?=null): BluetoothTerminal {
             return INSTANCE ?: synchronized(this) {
                 val instance = BluetoothTerminal(activity!!)
                 INSTANCE = instance

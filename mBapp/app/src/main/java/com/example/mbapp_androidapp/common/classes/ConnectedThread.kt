@@ -24,7 +24,7 @@ class ConnectedThread(socket: BluetoothSocket, private val activity: MainActivit
 
     companion object{
         @Volatile private var INSTANCE: ConnectedThread? = null
-        fun getActualThread(socket: BluetoothSocket?, activity: MainActivity?): ConnectedThread {
+        fun getActualThread(socket: BluetoothSocket?=null, activity: MainActivity?=null): ConnectedThread {
             return INSTANCE ?: synchronized(this) {
                 val instance = ConnectedThread(socket!!,activity!!)
                 INSTANCE = instance

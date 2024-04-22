@@ -11,7 +11,7 @@ class BarcodeScanner private constructor(private val activity: MainActivity) {
     private val codeList: MutableList<String> = mutableListOf()
     companion object{
         @Volatile private var INSTANCE: BarcodeScanner? = null
-        fun getBarcodeScanner(activity: MainActivity?): BarcodeScanner {
+        fun getBarcodeScanner(activity: MainActivity?=null): BarcodeScanner {
             return INSTANCE ?: synchronized(this) {
                 val instance = BarcodeScanner(activity!!)
                 INSTANCE = instance
@@ -27,6 +27,7 @@ class BarcodeScanner private constructor(private val activity: MainActivity) {
             Toast.makeText(activity.applicationContext,"Reader: " + it.contents, Toast.LENGTH_SHORT).show()
             lastCode = it.contents
             codeList.add(lastCode)
+
         } else {
             Toast.makeText(activity.applicationContext,"Error in reader", Toast.LENGTH_SHORT).show()
         }
