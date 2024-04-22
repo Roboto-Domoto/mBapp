@@ -1,7 +1,9 @@
 package com.example.mbapp_androidapp.presentation.screens
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -22,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.BarcodeScannerActivity
 import com.example.mbapp_androidapp.common.classes.System
@@ -30,17 +33,16 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
 fun BuyScreen(navController: NavHostController) {
+    val context = LocalContext.current
     val initialTW = System.getInstance().getTopWeight()
     val initialBW = System.getInstance().getBotWeight()
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = true)
 
-    val scannerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val scannedBarcode = result.data?.getStringExtra("barcode")
-            if (scannedBarcode != null) {
-                // Guarda el código de barras escaneado y actualiza la lista en System
-                System.getInstance().codeScanned(scannedBarcode)
-            }
+    //Solicitud de permisos
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            val intent = Intent(context, BarcodeScannerActivity::class.java)
+            context.startActivity(intent)
         }
     }
 
@@ -53,8 +55,14 @@ fun BuyScreen(navController: NavHostController) {
         //Sacar producto
         if (topWeight.value < (initialTW * failTake) || botWeight.value < (initialBW * failTake)) {
             //Activar cámara
-            val intent = Intent(LocalContext.current, BarcodeScannerActivity::class.java)
-            scannerLauncher.launch(intent)
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // Si no se han concedido, solicita el permiso
+                permissionLauncher.launch(Manifest.permission.CAMERA)
+            } else {
+                // Permiso concedido, acceder a la cámara
+                val intent = Intent(context, BarcodeScannerActivity::class.java)
+                context.startActivity(intent)
+            }
         }
         //Meter un producto
         else if (topWeight.value > (initialTW * failPut) || botWeight.value > (initialBW * failPut)) {
