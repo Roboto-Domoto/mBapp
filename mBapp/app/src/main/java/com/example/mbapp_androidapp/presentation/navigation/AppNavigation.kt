@@ -95,7 +95,7 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.BuyScreen.route) {
-            BuyScreen()
+            BuyScreen(navController)
         }
     }
 }

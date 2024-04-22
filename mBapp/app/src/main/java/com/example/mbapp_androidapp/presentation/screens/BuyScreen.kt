@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.viewmodels.BuyScreenViewModel
@@ -35,30 +36,39 @@ private val weightBot = system.weightBot.value ?: 0
 private val weightTop = system.weightTop.value ?: 0
 
 @Composable
-fun BuyScreen(viewModel: BuyScreenViewModel = BuyScreenViewModel()) {
-    val barcodeResult by viewModel.barcodeResult.observeAsState()
-    val failureConst = 0.1
+fun BuyScreen(navController: NavHostController, viewModel: BuyScreenViewModel = BuyScreenViewModel()) {
+    val doorIsOpen = system.doorIsOpen.observeAsState(initial = true)
 
-    val actualBotWeight by viewModel.botWeightNow.observeAsState()
-    val actualTopWeight by viewModel.topWeightNow.observeAsState()
+    if (!doorIsOpen.value) navController.popBackStack()
+    else {
+        // Lo demás
+        // NO TOCAR; LA TRIFUERZA NO HA LLEGADO TODAVÍA
+        val barcodeResult by viewModel.barcodeResult.observeAsState()
+        val failureConst = 0.1
 
-    if (actualTopWeight!! < (viewModel.initialTopWeight * (1 - failureConst))||
-        actualBotWeight!! < (viewModel.initialBotWeight * (1 - failureConst)))
-    {
-        LaunchedEffect(true) {
-            BarcodeScanner.getBarcodeScanner(null).scan()
-            val barcodeScanner = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
-            viewModel.setBarcodeResult(barcodeScanner)
+        val actualBotWeight by viewModel.botWeightNow.observeAsState()
+        val actualTopWeight by viewModel.topWeightNow.observeAsState()
+
+        if (actualTopWeight!! < (viewModel.initialTopWeight * (1 - failureConst))||
+            actualBotWeight!! < (viewModel.initialBotWeight * (1 - failureConst)))
+        {
+            LaunchedEffect(true) {
+                BarcodeScanner.getBarcodeScanner(null).scan()
+                val barcodeScanner = BarcodeScanner.getBarcodeScanner(null).getLastCodeRead()
+                viewModel.setBarcodeResult(barcodeScanner)
+
+            }
 
         }
+        else if (actualBotWeight!! > (viewModel.initialBotWeight * (1 + failureConst))||
+            actualTopWeight!! > (viewModel.initialTopWeight * (1 + failureConst)))
+        {
 
+        }
+        else GuideScreen()
     }
-    else if (actualBotWeight!! > (viewModel.initialBotWeight * (1 + failureConst))||
-        actualTopWeight!! > (viewModel.initialTopWeight * (1 + failureConst)))
-    {
 
-    }
-    else GuideScreen()
+
 }
 
 @Composable
@@ -138,10 +148,4 @@ private fun TextGuide() {
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    BuyScreen()
 }
