@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.BarcodeScannerActivity
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
@@ -55,6 +56,7 @@ fun BuyScreen(navController: NavHostController) {
             //Activar cámara
             val intent = Intent(LocalContext.current, BarcodeScannerActivity::class.java)
             scannerLauncher.launch(intent)
+            //BarcodeScanner.getBarcodeScanner(null).scan()
         }
         //Meter un producto
         else if (topWeight.value > (initialTW * failPut) || botWeight.value > (initialBW * failPut)) {
