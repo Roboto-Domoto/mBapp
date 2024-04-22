@@ -94,7 +94,7 @@ class ConnectedThread(socket: BluetoothSocket, private val activity: MainActivit
                 temperatureMed+=temp.toDouble()
             }
         }
-        listData.add((temperatureMed/i).toString())
+        listData.add((temperatureMed/i).toInt().toString())
         listData.add(listOfSliceData[1][2].toString())
         val pesos = listOfSliceData[2].split(",")
         listData.add(pesos[0].substring(2))
