@@ -87,7 +87,7 @@ private fun TopElements(navController: NavHostController) {
 //En esta función se representa la temperatura, hora, fecha y clima
 @Composable
 private fun CenterElements() {
-    val temperature = System.getInstance().temperature.observeAsState("0")
+    val temperature = System.getInstance().temperature.observeAsState(0)
     val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val date = LocalDateTime.now().format(dateFormat)
 
@@ -97,7 +97,7 @@ private fun CenterElements() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = temperature.value + "º",
+            text = "${temperature.value}º",
             fontSize = 208.sp,
             fontFamily = amableFamily
         )

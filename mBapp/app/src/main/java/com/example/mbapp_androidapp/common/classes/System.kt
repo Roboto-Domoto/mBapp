@@ -12,8 +12,8 @@ class System private constructor() {
     var customer: Customer = Customer.getInstance()
     //Communication variables with ESP32
     //Temperature
-    private val _temperature = MutableLiveData("0")
-    var temperature: LiveData<String> = _temperature
+    private val _temperature = MutableLiveData(0)
+    var temperature: LiveData<Int> = _temperature
 
     var doorIsOpen: Boolean = false
     private val _weightTop = MutableLiveData(0)
@@ -21,7 +21,7 @@ class System private constructor() {
     private var _weightBot = MutableLiveData(0)
     val weightBot: LiveData<Int> = _weightBot
 
-    fun updateTemperature(t: String) {
+    fun updateTemperature(t: Int) {
         _temperature.value = t
     }
 
