@@ -17,6 +17,7 @@ import com.example.mbapp_androidapp.presentation.screens.HomeScreen
 import com.example.mbapp_androidapp.presentation.screens.ItemsScreen
 import com.example.mbapp_androidapp.presentation.screens.MyShoppingScreen
 import com.example.mbapp_androidapp.presentation.screens.SleepScreen
+import com.example.mbapp_androidapp.presentation.screens.StockScreen
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModelFactory
 
@@ -91,6 +92,9 @@ fun AppNavigation() {
 
         composable(route = AppScreens.BuyScreen.route) {
             BuyScreen(navController,System.getInstance().getTopWeight(),System.getInstance().getBotWeight())
+        }
+        composable(route = AppScreens.StockScreen.route) {
+            StockScreen(navController, itemsViewModel)
         }
     }
 }

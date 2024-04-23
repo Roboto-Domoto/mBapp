@@ -34,7 +34,6 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
 fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
-    val context = LocalContext.current
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = true)
     val barcodeScanner = BarcodeScanner.getBarcodeScanner()
     val mailSender = MailSender.getMailSender()
@@ -61,7 +60,7 @@ fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
         //Meter un producto
         else if (topWeight.value > (initialTW * failPut) || botWeight.value > (initialBW * failPut)) {
             mailSender.send("Problema con el minibar 0, se ha detectado una subida de peso sospechosa. Acuda a observar y cobran si es necesario.",
-                "Problema minibar 0",Employee.getInstance().getAdminTl())
+                "Problema minibar 0",Employee.getInstance().getAdminEmail())
         }
         //Mientras el peso se mantenga constante mostrar la pantalla de guía
         else GuideScreen()

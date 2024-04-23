@@ -85,7 +85,8 @@ private fun Buttons(navController: NavHostController) {
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
             icon = ImageVector.vectorResource(id = R.drawable.local_cafe_24px),
-            text = "Stock"
+            text = "Stock",
+            onClick = { navController.navigate(AppScreens.StockScreen.route) }
         )
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(

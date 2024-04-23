@@ -41,7 +41,7 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 fun AdminWindow(flag: MutableState<Boolean>)
 {
     val employee = System.getInstance().employee
-    var number by remember { mutableStateOf(employee.getAdminTl()) }
+    var mail by remember { mutableStateOf(employee.getAdminEmail()) }
 
     AlertDialog(
         onDismissRequest = { flag.value = !flag.value },
@@ -66,8 +66,8 @@ fun AdminWindow(flag: MutableState<Boolean>)
                 //Botón para aceptar
                 IconButton(
                     onClick = {
-                        if (number.length == 9) {
-                            employee.changeAdminTl(number)
+                        if (mail.length == 9) {
+                            employee.changeAdminEmail(mail)
                             flag.value = !flag.value
                         }
                     }
@@ -85,7 +85,7 @@ fun AdminWindow(flag: MutableState<Boolean>)
         },
         title = {
             Text(
-                text = "Contacto del administrador",
+                text = "Correo del administrador",
                 fontFamily = caviarFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
@@ -94,8 +94,8 @@ fun AdminWindow(flag: MutableState<Boolean>)
         },
         text = {
             TextField(
-                value = number,
-                onValueChange = { number = it },
+                value = mail,
+                onValueChange = { mail = it },
                 label = {
                     Text(text = "Email del admin")
                 },

@@ -1,7 +1,7 @@
 package com.example.mbapp_androidapp.common.classes
 
 class Employee private constructor() {
-    private var adminTl = ""
+    private var adminMail = ""
 
     companion object {
         private var instance: Employee? = null
@@ -15,11 +15,11 @@ class Employee private constructor() {
         }
     }
 
-    fun changeAdminTl(number: String) {
-        adminTl = number
+    fun changeAdminEmail(email: String) {
+        adminMail = email
     }
 
-    fun getAdminTl(): String {
-        return adminTl
+    fun getAdminEmail(): String {
+        return adminMail
     }
 }
