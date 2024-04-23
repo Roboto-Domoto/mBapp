@@ -32,8 +32,7 @@ fun StockProcesScreen() {
         //Activar cámara
         barcodeScanner.scan()
         //navController.navigate(AppScreens.BuyScreen.route)
-    }
-    GuideScreen()
+    }else GuideScreen()
 }
 
 @Composable

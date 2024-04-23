@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-/*
+
 
         val bt = BluetoothTerminal(this)
         bt.getDeviceByName("ESP32-BT-MINIBAR")
@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
         hilo.execute()
 
 
- */
+
         //Instance of barcode scanner
         BarcodeScanner.getBarcodeScanner(this)
         /*val stockMsg = "*Aviso temperatura anómala:*\nEl minibar cuenta con una diferencia de temperatura \nsignificativa entre los sensores interiores y el sensor de la puerta.\nAtender cuanto antes la posible fuga de frío.\n-----------------------------"
