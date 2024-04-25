@@ -20,6 +20,7 @@ class ConnectedThread(socket: BluetoothSocket, private val activity: MainActivit
     private var mmInputStream: InputStream? = null
     private var mmOutputStream: OutputStream? = null
     private val handlerState = 0
+    private val error_temperature = 2.00
 
 
     companion object{
@@ -86,15 +87,13 @@ class ConnectedThread(socket: BluetoothSocket, private val activity: MainActivit
     private fun filterMsg(msg:String):List<String>{
         val listData = mutableListOf<String>()
         val listOfSliceData = msg.split("|")
-        var temperatureMed = 0.00
-        var i = 0
-        for (temp in listOfSliceData[0].substring(2).split(",")){
-            if(temp!="nan"){
-                i++
-                temperatureMed+=temp.toDouble()
-            }
-        }
-        listData.add((temperatureMed/i).toInt().toString())
+        val temps = listOfSliceData[0].substring(2).split(",")
+        val temperatureMed = (temps[0].toDouble()+temps[2].toDouble())/2
+        val temperatureDoor = temps[1].toDouble()
+        if(temperatureDoor<temperatureMed-error_temperature||
+            temperatureDoor>temperatureMed+error_temperature)
+            MailSender.getMailSender().sendTempMessage(temperatureDoor)
+        listData.add((temperatureMed).toInt().toString())
         listData.add(listOfSliceData[1][2].toString())
         val pesos = listOfSliceData[2].split(",")
         listData.add(pesos[0].substring(2))

@@ -58,4 +58,16 @@ class MailSender {
             }
         }.start()
     }
+
+    fun sendTempMessage(temp:Double){
+        MailSender.getMailSender().send(
+            message="*Aviso temperatura anómala(${temp}):*\n" +
+                    "El minibar cuenta con una diferencia de temperatura\n" +
+                    "significativa entre los sensores interiores y el sensor de la puerta.\n" +
+                    "Atender cuanto antes la posible fuga de frío.\n" +
+                    "-----------------------------",
+            subject="Alerta minibar (${System.barId})",
+            destMail = Employee.getInstance().getAdminEmail()
+        )
+    }
 }

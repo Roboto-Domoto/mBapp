@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class System private constructor() {
+
     private val mBappLogs: MutableList<MBappLog> = mutableListOf()
     private val dailyInventory: MutableList<InventoryItem> = mutableListOf()
     var employee: Employee = Employee.getInstance()
@@ -66,6 +67,8 @@ class System private constructor() {
             if (instance == null) instance = System()
             return instance!!
         }
+
+        val barId = 300202
     }
     private fun getHour(): String {
         val hourFormat = DateTimeFormatter.ofPattern("hh:mm:ss")
