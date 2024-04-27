@@ -1,7 +1,7 @@
 package com.example.mbapp_androidapp.common.classes
 
 class Employee private constructor() {
-    private var adminMail = ""
+    private var adminMail = "sebssgarcia502580@gmail.com"
 
     companion object {
         private var instance: Employee? = null

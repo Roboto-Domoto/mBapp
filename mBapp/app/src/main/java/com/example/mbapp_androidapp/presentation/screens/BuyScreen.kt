@@ -58,11 +58,11 @@ fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
         }
         //Meter un producto
         else if (topWeight.value > (initialTW * failPut) || botWeight.value > (initialBW * failPut)) {
-            mailSender.send("Problema con el minibar ${System.barId}, se ha detectado una subida de peso sospechosa. Acuda a observar y cobran si es necesario.",
-                "Problema minibar ${System.barId}",Employee.getInstance().getAdminEmail())
+            mailSender.send("Problema con el minibar ${System.barId}, se ha detectado una subida de peso sospechosa. Acuda a observar y cobrar si es necesario.",
+                "Problema pesos minibar ${System.barId}",Employee.getInstance().getAdminEmail())
         }
         //Mientras el peso se mantenga constante mostrar la pantalla de guía
-        else GuideScreen()
+        GuideScreen()
     }
 }
 
