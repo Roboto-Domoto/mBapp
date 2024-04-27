@@ -113,7 +113,7 @@ fun TopElements() {
 }
 
 @Composable
-fun MenuButton (icon: ImageVector, text: String, onClick: () -> Unit = {}) {
+fun MenuButton (icon: ImageVector, text: String, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     TextButton(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(Color.Black, Color.White),
@@ -121,7 +121,7 @@ fun MenuButton (icon: ImageVector, text: String, onClick: () -> Unit = {}) {
             width = 2.dp,
             brush = Brush.linearGradient(listOf(Color.Gray, Color.White))
         ),
-        modifier = Modifier
+        modifier = modifier
             .size(192.dp, 60.dp)
     ) {
         ButtonContent(icon, text) //Icono y texto que contiene el botón

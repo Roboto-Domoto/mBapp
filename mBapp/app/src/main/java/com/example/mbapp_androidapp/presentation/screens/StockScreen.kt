@@ -19,7 +19,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,16 +41,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.ItemClass
+import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.data.AppDatabase
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
+import com.example.mbapp_androidapp.presentation.windows.NewItemWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import java.util.Locale
 
 @Composable
 fun StockScreen(navController: NavHostController, itemsViewModel: ItemsViewModel) {
     val itemsList by itemsViewModel.allItems.observeAsState(emptyList())
+    val showNewItemWindow = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -82,17 +87,20 @@ fun StockScreen(navController: NavHostController, itemsViewModel: ItemsViewModel
         }
 
         Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.Bottom
         ) {
-            Icon(
-                imageVector = Icons.Rounded.Info,
-                contentDescription = "Info button",
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(52.dp)
+            MenuButton(
+                icon = Icons.Rounded.Add,
+                text = "Añadir nuevo",
+                onClick = {showNewItemWindow.value = !showNewItemWindow.value}
             )
+        }
+        if (showNewItemWindow.value) {
+            NewItemWindow(flag = showNewItemWindow)
         }
     }
 }

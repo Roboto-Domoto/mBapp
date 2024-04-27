@@ -33,32 +33,6 @@ fun AppNavigation() {
     val navController = rememberNavController() //Controlador de navegación
     //Se instancia al cliente
     val system = System.getInstance()
-    val snicker = ItemClass(
-        name = "Snicker",
-        pictureId = R.drawable.twix,
-        price = 1.25f,
-        type = "Snack",
-        quantity = 50f
-    )
-    val cocaColaZero = ItemClass(
-        name = "Coca-Cola Zero",
-        pictureId = R.drawable.coca_cola_zero_lata,
-        price = 1.5f,
-        type = "Drink",
-        quantity = 330f
-    )
-    val water = ItemClass(
-        name = "Agua",
-        pictureId = R.drawable.botella_agua,
-        price = 1.5f,
-        type = "Drink",
-        quantity = 500f
-    )
-    system.customer.addProduct(snicker)
-    system.customer.addProduct(snicker)
-    system.customer.addProduct(cocaColaZero)
-    system.customer.addProduct(water)
-    system.customer.addProduct(snicker)
 
     //Room y DAO
     val appDatabase = AppDatabase.getDatabase(context = LocalContext.current.applicationContext)
