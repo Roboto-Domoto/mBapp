@@ -11,6 +11,7 @@ import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.data.AppDatabase
 import com.example.mbapp_androidapp.presentation.screens.BuyScreen
+import com.example.mbapp_androidapp.presentation.screens.CameraScreen
 import com.example.mbapp_androidapp.presentation.screens.EmployeeScreen
 import com.example.mbapp_androidapp.presentation.screens.EmployeeSettingScreen
 import com.example.mbapp_androidapp.presentation.screens.HomeScreen
@@ -101,6 +102,10 @@ fun AppNavigation() {
 
         composable(route = AppScreens.StockProcesScreen.route) {
             StockProcesScreen(navController)
+        }
+
+        composable(route = AppScreens.CameraScreen.route) {
+            CameraScreen(navController)
         }
     }
 }

@@ -31,8 +31,7 @@ fun StockProcesScreen(navController: NavHostController) {
 
     if (doorIsOpen.value) {
         //Activar cámara
-        barcodeScanner.value?.scan()
-        navController.navigate(AppScreens.StockProcesScreen.route)
+        navController.navigate(AppScreens.CameraScreen.route)
     } else GuideScreen()
 }
 
