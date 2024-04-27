@@ -35,14 +35,14 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 @Composable
 fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = true)
-    val barcodeScanner = BarcodeScanner.getBarcodeScanner()
+    val barcodeScanner = System.getInstance().barcodeScanner.observeAsState()
     val mailSender = MailSender.getMailSender()
 
     if (!doorIsOpen.value) {
-        val nProducts = barcodeScanner.getCodeList().size
+        val nProducts = barcodeScanner.value?.getCodeList()?.size
         if(nProducts!=0)
             Toast.makeText(LocalContext.current,"Has comprado un total de $nProducts!",Toast.LENGTH_SHORT).show()
-        barcodeScanner.cleanList()
+        barcodeScanner.value?.cleanList()
         navController.navigate(AppScreens.SleepScreen.route)
     }
     else {
@@ -54,7 +54,7 @@ fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
         Log.d("Weights", "$initialTW-$initialBW  ${topWeight.value}-${botWeight.value}")
         if (topWeight.value < (initialTW * failTake) || botWeight.value < (initialBW * failTake)) {
             //Activar cámara
-            barcodeScanner.scan()
+            barcodeScanner.value?.scan()
             navController.navigate(AppScreens.BuyScreen.route)
         }
         //Meter un producto

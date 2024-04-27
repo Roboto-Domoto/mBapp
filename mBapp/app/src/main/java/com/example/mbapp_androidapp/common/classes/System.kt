@@ -31,6 +31,9 @@ class System private constructor() {
     private var _weightBot = MutableLiveData(0)
     val weightBot: LiveData<Int> = _weightBot
 
+    /** BarcodeScanner **/
+    val barcodeScanner: LiveData<BarcodeScanner> = MutableLiveData(BarcodeScanner.getBarcodeScanner())
+
     fun codeScanned(code: String) {
         lastCodeScanned = code
         scannedList.add(code)
