@@ -16,6 +16,7 @@ import androidx.compose.material.icons.rounded.Build
 import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
@@ -120,8 +121,8 @@ private fun Buttons(showMsg: MutableState<Boolean>, showAdminW: MutableState<Boo
         )
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
-            icon = ImageVector.vectorResource(id = R.drawable.bluetooth_fill0_wght400_grad0_opsz24),
-            text = "Seleccionar dispositivo BT"
+            icon = Icons.Rounded.ShoppingCart,
+            text = "Inventario"
         )
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
