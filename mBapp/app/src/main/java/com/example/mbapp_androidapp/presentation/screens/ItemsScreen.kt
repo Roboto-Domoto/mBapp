@@ -64,7 +64,7 @@ fun ItemsScreen(itemsViewModel: ItemsViewModel) {
                 state = rememberLazyListState(),
                 contentPadding = PaddingValues(12.dp)
             ) {
-                itemsIndexed(itemsList) { _, actualItem ->
+                itemsIndexed(itemsList.distinctBy { it.name }) { _, actualItem ->
                     //Representación del producto
                     Item(item = actualItem.toItemClass(), showInfo, item, itemsViewModel)
                     Spacer(modifier = Modifier.height(16.dp)) //Margen entre productos

@@ -14,6 +14,7 @@ data class ItemEntity(
     val quantity: Float,
     val price: Float,
     val type: String,
+    val barcode: String? = null,
     var nutritionInfo: NutritionInfoClass = NutritionInfoClass()
 ) {
     fun toItemClass(): ItemClass {

@@ -36,13 +36,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+/*
         val bt = BluetoothTerminal(this)
         bt.getDeviceByName("ESP32-BT-MINIBAR")
         bt.connect()
 
         val hilo = bt.createConnectedThread()
         hilo.execute()
+ */
 
 
 

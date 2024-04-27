@@ -28,4 +28,8 @@ interface ItemDao {
 
     @Query("SELECT * FROM items_table WHERE name = :name")
     fun getByName(name: String): Flow<List<ItemEntity>>
+
+    @Query("SELECT * FROM items_table WHERE barcode = :codebar")
+    fun getByCodebar(codebar: String): Flow<List<ItemEntity>>
+
 }
