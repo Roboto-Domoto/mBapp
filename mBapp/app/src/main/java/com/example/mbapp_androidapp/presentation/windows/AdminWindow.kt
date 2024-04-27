@@ -1,5 +1,6 @@
 package com.example.mbapp_androidapp.presentation.windows
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +25,11 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,13 +38,15 @@ import androidx.compose.ui.unit.sp
 import com.example.mbapp_androidapp.common.classes.Employee
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AdminWindow(flag: MutableState<Boolean>)
-{
+fun AdminWindow(flag: MutableState<Boolean>) {
     val employee = System.getInstance().employee
     var mail by remember { mutableStateOf(employee.getAdminEmail()) }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     AlertDialog(
         onDismissRequest = { flag.value = !flag.value },
@@ -66,15 +71,25 @@ fun AdminWindow(flag: MutableState<Boolean>)
                 //Botón para aceptar
                 IconButton(
                     onClick = {
-                        if (mail.length == 9) {
+                        if (Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,})+\$").matches(mail)) {
+                            System.getInstance()
+                                .addLog("Cambiado correo admin de ${employee.getAdminEmail()} a $mail")
                             employee.changeAdminEmail(mail)
                             flag.value = !flag.value
+                        } else {
+                            coroutineScope.launch {
+                                Toast.makeText(
+                                    context,
+                                    "Formato incorrecto de email",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Check,
-                        contentDescription = "Validate password",
+                        contentDescription = "Validate email",
                         tint = Color.White,
                         modifier = Modifier
                             .size(32.dp)
@@ -100,10 +115,6 @@ fun AdminWindow(flag: MutableState<Boolean>)
                     Text(text = "Email del admin")
                 },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Phone,
-                    imeAction = ImeAction.Done
-                ),
                 modifier = Modifier
                     .padding(12.dp)
                     .size(272.dp, 52.dp)

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.Employee
+import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.MailSender
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
@@ -35,31 +36,43 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 @Composable
 fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = true)
-    val barcodeScanner = System.getInstance().barcodeScanner.observeAsState()
+    val barcodeScanner = BarcodeScanner.getBarcodeScanner()
+    barcodeScanner.setNav(navController)
     val mailSender = MailSender.getMailSender()
 
     if (!doorIsOpen.value) {
-        val nProducts = barcodeScanner.value?.getCodeList()?.size
-        if(nProducts!=0)
-            Toast.makeText(LocalContext.current,"Has comprado un total de $nProducts!",Toast.LENGTH_SHORT).show()
-        barcodeScanner.value?.cleanList()
+        val nProducts = barcodeScanner.getCodeList().size
+        if(nProducts!=0) {
+            Toast.makeText(
+                LocalContext.current,
+                "Has comprado un total de $nProducts!",
+                Toast.LENGTH_SHORT
+            ).show()
+            //No hace más logica ya que se hace tras escanear
+            System.getInstance().addLog("Comprado un total de $nProducts")
+            for(code in barcodeScanner.getCodeList()){
+                val item: ItemClass? = null //Obtener item de la base de datos
+                System.getInstance().addLog("Comprado producto ${item?.name?:"......"} y codigo $code")
+                //Eliminar item de la base de datos
+            }
+
+            barcodeScanner.cleanList()
+        }
+
         navController.navigate(AppScreens.SleepScreen.route)
     }
     else {
         val topWeight = System.getInstance().weightTop.observeAsState(0)
         val botWeight = System.getInstance().weightBot.observeAsState(0)
-        val failTake = 0.9
-        val failPut = 1.1
+        val pressure_error = System.pressure_error
         //Sacar producto
-        if (topWeight.value < (initialTW * failTake) || botWeight.value < (initialBW * failTake)) {
-            //Activar cámara
-            barcodeScanner.value?.scan()
-            navController.navigate(AppScreens.BuyScreen.route)
-        }
-        //Meter un producto
-        else if (topWeight.value > (initialTW * failPut) || botWeight.value > (initialBW * failPut)) {
+        if (topWeight.value < (initialTW - pressure_error) || botWeight.value < (initialBW - pressure_error))
+            barcodeScanner.scan()
+        //Meter un producto (posible robo)
+        else if (topWeight.value > (initialTW + pressure_error) || botWeight.value > (initialBW + pressure_error)) {
             mailSender.send("Problema con el minibar ${System.barId}, se ha detectado una subida de peso sospechosa. Acuda a observar y cobrar si es necesario.",
                 "Problema pesos minibar ${System.barId}",Employee.getInstance().getAdminEmail())
+            System.getInstance().addLog("Subida de peso anómala, se aconseja comprobar productos(T:$initialTW->${topWeight.value} B:$initialBW->${botWeight.value})")
         }
         //Mientras el peso se mantenga constante mostrar la pantalla de guía
         GuideScreen()

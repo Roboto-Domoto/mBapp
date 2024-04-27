@@ -7,6 +7,5 @@ import com.example.mbapp_androidapp.common.classes.System
 @Composable
 fun CameraScreen(navController: NavHostController) {
     val system = System.getInstance()
-    system.barcodeScanner.value?.scan()
     navController.navigateUp()
 }

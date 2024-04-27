@@ -2,6 +2,7 @@ package com.example.mbapp_androidapp.common.classes
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.mbapp_androidapp.MainActivity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -30,9 +31,6 @@ class System private constructor() {
     //Bot weight
     private var _weightBot = MutableLiveData(0)
     val weightBot: LiveData<Int> = _weightBot
-
-    /** BarcodeScanner **/
-    val barcodeScanner: LiveData<BarcodeScanner> = MutableLiveData(BarcodeScanner.getBarcodeScanner())
 
     fun codeScanned(code: String) {
         lastCodeScanned = code
@@ -72,13 +70,14 @@ class System private constructor() {
         }
 
         val barId = 300202
+        val pressure_error = 15
     }
-    private fun getHour(): String {
-        val hourFormat = DateTimeFormatter.ofPattern("hh:mm:ss")
+    private fun getDate(): String {
+        val hourFormat = DateTimeFormatter.ofPattern("hh:mm:ss - dd/MM/yyyy")
         return LocalDateTime.now().format(hourFormat)
     }
     fun addLog(event: String) {
-        val log = MBappLog(getHour(), event)
+        val log = MBappLog(getDate(), event)
         mBappLogs.add(log)
     }
 
@@ -87,7 +86,7 @@ class System private constructor() {
     }
 
     fun addItemToInventory(item: ItemClass) {
-        val inventoryItem = InventoryItem(getHour(), item)
+        val inventoryItem = InventoryItem(getDate(), item)
         dailyInventory.add(inventoryItem)
     }
 
@@ -103,4 +102,5 @@ class System private constructor() {
         Customer.deleteInstance()
         customer = Customer.getInstance()
     }
+
 }

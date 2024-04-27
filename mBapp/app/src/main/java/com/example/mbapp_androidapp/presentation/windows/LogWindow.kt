@@ -71,7 +71,7 @@ fun LogWindow(flag: MutableState<Boolean>)
                 contentPadding = PaddingValues(12.dp)
             ) {
                 itemsIndexed(logs) { _, log ->
-                    LogEvent(hour = log.hour, event = log.event)
+                    LogEvent(date = log.date, event = log.event)
                     Spacer(modifier = Modifier.height(16.dp)) //Margen
                 }
             }
@@ -83,10 +83,10 @@ fun LogWindow(flag: MutableState<Boolean>)
 }
 
 @Composable
-private fun LogEvent(hour: String, event: String) {
+private fun LogEvent(date: String, event: String) {
     Row {
         Text(
-            text = hour,
+            text = date,
             fontFamily = caviarFamily,
             fontSize = 12.sp,
             modifier = Modifier.padding(4.dp)

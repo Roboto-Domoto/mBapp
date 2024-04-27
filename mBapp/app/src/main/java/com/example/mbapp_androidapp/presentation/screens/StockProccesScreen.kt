@@ -28,12 +28,14 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 @Composable
 fun StockProcesScreen(navController: NavHostController) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = false)
-    val barcodeScanner = System.getInstance().barcodeScanner.observeAsState()
+    val barcodeScanner = BarcodeScanner.getBarcodeScanner()
+    barcodeScanner.setNav(navController)
 
     if (doorIsOpen.value) {
         //Activar cámara
-        navController.navigate(AppScreens.CameraScreen.route)
-    } else GuideScreen()
+        barcodeScanner.scan()
+
+    }else GuideScreen()
 }
 
 @Composable

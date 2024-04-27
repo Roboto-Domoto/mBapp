@@ -108,7 +108,7 @@ private fun Buttons(showMsg: MutableState<Boolean>, showAdminW: MutableState<Boo
             text = "Nuevo cliente",
             onClick = {
                 customer.resetList()
-                System.getInstance().addLog("Nuevo cliente")
+                System.getInstance().addLog("Nuevo cliente creado con éxito")
                 showMsg.value = true
             }
         )
