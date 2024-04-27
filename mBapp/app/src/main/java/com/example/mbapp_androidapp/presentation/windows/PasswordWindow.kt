@@ -75,7 +75,7 @@ fun PasswordWindow(navController: NavHostController, flag: MutableState<Boolean>
                 //Botón para aceptar
                 IconButton(
                     onClick = {
-                        if (password == "Contraseña"){
+                        if (password == ""){
                             system.addLog("Acceso a modo empleado")
                             navController.navigate(AppScreens.EmployeeScreen.route)
                         }
