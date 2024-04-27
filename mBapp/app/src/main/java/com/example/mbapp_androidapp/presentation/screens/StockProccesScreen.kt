@@ -18,20 +18,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun StockProcesScreen() {
+fun StockProcesScreen(navController: NavHostController) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = false)
     val barcodeScanner = BarcodeScanner.getBarcodeScanner()
 
     if (doorIsOpen.value) {
         //Activar cámara
         barcodeScanner.scan()
-        //navController.navigate(AppScreens.BuyScreen.route)
+        navController.navigate(AppScreens.StockProcesScreen.route)
     }else GuideScreen()
 }
 
@@ -112,10 +113,4 @@ private fun TextGuide() {
             fontSize = 26.sp,
         )
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-private fun Preview() {
-    StockProcesScreen()
 }
