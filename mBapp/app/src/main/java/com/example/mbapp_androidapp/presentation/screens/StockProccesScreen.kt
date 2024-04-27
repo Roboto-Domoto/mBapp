@@ -31,7 +31,6 @@ fun StockProcesScreen(navController: NavHostController) {
     val barcodeScanner = BarcodeScanner.getBarcodeScanner()
 
     if (doorIsOpen.value) {
-        Log.d("E","DOOR")
         //Activar cámara
         barcodeScanner.scan()
         navController.navigate(AppScreens.StockProcesScreen.route)
@@ -46,13 +45,6 @@ private fun GuideScreen() {
             .background(Color.White)
     ) {
         TextGuide()
-        Button(onClick = { /*navController.navigate(AppScreens.StockScreen.route)*/ }) {
-            Text(
-                text = "Salir",
-                fontFamily = caviarFamily,
-                fontSize = 24.sp,
-            )
-        }
     }
 }
 

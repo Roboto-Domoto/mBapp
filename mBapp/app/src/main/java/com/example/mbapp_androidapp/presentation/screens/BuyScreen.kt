@@ -51,7 +51,6 @@ fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
         val failTake = 0.9
         val failPut = 1.1
         //Sacar producto
-        Log.d("Weights", "$initialTW-$initialBW  ${topWeight.value}-${botWeight.value}")
         if (topWeight.value < (initialTW * failTake) || botWeight.value < (initialBW * failTake)) {
             //Activar cámara
             barcodeScanner.scan()
@@ -59,15 +58,12 @@ fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
         }
         //Meter un producto
         else if (topWeight.value > (initialTW * failPut) || botWeight.value > (initialBW * failPut)) {
-            mailSender.send("Problema con el minibar 0, se ha detectado una subida de peso sospechosa. Acuda a observar y cobran si es necesario.",
-                "Problema minibar 0",Employee.getInstance().getAdminEmail())
+            mailSender.send("Problema con el minibar ${System.barId}, se ha detectado una subida de peso sospechosa. Acuda a observar y cobran si es necesario.",
+                "Problema minibar ${System.barId}",Employee.getInstance().getAdminEmail())
         }
         //Mientras el peso se mantenga constante mostrar la pantalla de guía
         else GuideScreen()
-
     }
-
-
 }
 
 @Composable
