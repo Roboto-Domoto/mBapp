@@ -73,15 +73,6 @@ private fun TopElements(navController: NavHostController) {
                 modifier = Modifier.size(52.dp)
             )
         }
-        IconButton(onClick = {
-            /* TODO */
-        }) {
-            Icon(
-                imageVector = Icons.Rounded.Settings,
-                contentDescription = "Settings button",
-                modifier = Modifier.size(52.dp)
-            )
-        }
     }
 }
 
