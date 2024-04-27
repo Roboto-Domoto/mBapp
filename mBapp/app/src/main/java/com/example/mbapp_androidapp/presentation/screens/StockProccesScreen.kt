@@ -1,5 +1,6 @@
 package com.example.mbapp_androidapp.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -29,6 +30,7 @@ fun StockProcesScreen() {
     val barcodeScanner = BarcodeScanner.getBarcodeScanner()
 
     if (doorIsOpen.value) {
+        Log.d("E","DOOR")
         //Activar cámara
         barcodeScanner.scan()
         //navController.navigate(AppScreens.BuyScreen.route)
