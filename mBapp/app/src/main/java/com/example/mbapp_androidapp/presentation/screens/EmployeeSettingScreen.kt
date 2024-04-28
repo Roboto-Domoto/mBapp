@@ -134,7 +134,10 @@ private fun Buttons(showMsg: MutableState<Boolean>, showAdminW: MutableState<Boo
         MenuButton(
             icon = Icons.Rounded.Build,
             text = "Rest. modo fábrica",
-            onClick = { System.getInstance().factoryReset() }
+            onClick = {
+                System.getInstance().factoryReset()
+                System.getInstance().addLog("Reseteado de fábrica")
+            }
         )
     }
 }

@@ -3,6 +3,7 @@ package com.example.mbapp_androidapp.common.classes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mbapp_androidapp.MainActivity
+import com.example.mbapp_androidapp.data.entities.ItemEntity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -12,10 +13,10 @@ class System private constructor() {
     private val dailyInventory: MutableList<InventoryItem> = mutableListOf()
     var employee: Employee = Employee.getInstance()
     var customer: Customer = Customer.getInstance()
+    var lastItemAdd: ItemClass?=null
 
     /*** Communication with camera ***/
     private var lastCodeScanned: String? = null
-
     private val scannedList: MutableList<String> = mutableListOf()
 
     /*** Communication variables with ESP32 ***/
@@ -69,8 +70,9 @@ class System private constructor() {
             return instance!!
         }
 
-        val barId = 300202
-        val pressure_error = 15
+        const val barId = 300202
+        const val pressureErrorTop = 20
+        const val pressureErrorBot = 20
     }
     private fun getDate(): String {
         val hourFormat = DateTimeFormatter.ofPattern("hh:mm:ss - dd/MM/yyyy")

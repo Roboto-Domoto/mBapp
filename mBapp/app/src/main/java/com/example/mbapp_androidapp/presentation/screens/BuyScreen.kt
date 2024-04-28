@@ -1,10 +1,6 @@
 package com.example.mbapp_androidapp.presentation.screens
 
-import android.content.Intent
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,10 +27,11 @@ import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.MailSender
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
+import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
+fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int, itemsViewModel: ItemsViewModel) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = true)
     val barcodeScanner = BarcodeScanner.getBarcodeScanner()
     barcodeScanner.setNav(navController)
@@ -51,11 +48,11 @@ fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
             //No hace más logica ya que se hace tras escanear
             System.getInstance().addLog("Comprado un total de $nProducts")
             for(code in barcodeScanner.getCodeList()){
-                val item: ItemClass? = null //Obtener item de la base de datos
-                System.getInstance().addLog("Comprado producto ${item?.name?:"......"} y codigo $code")
-                //Eliminar item de la base de datos
+                itemsViewModel.getItem(code)?.let {
+                    System.getInstance().addLog("Comprado producto ${it.name} y codigo ${it.barcode}")
+                    itemsViewModel.deleteItem(it)
+                }
             }
-
             barcodeScanner.cleanList()
         }
 
@@ -64,12 +61,11 @@ fun BuyScreen(navController: NavHostController, initialTW:Int, initialBW:Int) {
     else {
         val topWeight = System.getInstance().weightTop.observeAsState(0)
         val botWeight = System.getInstance().weightBot.observeAsState(0)
-        val pressure_error = System.pressure_error
         //Sacar producto
-        if (topWeight.value < (initialTW - pressure_error) || botWeight.value < (initialBW - pressure_error))
+        if (topWeight.value < (initialTW - System.pressureErrorTop) || botWeight.value < (initialBW - System.pressureErrorBot))
             barcodeScanner.scan()
         //Meter un producto (posible robo)
-        else if (topWeight.value > (initialTW + pressure_error) || botWeight.value > (initialBW + pressure_error)) {
+        else if (topWeight.value > (initialTW + System.pressureErrorTop) || botWeight.value > (initialBW + System.pressureErrorBot)) {
             mailSender.send("Problema con el minibar ${System.barId}, se ha detectado una subida de peso sospechosa. Acuda a observar y cobrar si es necesario.",
                 "Problema pesos minibar ${System.barId}",Employee.getInstance().getAdminEmail())
             System.getInstance().addLog("Subida de peso anómala, se aconseja comprobar productos(T:$initialTW->${topWeight.value} B:$initialBW->${botWeight.value})")

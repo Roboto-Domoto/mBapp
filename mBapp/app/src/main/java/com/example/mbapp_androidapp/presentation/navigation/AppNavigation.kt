@@ -17,6 +17,7 @@ import com.example.mbapp_androidapp.presentation.screens.EmployeeSettingScreen
 import com.example.mbapp_androidapp.presentation.screens.HomeScreen
 import com.example.mbapp_androidapp.presentation.screens.ItemsScreen
 import com.example.mbapp_androidapp.presentation.screens.MyShoppingScreen
+import com.example.mbapp_androidapp.presentation.screens.PressureScreen
 import com.example.mbapp_androidapp.presentation.screens.SleepScreen
 import com.example.mbapp_androidapp.presentation.screens.StockProcesScreen
 import com.example.mbapp_androidapp.presentation.screens.StockScreen
@@ -93,7 +94,7 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.BuyScreen.route) {
-            BuyScreen(navController,System.getInstance().getTopWeight(),System.getInstance().getBotWeight())
+            BuyScreen(navController,System.getInstance().getTopWeight(),System.getInstance().getBotWeight(),itemsViewModel)
         }
 
         composable(route = AppScreens.StockScreen.route) {
@@ -104,8 +105,8 @@ fun AppNavigation() {
             StockProcesScreen(navController)
         }
 
-        composable(route = AppScreens.CameraScreen.route) {
-            CameraScreen(navController)
+        composable(route = AppScreens.PressureScreen.route) {
+            PressureScreen(navController,System.getInstance().getTopWeight(),System.getInstance().getBotWeight(),itemsViewModel)
         }
     }
 }

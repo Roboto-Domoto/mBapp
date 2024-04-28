@@ -11,7 +11,7 @@ data class ItemEntity(
     val itemId: Int = 0,
     val name: String,
     val pictureId: Int,
-    val quantity: Float,
+    var quantity: Float,
     val price: Float,
     val type: String,
     val barcode: String? = null,

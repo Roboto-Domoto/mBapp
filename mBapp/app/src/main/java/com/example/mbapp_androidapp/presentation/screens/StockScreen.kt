@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.ItemClass
+import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.data.AppDatabase
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
@@ -104,7 +105,10 @@ private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel
     Column(
         modifier = Modifier
             .fillMaxWidth(0.95f)
-            .clickable { navController.navigate(AppScreens.StockProcesScreen.route) },
+            .clickable {
+                navController.navigate(AppScreens.StockProcesScreen.route)
+                System.getInstance().lastItemAdd=item
+            },
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Bottom
     ) {
