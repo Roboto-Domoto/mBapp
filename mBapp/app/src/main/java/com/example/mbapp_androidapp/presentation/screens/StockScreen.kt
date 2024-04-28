@@ -33,14 +33,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.data.entities.ItemEntity
-import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.windows.NewItemWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
@@ -95,13 +97,14 @@ fun StockScreen(navController: NavHostController, itemsViewModel: ItemsViewModel
             )
         }
         if (showNewItemWindow.value) {
-            NewItemWindow(flag = showNewItemWindow)
+            NewItemWindow(flag = showNewItemWindow, itemsViewModel)
         }
     }
 }
 
 
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel, item: ItemClass) {
     val barcodeScanner = BarcodeScanner.getBarcodeScanner()
@@ -137,7 +140,8 @@ private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel
             modifier = Modifier.fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = item.pictureId),
+                painter = if (item.pictureId!=null) painterResource(id = item.pictureId!!)
+                else rememberImagePainter(item.pictureUri?.toUri()),
                 contentDescription = "Product picture",
                 modifier = Modifier
                     .align(Alignment.CenterVertically)

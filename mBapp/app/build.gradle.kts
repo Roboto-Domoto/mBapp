@@ -112,4 +112,8 @@ dependencies {
 
     implementation("com.sun.mail:android-mail:1.6.2")
     implementation("com.sun.mail:android-activation:1.6.2")
+
+    //Uris
+    implementation("io.coil-kt:coil-compose:1.3.2")
+
 }
