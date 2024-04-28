@@ -32,10 +32,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
@@ -92,6 +96,7 @@ fun ItemsScreen(itemsViewModel: ItemsViewModel) {
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun Item(item: ItemClass, showInfo: MutableState<Boolean>,
                  itemToShow: MutableState<ItemClass?>, itemsViewModel: ItemsViewModel
@@ -107,13 +112,15 @@ private fun Item(item: ItemClass, showInfo: MutableState<Boolean>,
             modifier = Modifier.fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = item.pictureId),
+                painter = if (item.pictureId!=null) painterResource(id = item.pictureId!!)
+                else rememberImagePainter(item.pictureUri?.toUri()),
                 contentDescription = "Product picture",
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .size(108.dp)
                     .padding(end = 8.dp)
             )
+            
             Column {
                 Row(
                     modifier = Modifier.fillMaxWidth(),

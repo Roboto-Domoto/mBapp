@@ -39,7 +39,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.MenuButton
@@ -101,13 +104,14 @@ fun StockScreen(navController: NavHostController, itemsViewModel: ItemsViewModel
             )
         }
         if (showNewItemWindow.value) {
-            NewItemWindow(flag = showNewItemWindow)
+            NewItemWindow(flag = showNewItemWindow, itemsViewModel)
         }
     }
 }
 
 
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel, item: ItemClass) {
     Column(
@@ -124,7 +128,8 @@ private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel
             modifier = Modifier.fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = item.pictureId),
+                painter = if (item.pictureId!=null) painterResource(id = item.pictureId!!)
+                else rememberImagePainter(item.pictureUri?.toUri()),
                 contentDescription = "Product picture",
                 modifier = Modifier
                     .align(Alignment.CenterVertically)

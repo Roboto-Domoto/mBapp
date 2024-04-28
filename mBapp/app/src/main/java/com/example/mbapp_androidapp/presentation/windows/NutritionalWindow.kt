@@ -26,6 +26,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
@@ -58,6 +61,7 @@ fun NutritionalWindow(flag: MutableState<Boolean>, item: ItemClass, modifier: Mo
     )
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun Title(item: ItemClass) {
     Row(
@@ -65,7 +69,8 @@ private fun Title(item: ItemClass) {
         verticalAlignment = Alignment.Top
     ) {
         Image(
-            painter = painterResource(id = item.pictureId),
+            painter = if (item.pictureId!=null) painterResource(id = item.pictureId!!)
+            else rememberImagePainter(item.pictureUri?.toUri()),
             contentDescription = "Product picture",
             modifier = Modifier
                 .align(Alignment.CenterVertically)
