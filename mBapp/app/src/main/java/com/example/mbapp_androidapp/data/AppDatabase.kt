@@ -80,16 +80,6 @@ abstract class AppDatabase: RoomDatabase() {
                 quantity = 330f,
                 nutritionInfo = ccNutritionInfo
             )
-            val cocaColaD = ItemEntity(
-                name = "Coca-Cola",
-                pictureId = R.drawable.cocacola_lata,
-                price = 1.5f,
-                type = "Drink",
-                quantity = 330f,
-                barcode = "12345",
-                nutritionInfo = ccNutritionInfo
-            )
-            INSTANCE?.itemDao()?.insert(cocaColaD)
 
             val ccZeroNutritionInfo = NutritionInfoClass(
                 calories = 0.2f ,

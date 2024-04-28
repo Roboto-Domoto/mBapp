@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
 import com.example.mbapp_androidapp.common.classes.MailSender
+import com.example.mbapp_androidapp.common.classes.PhotoManager
 import com.example.mbapp_androidapp.presentation.navigation.AppNavigation
 import com.example.mbapp_androidapp.ui.theme.MBapp_androidAppTheme
 import com.example.mbapp_androidapp.common.classes.System
@@ -45,6 +46,8 @@ class MainActivity : ComponentActivity() {
 
         //Instance of barcode scanner
         BarcodeScanner.getBarcodeScanner(this)
+        //Instance of photo manager
+        PhotoManager.getInstance(this)
 
         // Lock the mobile screen orientation in vertical
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
