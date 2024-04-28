@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -133,120 +134,122 @@ fun NewItemWindow(flag: MutableState<Boolean>, itemsViewModel: ItemsViewModel) {
             )
         },
         text = {
-            Column {
-                TextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    label = {
-                        Text(text = "Nombre")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp)
-                )
-                TextField(
-                    value = price,
-                    onValueChange = { price = it },
-                    label = {
-                        Text(text = "Precio")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp),
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
-                )
-                TextField(
-                    value = quantity,
-                    onValueChange = { quantity = it },
-                    label = {
-                        Text(text = "Cantidad")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp),
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(
-                        selected = type == "Drink",
-                        onClick = { type = "Drink" }
+            LazyColumn {
+                item {
+                    TextField(
+                        value = name,
+                        onValueChange = { name = it },
+                        label = { Text(text = "Nombre") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp)
                     )
-                    Text(text = "Bebida")
-
-                    RadioButton(
-                        selected = type == "Snack",
-                        onClick = { type = "Snack" }
-                    )
-                    Text(text = "Snack")
                 }
-                TextField(
-                    value = calories,
-                    onValueChange = { calories = it },
-                    label = {
-                        Text(text = "Calorias")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp)
-                )
-                TextField(
-                    value = fat,
-                    onValueChange = { fat = it },
-                    label = {
-                        Text(text = "Grasas")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp),
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
-                )
-                TextField(
-                    value = cholesterol,
-                    onValueChange = { cholesterol = it },
-                    label = {
-                        Text(text = "Colesterol")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp),
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
-                )
-                TextField(
-                    value = carbohydrate,
-                    onValueChange = { carbohydrate = it },
-                    label = {
-                        Text(text = "Carbohidratos")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp),
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
-                )
-                TextField(
-                    value = sugar,
-                    onValueChange = { sugar = it },
-                    label = {
-                        Text(text = "Azúcar")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp),
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
-                )
-                TextField(
-                    value = protein,
-                    onValueChange = { protein = it },
-                    label = {
-                        Text(text = "Proteinas")
-                    },
-                    singleLine = true,
-                    modifier = Modifier.padding(4.dp),
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
-                )
-                Button(
-                    onClick = {
-                        PhotoManager.getInstance().selectPhotoFromDevice()
-                        uri = PhotoManager.getInstance().getUri().toString()
-                    },
-                    colors = ButtonDefaults.buttonColors(Color.Black),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                ) {
-                    Text(text = "Añadir imagen")
+                item {
+                    TextField(
+                        value = price,
+                        onValueChange = { price = it },
+                        label = { Text(text = "Precio") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                item {
+                    TextField(
+                        value = quantity,
+                        onValueChange = { quantity = it },
+                        label = { Text(text = "Cantidad") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                item {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(
+                            selected = type == "Drink",
+                            onClick = { type = "Drink" }
+                        )
+                        Text(text = "Bebida")
+
+                        RadioButton(
+                            selected = type == "Snack",
+                            onClick = { type = "Snack" }
+                        )
+                        Text(text = "Snack")
+                    }
+                }
+                item {
+                    TextField(
+                        value = calories,
+                        onValueChange = { calories = it },
+                        label = { Text(text = "Calorias") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
+                item {
+                    TextField(
+                        value = fat,
+                        onValueChange = { fat = it },
+                        label = { Text(text = "Grasas") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                item {
+                    TextField(
+                        value = cholesterol,
+                        onValueChange = { cholesterol = it },
+                        label = { Text(text = "Colesterol") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                item {
+                    TextField(
+                        value = carbohydrate,
+                        onValueChange = { carbohydrate = it },
+                        label = { Text(text = "Carbohidratos") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                item {
+                    TextField(
+                        value = sugar,
+                        onValueChange = { sugar = it },
+                        label = { Text(text = "Azúcar") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                item {
+                    TextField(
+                        value = protein,
+                        onValueChange = { protein = it },
+                        label = { Text(text = "Proteinas") },
+                        singleLine = true,
+                        modifier = Modifier.padding(4.dp),
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Decimal)
+                    )
+                }
+                item {
+                    Button(
+                        onClick = {
+                            PhotoManager.getInstance().selectPhotoFromDevice()
+                            uri = PhotoManager.getInstance().getUri().toString()
+                        },
+                        colors = ButtonDefaults.buttonColors(Color.Black)
+                    ) {
+                        Text(text = "Añadir imagen")
+                    }
                 }
             }
-
         },
 
         modifier = Modifier
