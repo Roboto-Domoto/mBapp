@@ -1,5 +1,6 @@
 package com.example.mbapp_androidapp.presentation.screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -41,43 +42,43 @@ fun PressureScreen(
     val barcodeScanner = BarcodeScanner.getBarcodeScanner()
     barcodeScanner.setNav(navController)
     val mailSender = MailSender.getMailSender()
-    val topWeight = System.getInstance().weightTop.observeAsState(0)
-    val botWeight = System.getInstance().weightBot.observeAsState(0)
 
     if (!doorIsOpen.value) {
-        navController.navigate(AppScreens.StockScreen.route)
+        navController.navigate(AppScreens.EmployeeScreen.route)
+    }else{
+        val topWeight = System.getInstance().weightTop.observeAsState(0)
+        val botWeight = System.getInstance().weightBot.observeAsState(0)
+        Log.d("EEEE","$topWeight - $initialTW, $botWeight - $initialBW")
+        //Sacar producto (posible robo)
+        if (topWeight.value < (initialTW - System.pressureErrorTop) || botWeight.value < (initialBW - System.pressureErrorBot)) {
+            mailSender.send(
+                "Problema con el minibar ${System.barId}, se ha detectado una bajada de peso sospechosa. Acuda a observar y regañar al empleado.",
+                "Problema pesos admin minibar ${System.barId}", Employee.getInstance().getAdminEmail()
+            )
+            System.getInstance()
+                .addLog("Bajada de peso anómala, se aconseja comprobar productos(T:$initialTW->${topWeight.value} B:$initialBW->${botWeight.value})")
+            Toast.makeText(LocalContext.current,"Error en la introducción de objetos",Toast.LENGTH_SHORT).show()
+            navController.navigate(AppScreens.EmployeeScreen.route)
+        }
+        //Meter un producto
+        else if (topWeight.value > (initialTW + System.pressureErrorTop) || botWeight.value > (initialBW + System.pressureErrorBot)) {
+            val example = System.getInstance().lastItemAdd!!
+            val item = ItemEntity(
+                name = example.name,
+                pictureId = example.pictureId,
+                quantity = example.quantity,
+                price = example.price,
+                type = example.type,
+                barcode = barcodeScanner.getLastCodeRead(),
+                nutritionInfo = example.nutritionInfo
+            )
+            itemsViewModel.addItem(item)
+            System.getInstance()
+                .addLog("Añadido ${item.name} con codigo: ${item.barcode}")
+            navController.navigate(AppScreens.EmployeeScreen.route)
+        }
+        else GuideScreen()
     }
-
-    //Sacar producto (posible robo)
-    else if (topWeight.value < (initialTW - System.pressureErrorTop) || botWeight.value < (initialBW - System.pressureErrorBot)) {
-        mailSender.send(
-            "Problema con el minibar ${System.barId}, se ha detectado una bajada de peso sospechosa. Acuda a observar y regañar al empleado.",
-            "Problema pesos admin minibar ${System.barId}", Employee.getInstance().getAdminEmail()
-        )
-        System.getInstance()
-            .addLog("Bajada de peso anómala, se aconseja comprobar productos(T:$initialTW->${topWeight.value} B:$initialBW->${botWeight.value})")
-        Toast.makeText(LocalContext.current,"Error en la introducción de objetos",Toast.LENGTH_SHORT).show()
-        navController.navigate(AppScreens.StockScreen.route)
-    }
-    //Meter un producto
-    else if (topWeight.value > (initialTW + System.pressureErrorTop) || botWeight.value > (initialBW + System.pressureErrorBot)) {
-        val example = System.getInstance().lastItemAdd!!
-        val item = ItemEntity(
-            name = example.name,
-            pictureId = example.pictureId,
-            quantity = example.quantity,
-            price = example.price,
-            type = example.type,
-            barcode = barcodeScanner.getLastCodeRead(),
-            nutritionInfo = example.nutritionInfo
-        )
-        itemsViewModel.addItem(item)
-        System.getInstance()
-            .addLog("Añadido ${item.name} con codigo: ${item.barcode}")
-        navController.navigate(AppScreens.StockProcesScreen.route)
-    }
-    //Mientras el peso se mantenga constante mostrar la pantalla de guía
-    GuideScreen()
 }
 
 @Composable

@@ -24,6 +24,8 @@ import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun StockProcesScreen(navController: NavHostController) {
@@ -33,6 +35,10 @@ fun StockProcesScreen(navController: NavHostController) {
 
     if (doorIsOpen.value) {
         barcodeScanner.scan()
+        runBlocking {
+            delay(1000)
+        }
+        navController.navigate(AppScreens.PressureScreen.route)
     }else GuideScreen()
 }
 

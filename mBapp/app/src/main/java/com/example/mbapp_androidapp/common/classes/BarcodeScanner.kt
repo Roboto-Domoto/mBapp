@@ -38,8 +38,8 @@ class BarcodeScanner private constructor(private val activity: MainActivity) {
                 barcodeResult = barcode
                 Toast.makeText(activity.applicationContext, "Reader: $barcode", Toast.LENGTH_SHORT).show()
                 barcode?.let { codeList.add(it) }
-                if(route==null) navController?.navigateUp()
-                else navController?.navigate(route!!)
+                navController?.navigateUp()
+                if(route!=null) navController?.navigate(route!!)
             } else {
                 Toast.makeText(activity.applicationContext, "Error in reader", Toast.LENGTH_SHORT).show()
             }
