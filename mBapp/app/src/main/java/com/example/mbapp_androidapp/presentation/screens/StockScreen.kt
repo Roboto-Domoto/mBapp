@@ -20,12 +20,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -33,23 +29,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
-import com.example.mbapp_androidapp.data.AppDatabase
+import com.example.mbapp_androidapp.data.entities.ItemEntity
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.windows.NewItemWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
-import java.util.Locale
 
 @Composable
 fun StockScreen(navController: NavHostController, itemsViewModel: ItemsViewModel) {
@@ -110,12 +104,31 @@ fun StockScreen(navController: NavHostController, itemsViewModel: ItemsViewModel
 
 @Composable
 private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel, item: ItemClass) {
+    val barcodeScanner = BarcodeScanner.getBarcodeScanner()
+    val sys = System.getInstance()
+    if(barcodeScanner.getCodeList().isNotEmpty()){
+        for(code in barcodeScanner.getCodeList()){
+            val item = ItemEntity(
+                name = sys.lastItemAdd!!.name,
+                pictureId = sys.lastItemAdd!!.pictureId,
+                quantity = sys.lastItemAdd!!.quantity,
+                price = sys.lastItemAdd!!.price,
+                type = sys.lastItemAdd!!.type,
+                barcode = code,
+                nutritionInfo = sys.lastItemAdd!!.nutritionInfo
+            )
+            itemsViewModel.addItem(item)
+            sys.addLog("Añadido nuevo articulo ${item.name} con codigo ${item.barcode}")
+        }
+        barcodeScanner.cleanList()
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth(0.95f)
             .clickable {
-                navController.navigate(AppScreens.StockProcesScreen.route)
-                System.getInstance().lastItemAdd=item
+                sys.lastItemAdd=item
+                barcodeScanner.scan()
+                navController.navigateUp()
             },
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Bottom

@@ -19,7 +19,9 @@ class ItemsViewModel(private val itemDao: ItemDao) : ViewModel() {
     val allItems: LiveData<List<ItemEntity>> = itemDao.getAll().asLiveData()
 
     fun getStock(name: String): Int = allItems.value?.filter { it.barcode != null && it.name == name }?.size ?: 0
-    fun getItem(barcode: String): ItemEntity? = itemDao.getByCodebar(barcode).asLiveData().value?.first()
+    //fun getItem(barcode: String): ItemEntity? = itemDao.getByCodebar(barcode).asLiveData().value
+
+    fun getItem(barcode: Long): ItemEntity? = allItems.value?.first{it.barcode==barcode}
 
     fun addItem(item: ItemEntity) {
         viewModelScope.launch {

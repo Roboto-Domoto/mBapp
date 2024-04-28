@@ -40,7 +40,6 @@ fun BuyScreen(
 ) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(initial = true)
     val barcodeScanner = BarcodeScanner.getBarcodeScanner()
-    barcodeScanner.setNav(navController)
     val mailSender = MailSender.getMailSender()
 
     if (!doorIsOpen.value) {
@@ -54,7 +53,10 @@ fun BuyScreen(
             //No hace más logica ya que se hace tras escanear
             System.getInstance().addLog("Comprado un total de $nProducts")
             for (code in barcodeScanner.getCodeList()) {
-                itemsViewModel.getItem(code)?.let {
+
+                val item = itemsViewModel.getItem(code)
+                Log.d("NULL","$code -> ${item==null}")
+                item?.let {
                     System.getInstance()
                         .addLog("Comprado producto ${it.name} y codigo ${it.barcode}")
                     itemsViewModel.deleteItem(it)
@@ -62,15 +64,15 @@ fun BuyScreen(
             }
             barcodeScanner.cleanList()
         }
-
-        navController.navigate(AppScreens.SleepScreen.route)
+        navController.navigateUp()
     } else {
         val topWeight = System.getInstance().weightTop.observeAsState(0)
         val botWeight = System.getInstance().weightBot.observeAsState(0)
-        Log.d("EEEE", "$topWeight - $initialTW, $botWeight - $initialBW")
         //Sacar producto
-        if (topWeight.value < (initialTW - System.pressureErrorTop) || botWeight.value < (initialBW - System.pressureErrorBot))
+        if (topWeight.value < (initialTW - System.pressureErrorTop) || botWeight.value < (initialBW - System.pressureErrorBot)) {
             barcodeScanner.scan()
+            navController.navigate(AppScreens.BuyScreen.route)
+        }
         //Meter un producto (posible robo)
         else if (topWeight.value > (initialTW + System.pressureErrorTop) || botWeight.value > (initialBW + System.pressureErrorBot)) {
             mailSender.send(
