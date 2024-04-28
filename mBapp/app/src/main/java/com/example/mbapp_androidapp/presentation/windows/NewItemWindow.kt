@@ -2,6 +2,7 @@ package com.example.mbapp_androidapp.presentation.windows
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
@@ -242,6 +243,7 @@ fun NewItemWindow(flag: MutableState<Boolean>, itemsViewModel: ItemsViewModel) {
                     Button(
                         onClick = {
                             PhotoManager.getInstance().selectPhotoFromDevice()
+                            Log.d("Uri","${PhotoManager.getInstance().getUri()}")
                             uri = PhotoManager.getInstance().getUri().toString()
                         },
                         colors = ButtonDefaults.buttonColors(Color.Black)
