@@ -35,10 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.common.classes.Customer
+import com.example.mbapp_androidapp.common.classes.InventoryItem
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.windows.AdminWindow
+import com.example.mbapp_androidapp.presentation.windows.InventorySettingsWindow
 import com.example.mbapp_androidapp.presentation.windows.LogWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import kotlinx.coroutines.delay
@@ -48,6 +50,7 @@ fun EmployeeSettingScreen() {
     val showMsg = remember { mutableStateOf(false) }
     val showAdminW = remember { mutableStateOf(false) }
     val showLogsW = remember { mutableStateOf(false) }
+    val showInvW = remember { mutableStateOf(false) }
     
     Box(
         modifier = Modifier
@@ -57,7 +60,8 @@ fun EmployeeSettingScreen() {
         TopElements() //Hora y temperatura
         if (showAdminW.value) AdminWindow(flag = showAdminW)
         if (showLogsW.value) LogWindow(flag = showLogsW)
-        Buttons(showMsg, showAdminW, showLogsW) //Los botones con las distintas opciones del menú
+        if (showInvW.value) InventorySettingsWindow(flag = showInvW)
+        Buttons(showMsg, showAdminW, showLogsW, showInvW) //Los botones con las distintas opciones del menú
         Icon(
             imageVector = Icons.Rounded.Info,
             contentDescription = "Info button",
@@ -94,7 +98,7 @@ fun EmployeeSettingScreen() {
 
 @Composable
 private fun Buttons(showMsg: MutableState<Boolean>, showAdminW: MutableState<Boolean>,
-                    showLogsW: MutableState<Boolean>)
+                    showLogsW: MutableState<Boolean>, showInvW: MutableState<Boolean>)
 {
     val customer = System.getInstance().customer
 
@@ -122,7 +126,8 @@ private fun Buttons(showMsg: MutableState<Boolean>, showAdminW: MutableState<Boo
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
             icon = Icons.Rounded.ShoppingCart,
-            text = "Inventario"
+            text = "Inventario",
+            onClick = { showInvW.value = !showInvW.value }
         )
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
