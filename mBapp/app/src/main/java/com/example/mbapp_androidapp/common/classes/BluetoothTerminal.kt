@@ -8,16 +8,14 @@ import android.bluetooth.BluetoothSocket
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.Handler
 import android.widget.Toast
-import androidx.compose.runtime.MutableState
 import androidx.core.app.ActivityCompat
 import com.example.mbapp_androidapp.MainActivity
 import java.io.IOException
 import java.util.UUID
 
 
-class BluetoothTerminal(private var activity: MainActivity){
+class BluetoothTerminal private constructor(private var activity: MainActivity){
 
     private var tag = "BluetoothTerminal"
     private var requestCode = 0
@@ -73,12 +71,9 @@ class BluetoothTerminal(private var activity: MainActivity){
 
     fun getDeviceByName(name:String){
         checkConnectPermission()
-        for(dev in adapter.bondedDevices){
-            if(dev.name.equals(name)){
-                //makeToast("Device get it")
+        for(dev in adapter.bondedDevices)
+            if(dev.name.equals(name))
                 device = dev
-            }
-        }
     }
 
     fun connect(){

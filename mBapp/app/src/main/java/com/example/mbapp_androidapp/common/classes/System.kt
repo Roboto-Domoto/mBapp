@@ -2,8 +2,6 @@ package com.example.mbapp_androidapp.common.classes
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.mbapp_androidapp.MainActivity
-import com.example.mbapp_androidapp.data.entities.ItemEntity
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -16,10 +14,6 @@ class System private constructor() {
     var lastItemAdd: ItemClass?=null
     private var invHourStart: Array<String> = arrayOf("00", "00")
     private var invHourEnd: Array<String> = arrayOf("23", "59")
-
-    /*** Communication with camera ***/
-    private var lastCodeScanned: String? = null
-    private val scannedList: MutableList<String> = mutableListOf()
 
     /*** Communication variables with ESP32 ***/
     //Temperature
@@ -34,15 +28,6 @@ class System private constructor() {
     //Bot weight
     private var _weightBot = MutableLiveData(0)
     val weightBot: LiveData<Int> = _weightBot
-
-    fun codeScanned(code: String) {
-        lastCodeScanned = code
-        scannedList.add(code)
-    }
-
-    fun getCodeScannedList() : List<String> {
-        return scannedList
-    }
 
     fun updateTemperature(t: Int) {
         _temperature.value = t

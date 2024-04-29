@@ -28,7 +28,7 @@ import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModelFactor
 fun AppNavigation() {
     val navController = rememberNavController() //Controlador de navegación
     //Se instancia al cliente
-    val system = System.getInstance()
+    System.getInstance()
 
     //Room y DAO
     val appDatabase = AppDatabase.getDatabase(context = LocalContext.current.applicationContext)

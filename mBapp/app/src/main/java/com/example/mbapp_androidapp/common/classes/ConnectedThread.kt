@@ -5,10 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import com.example.mbapp_androidapp.MainActivity
 import java.io.IOException
 import java.io.InputStream
@@ -52,7 +48,6 @@ class ConnectedThread(socket: BluetoothSocket, private val activity: MainActivit
             Log.e(tag,"Can't execute")
         }else{
             start()
-            Toast.makeText(activity,"iniciado hilo",Toast.LENGTH_SHORT).show()
         }
     }
 

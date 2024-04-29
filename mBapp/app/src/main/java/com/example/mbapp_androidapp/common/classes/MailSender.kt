@@ -1,6 +1,5 @@
 package com.example.mbapp_androidapp.common.classes
 
-import android.R
 import android.util.Log
 import java.util.Properties
 import javax.mail.Authenticator
@@ -10,7 +9,6 @@ import javax.mail.Session
 import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
-
 
 class MailSender {
 
