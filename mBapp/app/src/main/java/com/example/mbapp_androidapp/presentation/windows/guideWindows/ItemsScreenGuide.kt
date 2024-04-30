@@ -29,7 +29,7 @@ import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun SleepGuide(flag: MutableState<Boolean>)
+fun ItemsGuide(flag: MutableState<Boolean>)
 {
     val logs = System.getInstance().getLogs()
 
@@ -52,7 +52,7 @@ fun SleepGuide(flag: MutableState<Boolean>)
         },
         title = {
             Text(
-                text = "Guia Principal",
+                text = "Guia Productos",
                 fontFamily = caviarFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
@@ -68,19 +68,19 @@ fun SleepGuide(flag: MutableState<Boolean>)
                 item {
                     val lineSpacing = 16.dp
                     Text(
-                        text = "Pantalla con fecha, hora y temperatura del minibar",
+                        text = "Catálogo productos disponibles",
                         fontFamily = caviarFamily,
                         style = TextStyle(color = Color.Black, fontSize = 28.sp)
                     )
                     Spacer(modifier = Modifier.height(lineSpacing))
                     Text(
-                        text = "Pulsar en el icono de la casa para ir al menú de home",
+                        text = "Botón de info en cada item para caracteristicas",
                         fontFamily = caviarFamily,
                         style = TextStyle(color = Color.Black, fontSize = 28.sp)
                     )
                     Spacer(modifier = Modifier.height(lineSpacing))
                     Text(
-                        text = "Abre la puerta para el modo compra",
+                        text = "Solo se muestran los productos que esten dentro del minibar",
                         fontFamily = caviarFamily,
                         style = TextStyle(color = Color.Black, fontSize = 28.sp)
                     )

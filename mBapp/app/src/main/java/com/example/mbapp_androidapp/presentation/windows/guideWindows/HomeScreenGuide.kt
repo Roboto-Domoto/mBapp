@@ -29,7 +29,7 @@ import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun SleepGuide(flag: MutableState<Boolean>)
+fun HomeGuide(flag: MutableState<Boolean>)
 {
     val logs = System.getInstance().getLogs()
 
@@ -52,7 +52,7 @@ fun SleepGuide(flag: MutableState<Boolean>)
         },
         title = {
             Text(
-                text = "Guia Principal",
+                text = "Guia Home",
                 fontFamily = caviarFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = 28.sp,
@@ -68,19 +68,25 @@ fun SleepGuide(flag: MutableState<Boolean>)
                 item {
                     val lineSpacing = 16.dp
                     Text(
-                        text = "Pantalla con fecha, hora y temperatura del minibar",
+                        text = "Pantalla para navegación cliente ",
                         fontFamily = caviarFamily,
                         style = TextStyle(color = Color.Black, fontSize = 28.sp)
                     )
                     Spacer(modifier = Modifier.height(lineSpacing))
                     Text(
-                        text = "Pulsar en el icono de la casa para ir al menú de home",
+                        text = "*Mis compras: Carrito de las compras",
                         fontFamily = caviarFamily,
                         style = TextStyle(color = Color.Black, fontSize = 28.sp)
                     )
                     Spacer(modifier = Modifier.height(lineSpacing))
                     Text(
-                        text = "Abre la puerta para el modo compra",
+                        text = "*Productos: catálogo de productos disponibles",
+                        fontFamily = caviarFamily,
+                        style = TextStyle(color = Color.Black, fontSize = 28.sp)
+                    )
+                    Spacer(modifier = Modifier.height(lineSpacing))
+                    Text(
+                        text = "*Soy empleado: acceso con contraseña admin",
                         fontFamily = caviarFamily,
                         style = TextStyle(color = Color.Black, fontSize = 28.sp)
                     )

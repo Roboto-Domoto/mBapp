@@ -18,6 +18,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.RememberObserver
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,9 +32,12 @@ import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
+import com.example.mbapp_androidapp.presentation.windows.guideWindows.SleepGuide
 
 @Composable
 fun EmployeeScreen(navController: NavHostController) {
+    val guideW = remember { mutableStateOf(false) }
+    if (guideW.value) SleepGuide(flag = guideW)
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -39,12 +45,12 @@ fun EmployeeScreen(navController: NavHostController) {
     ) {
         TopElements() //Hora y temperatura
         Buttons(navController) //Los botones con las distintas opciones del menú
-        BottomElements(navController) //Botones de cierre de sesión e información
+        BottomElements(navController,guideW) //Botones de cierre de sesión e información
     }
 }
 
 @Composable
-private fun BottomElements(navController: NavHostController) {
+private fun BottomElements(navController: NavHostController,guideW:MutableState<Boolean>) {
     Row(
         modifier = Modifier.fillMaxSize(),
         verticalAlignment = Alignment.Bottom,
@@ -58,14 +64,18 @@ private fun BottomElements(navController: NavHostController) {
                     .size(52.dp)
             )
         }
-
-        Icon(
-            imageVector = Icons.Rounded.Info,
-            contentDescription = "Info button",
+        IconButton(
+            onClick = {guideW.value=!guideW.value},
             modifier = Modifier
                 .padding(8.dp)
                 .size(52.dp)
-        )
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Info,
+                contentDescription = "Info button",
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
 

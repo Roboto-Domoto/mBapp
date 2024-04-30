@@ -18,6 +18,7 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,18 +32,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
-import com.example.mbapp_androidapp.common.classes.Customer
-import com.example.mbapp_androidapp.common.classes.InventoryItem
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.windows.AdminWindow
 import com.example.mbapp_androidapp.presentation.windows.InventorySettingsWindow
 import com.example.mbapp_androidapp.presentation.windows.LogWindow
+import com.example.mbapp_androidapp.presentation.windows.guideWindows.EmployeeSettingScreenGuide
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import kotlinx.coroutines.delay
 
@@ -52,7 +51,7 @@ fun EmployeeSettingScreen(navController: NavHostController) {
     val showAdminW = remember { mutableStateOf(false) }
     val showLogsW = remember { mutableStateOf(false) }
     val showInvW = remember { mutableStateOf(false) }
-    
+    val guideW = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -62,15 +61,21 @@ fun EmployeeSettingScreen(navController: NavHostController) {
         if (showAdminW.value) AdminWindow(flag = showAdminW)
         if (showLogsW.value) LogWindow(flag = showLogsW)
         if (showInvW.value) InventorySettingsWindow(flag = showInvW, navHostController = navController)
+        if (guideW.value) EmployeeSettingScreenGuide(flag = guideW)
         Buttons(showMsg, showAdminW, showLogsW, showInvW) //Los botones con las distintas opciones del menú
-        Icon(
-            imageVector = Icons.Rounded.Info,
-            contentDescription = "Info button",
+        IconButton(
+            onClick = {guideW.value=!guideW.value},
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(8.dp)
                 .size(52.dp)
-        )
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Info,
+                contentDescription = "Info button",
+                modifier = Modifier.fillMaxSize()
+            )
+        }
         if (showMsg.value) {
             Snackbar(
                 modifier = Modifier

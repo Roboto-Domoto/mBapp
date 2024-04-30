@@ -14,6 +14,7 @@ import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,6 +33,8 @@ import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.windows.PasswordWindow
+import com.example.mbapp_androidapp.presentation.windows.guideWindows.HomeGuide
+import com.example.mbapp_androidapp.presentation.windows.guideWindows.SleepGuide
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
@@ -39,6 +42,8 @@ fun HomeScreen(navController: NavHostController) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(false)
     if (doorIsOpen.value) navController.navigate(AppScreens.BuyScreen.route)
     else {
+        val guideW = remember { mutableStateOf(false) }
+        if (guideW.value) HomeGuide(flag = guideW)
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -46,14 +51,19 @@ fun HomeScreen(navController: NavHostController) {
         ) {
             TopElements() //Hora y temperatura superior
             Buttons(navController, showPassWindow) //Los botones con las distintas opciones del menú
-            Icon(
-                imageVector = Icons.Rounded.Info,
-                contentDescription = "Info button",
+            IconButton(
+                onClick = {guideW.value=!guideW.value},
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(8.dp)
                     .size(52.dp)
-            )
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Info,
+                    contentDescription = "Info button",
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
             if (showPassWindow.value) {
                 PasswordWindow(
                     navController = navController,
