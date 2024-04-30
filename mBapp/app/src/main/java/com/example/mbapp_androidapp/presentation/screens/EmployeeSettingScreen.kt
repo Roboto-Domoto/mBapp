@@ -33,6 +33,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.common.classes.Customer
 import com.example.mbapp_androidapp.common.classes.InventoryItem
@@ -46,7 +47,7 @@ import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import kotlinx.coroutines.delay
 
 @Composable
-fun EmployeeSettingScreen() {
+fun EmployeeSettingScreen(navController: NavHostController) {
     val showMsg = remember { mutableStateOf(false) }
     val showAdminW = remember { mutableStateOf(false) }
     val showLogsW = remember { mutableStateOf(false) }
@@ -60,7 +61,7 @@ fun EmployeeSettingScreen() {
         TopElements() //Hora y temperatura
         if (showAdminW.value) AdminWindow(flag = showAdminW)
         if (showLogsW.value) LogWindow(flag = showLogsW)
-        if (showInvW.value) InventorySettingsWindow(flag = showInvW)
+        if (showInvW.value) InventorySettingsWindow(flag = showInvW, navHostController = navController)
         Buttons(showMsg, showAdminW, showLogsW, showInvW) //Los botones con las distintas opciones del menú
         Icon(
             imageVector = Icons.Rounded.Info,
@@ -145,10 +146,4 @@ private fun Buttons(showMsg: MutableState<Boolean>, showAdminW: MutableState<Boo
             }
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun Preview() {
-    EmployeeSettingScreen()
 }

@@ -50,7 +50,7 @@ import com.example.mbapp_androidapp.presentation.windows.NutritionalWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun ItemsScreen(navController:NavController,itemsViewModel: ItemsViewModel) {
+fun ItemsScreen(navController:NavController, itemsViewModel: ItemsViewModel) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(false)
     if (doorIsOpen.value) navController.navigate(AppScreens.BuyScreen.route)
     else {
@@ -194,6 +194,5 @@ private fun Item(item: ItemClass, showInfo: MutableState<Boolean>,
             .align(Alignment.CenterHorizontally)
         )
     }
-
 }
 

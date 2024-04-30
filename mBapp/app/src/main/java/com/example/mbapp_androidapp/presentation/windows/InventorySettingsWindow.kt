@@ -10,8 +10,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,12 +30,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.System
+import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InventorySettingsWindow(flag: MutableState<Boolean>) {
+fun InventorySettingsWindow(flag: MutableState<Boolean>, navHostController: NavHostController) {
 
     val system = System.getInstance()
     var start by remember { mutableStateOf(system.getStartHour()) }
@@ -101,6 +103,9 @@ fun InventorySettingsWindow(flag: MutableState<Boolean>) {
                         imeAction = ImeAction.Done
                     )
                 )
+                Button(onClick = { navHostController.navigate(AppScreens.MinStockScreen.route) }) {
+                    Text(text = "Ajustar stocks mínimos")
+                }
             }
         },
         modifier = Modifier
