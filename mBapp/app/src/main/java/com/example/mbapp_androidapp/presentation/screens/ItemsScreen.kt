@@ -38,60 +38,67 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.mbapp_androidapp.common.classes.ItemClass
+import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.TopElements
+import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.windows.NutritionalWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
 @Composable
-fun ItemsScreen(itemsViewModel: ItemsViewModel) {
-    val showInfo = remember { mutableStateOf(false) }
-    val item: MutableState<ItemClass?> = remember { mutableStateOf(null) }
-    val itemsList by itemsViewModel.allItems.observeAsState(emptyList())
+fun ItemsScreen(navController:NavController,itemsViewModel: ItemsViewModel) {
+    val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(false)
+    if (doorIsOpen.value) navController.navigate(AppScreens.BuyScreen.route)
+    else {
+        val showInfo = remember { mutableStateOf(false) }
+        val item: MutableState<ItemClass?> = remember { mutableStateOf(null) }
+        val itemsList by itemsViewModel.allItems.observeAsState(emptyList())
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-
-        Column(
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            TopElements()
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.95f),
-                state = rememberLazyListState(),
-                contentPadding = PaddingValues(12.dp)
+
+            Column(
+                modifier = Modifier.fillMaxSize()
             ) {
-                itemsIndexed(itemsList.distinctBy { it.name }) { _, actualItem ->
-                    //Representación del producto
-                    Item(item = actualItem.toItemClass(), showInfo, item, itemsViewModel)
-                    Spacer(modifier = Modifier.height(16.dp)) //Margen entre productos
+                TopElements()
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.95f),
+                    state = rememberLazyListState(),
+                    contentPadding = PaddingValues(12.dp)
+                ) {
+                    itemsIndexed(itemsList.distinctBy{it.name}.filter{itemsViewModel.getStock(it.name)>0}) { _, actualItem ->
+                        //Representación del producto
+                        Item(item = actualItem.toItemClass(), showInfo, item, itemsViewModel)
+                        Spacer(modifier = Modifier.height(16.dp)) //Margen entre productos
+                    }
                 }
             }
-        }
 
-        Row(
-            modifier = Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.Bottom
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Info,
-                contentDescription = "Info button",
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(52.dp)
-            )
-        }
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Info,
+                    contentDescription = "Info button",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(52.dp)
+                )
+            }
 
-        if (showInfo.value && item.value != null) {
-            NutritionalWindow(flag = showInfo, item = item.value!!)
+            if (showInfo.value && item.value != null) {
+                NutritionalWindow(flag = showInfo, item = item.value!!)
+            }
         }
     }
 }

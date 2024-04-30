@@ -47,11 +47,11 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.MyShoppingScreen.route) {
-            MyShoppingScreen()
+            MyShoppingScreen(navController)
         }
 
         composable(route = AppScreens.ItemsScreen.route) {
-            ItemsScreen(itemsViewModel)
+            ItemsScreen(navController,itemsViewModel)
         }
 
         composable(route = AppScreens.EmployeeScreen.route) {

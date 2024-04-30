@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.data.entities.ItemEntity
+import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.windows.NewItemWindow
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
@@ -75,7 +77,7 @@ fun StockScreen(navController: NavHostController, itemsViewModel: ItemsViewModel
                 state = rememberLazyListState(),
                 contentPadding = PaddingValues(12.dp)
             ) {
-                itemsIndexed(itemsList) { _, actualItem ->
+                itemsIndexed(itemsList.distinctBy{it.name}) { _, actualItem ->
                     //Representación del producto
                     Item(navController, itemsViewModel, actualItem.toItemClass())
                     Spacer(modifier = Modifier.height(16.dp)) //Margen entre productos
@@ -111,17 +113,18 @@ private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel
     val sys = System.getInstance()
     if(barcodeScanner.getCodeList().isNotEmpty()){
         for(code in barcodeScanner.getCodeList()){
-            val item = ItemEntity(
+            val newItem = ItemEntity(
                 name = sys.lastItemAdd!!.name,
                 pictureId = sys.lastItemAdd!!.pictureId,
+                pictureUri = sys.lastItemAdd!!.pictureUri,
                 quantity = sys.lastItemAdd!!.quantity,
                 price = sys.lastItemAdd!!.price,
                 type = sys.lastItemAdd!!.type,
                 barcode = code,
                 nutritionInfo = sys.lastItemAdd!!.nutritionInfo
             )
-            itemsViewModel.addItem(item)
-            sys.addLog("Añadido nuevo articulo ${item.name} con codigo ${item.barcode}")
+            itemsViewModel.addItem(newItem)
+            sys.addLog("Añadido nuevo articulo ${newItem.name} con codigo ${newItem.barcode}")
         }
         barcodeScanner.cleanList()
     }
@@ -131,7 +134,7 @@ private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel
             .clickable {
                 sys.lastItemAdd=item
                 barcodeScanner.scan()
-                navController.navigateUp()
+                navController.navigate(AppScreens.StockScreen.route)
             },
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Bottom
@@ -141,7 +144,7 @@ private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel
         ) {
             Image(
                 painter = if (item.pictureId!=null) painterResource(id = item.pictureId!!)
-                else rememberImagePainter(item.pictureUri?.toUri()),
+                else rememberImagePainter(item.pictureUri!!.toUri()),
                 contentDescription = "Product picture",
                 modifier = Modifier
                     .align(Alignment.CenterVertically)

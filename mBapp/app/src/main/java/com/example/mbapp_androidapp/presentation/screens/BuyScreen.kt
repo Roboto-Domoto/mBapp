@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
+import com.example.mbapp_androidapp.common.classes.Customer
 import com.example.mbapp_androidapp.common.classes.Employee
 import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.MailSender
@@ -53,13 +54,13 @@ fun BuyScreen(
             //No hace más logica ya que se hace tras escanear
             System.getInstance().addLog("Comprado un total de $nProducts")
             for (code in barcodeScanner.getCodeList()) {
-
                 val item = itemsViewModel.getItem(code)
                 Log.d("NULL","$code -> ${item==null}")
                 item?.let {
                     System.getInstance()
                         .addLog("Comprado producto ${it.name} y codigo ${it.barcode}")
                     itemsViewModel.deleteItem(it)
+                    Customer.getInstance().addProduct(it.toItemClass())
                 }
             }
             barcodeScanner.cleanList()

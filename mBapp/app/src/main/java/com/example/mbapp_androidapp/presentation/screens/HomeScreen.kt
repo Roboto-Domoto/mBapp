@@ -16,6 +16,7 @@ import androidx.compose.material.icons.rounded.ShoppingCart
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,29 +36,33 @@ import com.example.mbapp_androidapp.presentation.windows.PasswordWindow
 @Composable
 fun HomeScreen(navController: NavHostController) {
     val showPassWindow = remember { mutableStateOf(false) }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        TopElements() //Hora y temperatura superior
-        Buttons(navController, showPassWindow) //Los botones con las distintas opciones del menú
-        Icon(
-            imageVector = Icons.Rounded.Info,
-            contentDescription = "Info button",
+    val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(false)
+    if (doorIsOpen.value) navController.navigate(AppScreens.BuyScreen.route)
+    else {
+        Box(
             modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(8.dp)
-                .size(52.dp)
-        )
-        if (showPassWindow.value) {
-            PasswordWindow(
-                navController = navController,
-                flag = showPassWindow,
+                .fillMaxSize()
+                .background(Color.White)
+        ) {
+            TopElements() //Hora y temperatura superior
+            Buttons(navController, showPassWindow) //Los botones con las distintas opciones del menú
+            Icon(
+                imageVector = Icons.Rounded.Info,
+                contentDescription = "Info button",
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(12.dp)
+                    .align(Alignment.BottomEnd)
+                    .padding(8.dp)
+                    .size(52.dp)
             )
+            if (showPassWindow.value) {
+                PasswordWindow(
+                    navController = navController,
+                    flag = showPassWindow,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(12.dp)
+                )
+            }
         }
     }
 }

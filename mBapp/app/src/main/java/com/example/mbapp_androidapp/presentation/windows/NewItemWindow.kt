@@ -71,9 +71,8 @@ fun NewItemWindow(flag: MutableState<Boolean>, itemsViewModel: ItemsViewModel) {
     var carbohydrate by remember { mutableStateOf("") }
     var sugar by remember { mutableStateOf("") }
     var protein by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
-    var uri by remember { mutableStateOf("") }
-    
     AlertDialog(
         onDismissRequest = { flag.value = !flag.value },
         confirmButton = {
@@ -83,34 +82,38 @@ fun NewItemWindow(flag: MutableState<Boolean>, itemsViewModel: ItemsViewModel) {
             ) {
                 //Botón para confirmar
                 IconButton(
-                    onClick = { 
-                        val q = if (quantity == "") 0f else quantity.toFloat()
-                        val p = if (price == "") 0f else price.toFloat()
-                        val c = if (calories == "") 0f else calories.toFloat()
-                        val f = if (fat == "") 0f else fat.toFloat()
-                        val ch = if (cholesterol == "") 0f else cholesterol.toFloat()
-                        val car = if (carbohydrate == "") 0f else carbohydrate.toFloat()
-                        val s = if (sugar == "") 0f else sugar.toFloat()
-                        val pro = if (protein == "") 0f else protein.toFloat()
-                        
-                        if (p > 0 && q > 0 && uri != "") {
-                            val item = ItemEntity(
-                                name = name,
-                                price = p,
-                                pictureUri = uri,
-                                quantity = q,
-                                type = type,
-                                nutritionInfo = NutritionInfoClass(
-                                    calories = c,
-                                    cholesterol = ch,
-                                    fat = f,
-                                    carbohydrate = car,
-                                    sugar = s,
-                                    protein = pro
+                    onClick = {
+                        if (itemsViewModel.getStock(name)==0) {
+                            val q = if (quantity == "") 0f else quantity.toFloat()
+                            val p = if (price == "") 0f else price.toFloat()
+                            val c = if (calories == "") 0f else calories.toFloat()
+                            val f = if (fat == "") 0f else fat.toFloat()
+                            val ch = if (cholesterol == "") 0f else cholesterol.toFloat()
+                            val car = if (carbohydrate == "") 0f else carbohydrate.toFloat()
+                            val s = if (sugar == "") 0f else sugar.toFloat()
+                            val pro = if (protein == "") 0f else protein.toFloat()
+                            val uri = PhotoManager.getInstance().getUri().toString()
+
+                            if (p > 0 && q > 0 && uri != "") {
+                                val item = ItemEntity(
+                                    name = name,
+                                    price = p,
+                                    pictureUri = uri,
+                                    quantity = q,
+                                    type = type,
+                                    nutritionInfo = NutritionInfoClass(
+                                        calories = c,
+                                        cholesterol = ch,
+                                        fat = f,
+                                        carbohydrate = car,
+                                        sugar = s,
+                                        protein = pro
+                                    )
                                 )
-                            )
-                            itemsViewModel.addItem(item)
-                        }
+                                itemsViewModel.addItem(item)
+                                System.getInstance().addLog("Añadido nuevo producto: $name")
+                            }
+                        }else Toast.makeText(context,"No se puede añadir con el mismo nombre!",Toast.LENGTH_SHORT).show()
                         flag.value = !flag.value
                     }
                 ) {
@@ -244,7 +247,6 @@ fun NewItemWindow(flag: MutableState<Boolean>, itemsViewModel: ItemsViewModel) {
                         onClick = {
                             PhotoManager.getInstance().selectPhotoFromDevice()
                             Log.d("Uri","${PhotoManager.getInstance().getUri()}")
-                            uri = PhotoManager.getInstance().getUri().toString()
                         },
                         colors = ButtonDefaults.buttonColors(Color.Black)
                     ) {

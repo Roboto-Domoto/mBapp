@@ -35,7 +35,6 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun SleepScreen(navController: NavHostController) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(false)
-
     if (doorIsOpen.value) navController.navigate(AppScreens.BuyScreen.route)
     else {
         Box (

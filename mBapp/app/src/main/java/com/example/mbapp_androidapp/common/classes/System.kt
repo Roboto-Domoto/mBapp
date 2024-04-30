@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class System private constructor() {
-
+    
     private val mBappLogs: MutableList<MBappLog> = mutableListOf()
     private val dailyInventory: MutableList<InventoryItem> = mutableListOf()
     var employee: Employee = Employee.getInstance()

@@ -19,6 +19,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,56 +28,62 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.mbapp_androidapp.common.classes.Customer
 import com.example.mbapp_androidapp.common.classes.ItemClass
+import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.TopElements
+import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import java.util.Locale
 
 @Composable
-fun MyShoppingScreen() {
-    val customer = Customer.getInstance()
-
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Column(
+fun MyShoppingScreen(navController: NavController) {
+    val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(false)
+    if (doorIsOpen.value) navController.navigate(AppScreens.BuyScreen.route)
+    else {
+        val customer = Customer.getInstance()
+        Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            TopElements()
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.91f),
-                state = rememberLazyListState(),
-                contentPadding = PaddingValues(12.dp)
+            Column(
+                modifier = Modifier.fillMaxSize()
             ) {
-                itemsIndexed(customer.getShoppingList()) { _, actualItem ->
-                    //Representación del producto
-                    Item(item = actualItem)
-                    Spacer(modifier = Modifier.height(16.dp)) //Margen entre productos
+                TopElements()
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.91f),
+                    state = rememberLazyListState(),
+                    contentPadding = PaddingValues(12.dp)
+                ) {
+                    itemsIndexed(customer.getShoppingList()) { _, actualItem ->
+                        //Representación del producto
+                        Item(item = actualItem)
+                        Spacer(modifier = Modifier.height(16.dp)) //Margen entre productos
+                    }
                 }
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.End
-            ) {
-                Text(
-                    text = "Total a pagar: ",
-                    fontFamily = caviarFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 28.sp
-                )
-                Text(
-                    text = "${String.format(Locale.US, "%.2f", customer.getAccount())}€",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 36.sp
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        text = "Total a pagar: ",
+                        fontFamily = caviarFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 28.sp
+                    )
+                    Text(
+                        text = "${String.format(Locale.US, "%.2f", customer.getAccount())}€",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 36.sp
+                    )
+                }
             }
         }
     }
