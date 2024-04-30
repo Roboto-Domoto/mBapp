@@ -14,7 +14,8 @@ class System private constructor() {
     var lastItemAdd: ItemClass?=null
     private var invHourStart: Array<String> = arrayOf("00", "00")
     private var invHourEnd: Array<String> = arrayOf("23", "59")
-
+    //Min stocks items
+    private val stockList: MutableList<ItemStock> = mutableListOf()
     /*** Communication variables with ESP32 ***/
     //Temperature
     private val _temperature = MutableLiveData(6)
@@ -96,6 +97,24 @@ class System private constructor() {
 
     fun getInventory(): List<InventoryItem> {
         return dailyInventory
+    }
+
+    fun getStockList(): List<ItemStock> {
+        return stockList
+    }
+
+    fun getMinStock(item: ItemClass): Int {
+        val product = stockList.firstOrNull { it.item.name == item.name }
+        return product?.minStock ?: 0
+    }
+
+    fun addMinStock(item: ItemClass, stock: Int) {
+        stockList.add(ItemStock(item, stock))
+    }
+
+    fun changeStock(item: ItemClass, stock: Int) {
+        if (stock > 0) stockList.first { it.item.name == item.name }.minStock = stock
+        else stockList.remove(stockList.first { it.item.name == item.name })
     }
 
     fun factoryReset() {

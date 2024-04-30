@@ -10,10 +10,7 @@ import com.example.mbapp_androidapp.common.classes.ItemClass
 import com.example.mbapp_androidapp.common.classes.NutritionInfoClass
 import com.example.mbapp_androidapp.data.daos.ItemDao
 import com.example.mbapp_androidapp.data.entities.ItemEntity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 class ItemsViewModel(private val itemDao: ItemDao) : ViewModel() {
     val allItems: LiveData<List<ItemEntity>> = itemDao.getAll().asLiveData()

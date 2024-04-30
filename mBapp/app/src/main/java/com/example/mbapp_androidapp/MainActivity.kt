@@ -1,28 +1,21 @@
 package com.example.mbapp_androidapp
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.core.content.ContextCompat
 import com.example.mbapp_androidapp.common.classes.BarcodeScanner
 import com.example.mbapp_androidapp.common.classes.BluetoothTerminal
-import com.example.mbapp_androidapp.common.classes.MailSender
 import com.example.mbapp_androidapp.common.classes.PhotoManager
 import com.example.mbapp_androidapp.presentation.navigation.AppNavigation
 import com.example.mbapp_androidapp.ui.theme.MBapp_androidAppTheme
-import com.example.mbapp_androidapp.common.classes.System
 
 
 
@@ -36,14 +29,14 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+/*
         val bt = BluetoothTerminal.getBluetoothTerminal(this)
         bt.getDeviceByName("ESP32-BT-MINIBAR")
         bt.connect()
 
         val hilo = bt.createConnectedThread()
         hilo.execute()
-
+*/
         //Instance of barcode scanner
         BarcodeScanner.getBarcodeScanner(this)
         //Instance of photo manager

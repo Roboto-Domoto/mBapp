@@ -13,6 +13,7 @@ import com.example.mbapp_androidapp.presentation.screens.EmployeeScreen
 import com.example.mbapp_androidapp.presentation.screens.EmployeeSettingScreen
 import com.example.mbapp_androidapp.presentation.screens.HomeScreen
 import com.example.mbapp_androidapp.presentation.screens.ItemsScreen
+import com.example.mbapp_androidapp.presentation.screens.MinStockScreen
 import com.example.mbapp_androidapp.presentation.screens.MyShoppingScreen
 import com.example.mbapp_androidapp.presentation.screens.SleepScreen
 import com.example.mbapp_androidapp.presentation.screens.StockScreen
@@ -59,7 +60,7 @@ fun AppNavigation() {
         }
 
         composable(route = AppScreens.EmployeeSettingScreen.route) {
-            EmployeeSettingScreen()
+            EmployeeSettingScreen(navController)
         }
 
         composable(route = AppScreens.BuyScreen.route) {
@@ -70,5 +71,8 @@ fun AppNavigation() {
             StockScreen(navController, itemsViewModel)
         }
 
+        composable(route = AppScreens.MinStockScreen.route) {
+            MinStockScreen(itemsViewModel)
+        }
     }
 }
