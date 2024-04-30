@@ -27,6 +27,8 @@ import androidx.navigation.NavHostController
 import com.example.mbapp_androidapp.common.classes.System
 import com.example.mbapp_androidapp.common.elements.Clock
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
+import com.example.mbapp_androidapp.presentation.windows.LogWindow
+import com.example.mbapp_androidapp.presentation.windows.guideWindows.SleepGuide
 import com.example.mbapp_androidapp.ui.theme.amableFamily
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 import java.time.LocalDateTime
@@ -37,20 +39,27 @@ fun SleepScreen(navController: NavHostController) {
     val doorIsOpen = System.getInstance().doorIsOpen.observeAsState(false)
     if (doorIsOpen.value) navController.navigate(AppScreens.BuyScreen.route)
     else {
+        val guideW = remember { mutableStateOf(false) }
+        if (guideW.value) SleepGuide(flag = guideW)
         Box (
             modifier = Modifier
                 .fillMaxSize()
         ) {
             TopElements(navController) //Elementos en la parte superior
             CenterElements() //Elementos de la parte central de la pantalla
-            Icon(
-                imageVector = Icons.Rounded.Info,
-                contentDescription = "Info button",
+            IconButton(
+                onClick = {guideW.value=!guideW.value},
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(8.dp)
                     .size(52.dp)
-            )
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Info,
+                    contentDescription = "Info button",
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 }
