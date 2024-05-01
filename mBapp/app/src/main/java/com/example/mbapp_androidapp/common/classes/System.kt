@@ -81,6 +81,12 @@ class System private constructor() {
         val hourFormat = DateTimeFormatter.ofPattern("hh:mm:ss - dd/MM/yyyy")
         return LocalDateTime.now().format(hourFormat)
     }
+
+    private fun getDateInv(): String {
+        val hourFormat = DateTimeFormatter.ofPattern("hh:mm")
+        return LocalDateTime.now().format(hourFormat)
+    }
+
     fun addLog(event: String) {
         val log = MBappLog(getDate(), event)
         mBappLogs.add(log)
@@ -90,11 +96,19 @@ class System private constructor() {
         return mBappLogs
     }
 
-    fun addItemToInventory(item: ItemClass) {
-        val inventoryItem = InventoryItem(getDate(), item)
+    fun buyItemToInventory(item: ItemClass) {
+        val inventoryItem = InventoryItem(getDateInv(), item, "Compra")
         dailyInventory.add(inventoryItem)
     }
 
+    fun reItemToInventory(item: ItemClass) {
+        val inventoryItem = InventoryItem(getDateInv(), item, "Stock")
+        dailyInventory.add(inventoryItem)
+    }
+
+    fun clearInventory() {
+        dailyInventory.clear()
+    }
     fun getInventory(): List<InventoryItem> {
         return dailyInventory
     }

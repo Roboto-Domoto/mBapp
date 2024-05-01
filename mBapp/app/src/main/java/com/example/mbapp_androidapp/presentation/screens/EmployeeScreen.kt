@@ -18,6 +18,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +31,7 @@ import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
+import com.example.mbapp_androidapp.presentation.windows.InventoryWindow
 
 @Composable
 fun EmployeeScreen(navController: NavHostController) {
@@ -71,6 +74,9 @@ private fun BottomElements(navController: NavHostController) {
 
 @Composable
 private fun Buttons(navController: NavHostController) {
+    val showInvW = remember { mutableStateOf(false) }
+    if(showInvW.value) InventoryWindow(flag = showInvW)
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -91,7 +97,8 @@ private fun Buttons(navController: NavHostController) {
         Spacer(modifier = Modifier.height(60.dp))
         MenuButton(
             icon = ImageVector.vectorResource(id = R.drawable.inventory_24px),
-            text = "Inventario"
+            text = "Inventario",
+            onClick = { showInvW.value = !showInvW.value }
         )
     }
 }
