@@ -29,14 +29,14 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-/*
+
         val bt = BluetoothTerminal.getBluetoothTerminal(this)
         bt.getDeviceByName("ESP32-BT-MINIBAR")
         bt.connect()
 
         val hilo = bt.createConnectedThread()
         hilo.execute()
-*/
+
         //Instance of barcode scanner
         BarcodeScanner.getBarcodeScanner(this)
         //Instance of photo manager

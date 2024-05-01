@@ -47,6 +47,7 @@ import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.windows.NutritionalWindow
+import com.example.mbapp_androidapp.presentation.windows.guideWindows.ItemsGuide
 import com.example.mbapp_androidapp.presentation.windows.guideWindows.SleepGuide
 import com.example.mbapp_androidapp.ui.theme.caviarFamily
 
@@ -59,7 +60,7 @@ fun ItemsScreen(navController:NavController, itemsViewModel: ItemsViewModel) {
         val item: MutableState<ItemClass?> = remember { mutableStateOf(null) }
         val itemsList by itemsViewModel.allItems.observeAsState(emptyList())
         val guideW = remember { mutableStateOf(false) }
-        if (guideW.value) SleepGuide(flag = guideW)
+        if (guideW.value) ItemsGuide(flag = guideW)
         Box(
             modifier = Modifier
                 .fillMaxSize()

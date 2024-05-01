@@ -124,6 +124,7 @@ private fun Item(navController: NavHostController,itemsViewModel: ItemsViewModel
                 nutritionInfo = sys.lastItemAdd!!.nutritionInfo
             )
             itemsViewModel.addItem(newItem)
+            System.getInstance().reItemToInventory(newItem.toItemClass())
             sys.addLog("Añadido nuevo articulo ${newItem.name} con codigo ${newItem.barcode}")
         }
         barcodeScanner.cleanList()

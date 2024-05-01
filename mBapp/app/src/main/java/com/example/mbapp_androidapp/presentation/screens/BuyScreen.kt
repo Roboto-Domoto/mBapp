@@ -61,10 +61,29 @@ fun BuyScreen(
                         .addLog("Comprado producto ${it.name} y codigo ${it.barcode}")
                     itemsViewModel.deleteItem(it)
                     Customer.getInstance().addProduct(it.toItemClass())
+                    System.getInstance().buyItemToInventory(it.toItemClass())
                 }
+            }
+            val listOfMinStock=itemsViewModel.allItems.value?.distinctBy{it.name}?.map{
+                Pair(
+                    System.getInstance().getMinStock(it.toItemClass()),
+                    it.name
+                )
+            }
+            if(listOfMinStock!=null){
+                var msg = "*Aviso de stock:*\n"
+                for(pair in listOfMinStock){
+                    msg+="\t-${pair.second}: ${itemsViewModel.getStock(pair.second)} de ${pair.first}\n"
+                }
+                MailSender.getMailSender().send(
+                    msg,
+                    "Alerta minibar ${System.barId}",
+                    Employee.getInstance().getAdminEmail()
+                )
             }
             barcodeScanner.cleanList()
         }
+
         navController.navigateUp()
     } else {
         val topWeight = System.getInstance().weightTop.observeAsState(0)

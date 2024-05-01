@@ -78,20 +78,6 @@ fun MinStockScreen(itemsViewModel: ItemsViewModel) {
                     }
                 }
             }
-
-            Row(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Info,
-                    contentDescription = "Info button",
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(52.dp)
-                )
-            }
         }
         else {
 

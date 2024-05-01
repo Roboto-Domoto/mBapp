@@ -18,10 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-<<<<<<< HEAD
-import androidx.compose.runtime.RememberObserver
-=======
->>>>>>> 496eb3fc336dc1b8fb4b0233c1190943e1a3737d
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,16 +31,14 @@ import com.example.mbapp_androidapp.R
 import com.example.mbapp_androidapp.common.elements.MenuButton
 import com.example.mbapp_androidapp.common.elements.TopElements
 import com.example.mbapp_androidapp.presentation.navigation.AppScreens
-<<<<<<< HEAD
 import com.example.mbapp_androidapp.presentation.windows.guideWindows.SleepGuide
-=======
 import com.example.mbapp_androidapp.presentation.windows.InventoryWindow
->>>>>>> 496eb3fc336dc1b8fb4b0233c1190943e1a3737d
+import com.example.mbapp_androidapp.presentation.windows.guideWindows.EmployeeGuide
 
 @Composable
 fun EmployeeScreen(navController: NavHostController) {
     val guideW = remember { mutableStateOf(false) }
-    if (guideW.value) SleepGuide(flag = guideW)
+    if (guideW.value) EmployeeGuide(flag = guideW)
     Box(
         modifier = Modifier
             .fillMaxSize()
