@@ -1,6 +1,9 @@
 package com.example.mbapp_androidapp.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -19,6 +22,8 @@ import com.example.mbapp_androidapp.presentation.screens.SleepScreen
 import com.example.mbapp_androidapp.presentation.screens.StockScreen
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModel
 import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModelFactory
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 /**
@@ -28,6 +33,12 @@ import com.example.mbapp_androidapp.presentation.viewmodels.ItemsViewModelFactor
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController() //Controlador de navegación
+    val hourStart by remember { mutableStateOf(System.getInstance().getStartHour()) }
+    val hourFormat = DateTimeFormatter.ofPattern("hh:mm")
+    val hour by remember { mutableStateOf(LocalDateTime.now().format(hourFormat)) }
+
+    if (hourStart == hour) System.getInstance().clearInventory()
+
     //Se instancia al cliente
     System.getInstance()
 
