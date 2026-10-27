@@ -1,0 +1,11 @@
+{
+  "accent": "#9666C3",
+  "icon_alt": {
+    "en": "mBapp app icon: a blue minibar fridge stocked with drinks on a purple background",
+    "es": "Icono de la app mBapp: un minibar azul lleno de bebidas sobre fondo morado"
+  },
+  "banner_alt": {
+    "en": "mBapp banner: the app icon, the tagline \"Smart minibar controlled from an Android app\" and the stack (Kotlin, Jetpack Compose, C++, PlatformIO, ESP32)",
+    "es": "Banner de mBapp: el icono de la app, el lema \"Minibar inteligente controlado desde una app Android\" y el stack (Kotlin, Jetpack Compose, C++, PlatformIO, ESP32)"
+  }
+}
